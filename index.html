@@ -585,10 +585,11 @@
 
     <!-- ROLE TABS -->
     <div class="role-tabs" id="roleTabs">
-        <button class="role-tab active" data-role="all" type="button">🌟 All <span class="tab-count" id="cAll">0</span></button>
-        <button class="role-tab" data-role="student" type="button">🎓 Students <span class="tab-count" id="cStudent">0</span></button>
-        <button class="role-tab" data-role="teacher" type="button">👩‍🏫 Teachers <span class="tab-count" id="cTeacher">0</span></button>
-        <button class="role-tab" data-role="parent" type="button">👨‍👩‍👧 Parents <span class="tab-count" id="cParent">0</span></button>
+        <button class="role-tab active" data-role="all"      type="button">🌟 All       <span class="tab-count" id="cAll">0</span></button>
+        <button class="role-tab"        data-role="student"  type="button">🎓 Students  <span class="tab-count" id="cStudent">0</span></button>
+        <button class="role-tab"        data-role="teacher"  type="button">👩‍🏫 Teachers  <span class="tab-count" id="cTeacher">0</span></button>
+        <button class="role-tab"        data-role="parent"   type="button">👨‍👩‍👧 Parents   <span class="tab-count" id="cParent">0</span></button>
+        <button class="role-tab"        data-role="employee" type="button">🏫 PW Employees <span class="tab-count" id="cEmployee">0</span></button>
     </div>
 
     <!-- SWIPE DECK SECTION -->
@@ -700,6 +701,7 @@ const cAll       = document.getElementById('cAll');
 const cStudent   = document.getElementById('cStudent');
 const cTeacher   = document.getElementById('cTeacher');
 const cParent    = document.getElementById('cParent');
+const cEmployee  = document.getElementById('cEmployee');
 
 // ── Hamburger / Mobile Drawer ──────────────────────────────
 const hamBtn       = document.getElementById('hamBtn');
@@ -737,8 +739,9 @@ const fmtDate = v => { if(!v)return''; const p=Date.parse(v); return isNaN(p)?St
 function roleInfo(r){
     if(!r) return {label:'Student',icon:'🎓',key:'student'};
     const c=r.toLowerCase();
-    if(c.includes('teacher')||c.includes('faculty'))  return {label:'Teacher',icon:'👩‍🏫',key:'teacher'};
-    if(c.includes('parent')||c.includes('guardian'))  return {label:'Parent', icon:'👨‍👩‍👧',key:'parent'};
+    if(c.includes('teacher')||c.includes('faculty'))                        return {label:'Teacher',    icon:'👩‍🏫',key:'teacher'};
+    if(c.includes('parent')||c.includes('guardian'))                        return {label:'Parent',     icon:'👨‍👩‍👧',key:'parent'};
+    if(c.includes('employee')||c.includes('staff')||c.includes('pw staff')) return {label:'PW Employee',icon:'🏫',  key:'employee'};
     return {label:'Student',icon:'🎓',key:'student'};
 }
 
@@ -1002,9 +1005,19 @@ function applyFilters(){
 }
 
 function updateCounts(){
-    let ns=0,nt=0,np=0;
-    all.forEach(item=>{ const k=roleInfo(item.role).key; if(k==='student')ns++; else if(k==='teacher')nt++; else if(k==='parent')np++; });
-    cAll.textContent=all.length; cStudent.textContent=ns; cTeacher.textContent=nt; cParent.textContent=np;
+    let ns=0,nt=0,np=0,ne=0;
+    all.forEach(item=>{
+        const k=roleInfo(item.role).key;
+        if(k==='student')ns++;
+        else if(k==='teacher')nt++;
+        else if(k==='parent')np++;
+        else if(k==='employee')ne++;
+    });
+    cAll.textContent=all.length;
+    cStudent.textContent=ns;
+    cTeacher.textContent=nt;
+    cParent.textContent=np;
+    cEmployee.textContent=ne;
 }
 
 // ── Role Tabs ─────────────────────────────────────────────
