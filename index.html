@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Dream Wall — A Tapestry of Student Hopes & Ambitions</title>
-    <meta name="description" content="A digital, interactive dream wall celebrating the hopes, ambitions, and dreams of our students. Upload an Excel spreadsheet to visualize dreams as charming sticky notes.">
+    <title>Our Dream Wall — PW Alipurduar Vidyapeeth</title>
+    <meta name="description" content="A live digital dream wall celebrating the aspirations, ambitions, and dreams of students at PW Alipurduar Vidyapeeth.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- SheetJS (XLSX) for client-side Excel parsing -->
+    <!-- SheetJS (XLSX) library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
@@ -21,71 +21,68 @@
             --font-hand: 'Caveat', cursive;
 
             /* Brand & Theme Colors */
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #2e1065 70%, #0f172a 100%);
+            --bg-gradient: linear-gradient(135deg, #090d16 0%, #15102a 35%, #240c49 70%, #090d16 100%);
             --primary: #8b5cf6;
             --primary-light: #a78bfa;
             --secondary: #ec4899;
             --accent: #f59e0b;
-            --cyan: #06b6d4;
-            --surface-glass: rgba(255, 255, 255, 0.07);
-            --surface-glass-border: rgba(255, 255, 255, 0.15);
+            --surface-glass: rgba(255, 255, 255, 0.06);
+            --surface-glass-border: rgba(255, 255, 255, 0.12);
             --text-primary: #f8fafc;
             --text-secondary: #cbd5e1;
             --text-muted: #94a3b8;
 
-            /* Sticky Note Palette (Carefully tuned pastel colors with authentic paper feel) */
+            /* Sticky Note Palettes (Pastel with paper depth) */
             --note-yellow-bg: #fef08a;
             --note-yellow-border: #fde047;
             --note-yellow-text: #713f12;
-            --note-yellow-tape: rgba(250, 204, 21, 0.5);
+            --note-yellow-tape: rgba(250, 204, 21, 0.55);
 
             --note-pink-bg: #fbcfe8;
             --note-pink-border: #f472b6;
             --note-pink-text: #831843;
-            --note-pink-tape: rgba(244, 114, 182, 0.45);
+            --note-pink-tape: rgba(244, 114, 182, 0.5);
 
             --note-blue-bg: #bae6fd;
             --note-blue-border: #38bdf8;
             --note-blue-text: #0c4a6e;
-            --note-blue-tape: rgba(56, 189, 248, 0.45);
+            --note-blue-tape: rgba(56, 189, 248, 0.5);
 
             --note-mint-bg: #bbf7d0;
             --note-mint-border: #4ade80;
             --note-mint-text: #14532d;
-            --note-mint-tape: rgba(74, 222, 128, 0.45);
+            --note-mint-tape: rgba(74, 222, 128, 0.5);
 
             --note-lavender-bg: #e9d5ff;
             --note-lavender-border: #c084fc;
             --note-lavender-text: #581c87;
-            --note-lavender-tape: rgba(192, 132, 252, 0.45);
+            --note-lavender-tape: rgba(192, 132, 252, 0.5);
 
             --note-orange-bg: #fed7aa;
             --note-orange-border: #fb923c;
             --note-orange-text: #7c2d12;
-            --note-orange-tape: rgba(251, 146, 60, 0.45);
+            --note-orange-tape: rgba(251, 146, 60, 0.5);
 
             --note-cream-bg: #fef3c7;
             --note-cream-border: #fcd34d;
             --note-cream-text: #78350f;
-            --note-cream-tape: rgba(252, 211, 77, 0.45);
+            --note-cream-tape: rgba(252, 211, 77, 0.5);
 
             --note-rose-bg: #ffe4e6;
             --note-rose-border: #fb7185;
             --note-rose-text: #881337;
-            --note-rose-tape: rgba(251, 113, 133, 0.45);
+            --note-rose-tape: rgba(251, 113, 133, 0.5);
 
             --radius-sm: 8px;
             --radius-md: 14px;
             --radius-lg: 20px;
             --radius-full: 9999px;
 
-            --shadow-subtle: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-            --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            --shadow-hover: 0 22px 35px -5px rgba(0, 0, 0, 0.4), 0 12px 18px -6px rgba(0, 0, 0, 0.25);
-            --shadow-glow: 0 0 25px rgba(139, 92, 246, 0.35);
+            --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 22px 35px -5px rgba(0, 0, 0, 0.45), 0 12px 18px -6px rgba(0, 0, 0, 0.3);
         }
 
-        /* RESET & BASE */
+        /* RESET */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
@@ -108,7 +105,7 @@
             position: relative;
         }
 
-        /* Ambient Animated Background Glows */
+        /* Ambient Glow & Starry Background */
         .ambient-bg {
             position: fixed;
             inset: 0;
@@ -121,55 +118,54 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(100px);
-            opacity: 0.28;
-            animation: floatOrb 18s ease-in-out infinite alternate;
+            opacity: 0.25;
+            animation: floatOrb 20s ease-in-out infinite alternate;
         }
 
         .ambient-orb-1 {
             width: 500px;
             height: 500px;
             background: radial-gradient(circle, #8b5cf6, #3b82f6);
-            top: -100px;
-            left: -100px;
+            top: -80px;
+            left: -80px;
         }
 
         .ambient-orb-2 {
             width: 450px;
             height: 450px;
             background: radial-gradient(circle, #ec4899, #f43f5e);
-            bottom: 10%;
-            right: -100px;
-            animation-duration: 22s;
-            animation-delay: -5s;
+            bottom: 5%;
+            right: -80px;
+            animation-duration: 24s;
+            animation-delay: -6s;
         }
 
         .ambient-orb-3 {
-            width: 400px;
-            height: 400px;
+            width: 380px;
+            height: 380px;
             background: radial-gradient(circle, #06b6d4, #10b981);
-            top: 45%;
-            left: 20%;
-            animation-duration: 26s;
-            animation-delay: -10s;
+            top: 40%;
+            left: 25%;
+            animation-duration: 28s;
+            animation-delay: -12s;
         }
 
         @keyframes floatOrb {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, 60px) scale(1.1); }
-            100% { transform: translate(-30px, 30px) scale(0.95); }
+            50% { transform: translate(40px, 50px) scale(1.08); }
+            100% { transform: translate(-30px, 25px) scale(0.95); }
         }
 
-        /* Subtle Starry Particle Overlay */
         .star-field {
             position: fixed;
             inset: 0;
             background-image: 
                 radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 60px 140px, #e2e8f0, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 120px 60px, #fbcfe8, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 250px 220px, #fde047, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 340px 90px, #a78bfa, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 450px 290px, #67e8f9, rgba(0,0,0,0));
+                radial-gradient(1.5px 1.5px at 70px 150px, #e2e8f0, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 140px 70px, #fbcfe8, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 260px 240px, #fde047, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 350px 100px, #a78bfa, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 480px 310px, #67e8f9, rgba(0,0,0,0));
             background-repeat: repeat;
             background-size: 500px 500px;
             opacity: 0.35;
@@ -177,7 +173,6 @@
             z-index: 0;
         }
 
-        /* LAYOUT CONTAINER */
         .container {
             width: 100%;
             max-width: 1320px;
@@ -187,15 +182,15 @@
             z-index: 1;
         }
 
-        /* HEADER & NAVIGATION */
+        /* HEADER */
         .site-header {
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            background: rgba(15, 23, 42, 0.75);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(9, 13, 22, 0.82);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
         }
 
@@ -203,44 +198,49 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 72px;
+            height: 76px;
         }
 
-        .brand-logo {
+        .brand-logo-group {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             text-decoration: none;
             color: #ffffff;
+        }
+
+        .pw-logo-img {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            background: #ffffff;
+        }
+
+        .brand-text-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-main-title {
             font-family: var(--font-heading);
             font-weight: 800;
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             letter-spacing: -0.02em;
+            line-height: 1.15;
+            background: linear-gradient(135deg, #ffffff 40%, #ddd6fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .brand-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
-        }
-
-        .brand-badge {
-            font-size: 0.65rem;
+        .brand-sub-title {
+            font-size: 0.72rem;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            background: rgba(236, 72, 153, 0.2);
             color: #f472b6;
-            border: 1px solid rgba(236, 72, 153, 0.4);
-            padding: 2px 8px;
-            border-radius: 999px;
-            font-weight: 700;
-            margin-left: 4px;
         }
 
         .nav-links {
@@ -255,55 +255,35 @@
             color: var(--text-secondary);
             font-weight: 500;
             font-size: 0.95rem;
-            transition: color 0.2s ease, transform 0.2s ease;
+            transition: color 0.2s ease;
             position: relative;
         }
 
-        .nav-links a:hover,
-        .nav-links a:focus-visible {
+        .nav-links a:hover {
             color: #ffffff;
         }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0%;
-            height: 2px;
-            background: linear-gradient(90deg, #8b5cf6, #ec4899);
-            transition: width 0.25s ease;
-            border-radius: 2px;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-action-btn {
+        .btn-add-dream {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 18px;
+            padding: 9px 20px;
             border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
             color: #ffffff;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.92rem;
             text-decoration: none;
-            box-shadow: 0 4px 14px rgba(139, 92, 246, 0.35);
+            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
             transition: all 0.25s ease;
             border: none;
             cursor: pointer;
         }
 
-        .nav-action-btn:hover {
+        .btn-add-dream:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
-        }
-
-        .nav-action-btn:active {
-            transform: translateY(0);
+            box-shadow: 0 6px 22px rgba(236, 72, 153, 0.6);
+            color: #ffffff;
         }
 
         .mobile-menu-btn {
@@ -320,21 +300,19 @@
             font-size: 1.25rem;
         }
 
-        /* MOBILE NAV DRAWER */
         .mobile-drawer {
             display: none;
             position: fixed;
-            top: 72px;
+            top: 76px;
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.96);
+            background: rgba(10, 14, 25, 0.96);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 1.5rem;
             z-index: 99;
             flex-direction: column;
-            gap: 1.2rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            gap: 1rem;
         }
 
         .mobile-drawer.open {
@@ -352,39 +330,34 @@
 
         /* HERO SECTION */
         .hero {
-            padding: 5rem 0 3.5rem;
+            padding: 4.5rem 0 2.5rem;
             text-align: center;
             position: relative;
         }
 
-        .hero-badge-container {
+        .hero-badge {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 6px 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 6px 18px;
+            background: rgba(236, 72, 153, 0.15);
+            border: 1px solid rgba(236, 72, 153, 0.35);
             border-radius: var(--radius-full);
             font-size: 0.85rem;
-            font-weight: 600;
+            font-weight: 700;
             color: #fbcfe8;
             margin-bottom: 1.5rem;
-            backdrop-filter: blur(8px);
-            animation: pulseGlow 4s infinite alternate;
-        }
-
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 10px rgba(236, 72, 153, 0.2); }
-            100% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.4); }
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .hero-title {
             font-family: var(--font-heading);
-            font-size: clamp(2.75rem, 6vw, 4.5rem);
+            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1rem;
             background: linear-gradient(135deg, #ffffff 30%, #ddd6fe 60%, #fbcfe8 90%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -392,24 +365,82 @@
 
         .hero-subtitle {
             font-family: var(--font-hand);
-            font-size: clamp(1.6rem, 3.2vw, 2.3rem);
+            font-size: clamp(1.7rem, 3.2vw, 2.3rem);
             color: #fde047;
             margin-bottom: 1rem;
             line-height: 1.3;
             transform: rotate(-1.5deg);
             display: inline-block;
-            text-shadow: 0 2px 10px rgba(253, 224, 71, 0.25);
+            text-shadow: 0 2px 10px rgba(253, 224, 71, 0.3);
         }
 
         .hero-desc {
-            max-width: 650px;
-            margin: 0 auto 2.5rem;
+            max-width: 680px;
+            margin: 0 auto 2rem;
             font-size: 1.1rem;
             color: var(--text-secondary);
-            font-weight: 400;
         }
 
-        /* FLOATING DECORATIVE PAPER ICONS */
+        .hero-action-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .hero-btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 30px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+            transition: all 0.25s ease;
+        }
+
+        .hero-btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 28px rgba(236, 72, 153, 0.6);
+            color: #ffffff;
+        }
+
+        .hero-btn-sync {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .hero-btn-sync:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.35);
+        }
+
+        .hero-btn-sync.spinning #syncIcon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* FLOATING STICKERS */
         .floating-stickers {
             position: absolute;
             inset: 0;
@@ -420,277 +451,59 @@
         .floating-item {
             position: absolute;
             font-size: 1.8rem;
-            opacity: 0.75;
+            opacity: 0.7;
             animation: floatSlow 6s ease-in-out infinite alternate;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
 
-        .float-1 { top: 15%; left: 8%; animation-delay: 0s; transform: rotate(-12deg); }
-        .float-2 { top: 25%; right: 10%; animation-delay: 1.5s; transform: rotate(15deg); }
-        .float-3 { bottom: 20%; left: 12%; animation-delay: 3s; transform: rotate(8deg); }
-        .float-4 { bottom: 15%; right: 14%; animation-delay: 4.5s; transform: rotate(-10deg); }
+        .float-1 { top: 15%; left: 6%; animation-delay: 0s; }
+        .float-2 { top: 25%; right: 8%; animation-delay: 1.5s; }
+        .float-3 { bottom: 20%; left: 10%; animation-delay: 3s; }
+        .float-4 { bottom: 15%; right: 12%; animation-delay: 4.5s; }
 
         @keyframes floatSlow {
             0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-18px) rotate(6deg); }
+            100% { transform: translateY(-16px) rotate(6deg); }
         }
 
-        /* STATS BAR */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 3.5rem;
-        }
-
-        .stat-card {
-            background: var(--surface-glass);
-            border: 1px solid var(--surface-glass-border);
-            border-radius: var(--radius-md);
-            padding: 1.25rem 1.5rem;
-            backdrop-filter: blur(12px);
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            transition: all 0.3s ease;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-icon-wrapper {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+        /* LIVE SYNC STATUS BADGE */
+        .sync-status-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
-            flex-shrink: 0;
-        }
-
-        .stat-icon-1 { background: rgba(139, 92, 246, 0.25); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.4); }
-        .stat-icon-2 { background: rgba(236, 72, 153, 0.25); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.4); }
-        .stat-icon-3 { background: rgba(56, 189, 248, 0.25); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.4); }
-        .stat-icon-4 { background: rgba(251, 146, 60, 0.25); color: #fdba74; border: 1px solid rgba(251, 146, 60, 0.4); }
-
-        .stat-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .stat-number {
-            font-family: var(--font-heading);
-            font-size: 1.85rem;
-            font-weight: 800;
-            line-height: 1.1;
-            color: #ffffff;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* UPLOAD SECTION */
-        .upload-section {
-            margin-bottom: 3.5rem;
-        }
-
-        .upload-card {
-            background: linear-gradient(135deg, rgba(30, 27, 75, 0.7) 0%, rgba(46, 16, 101, 0.6) 100%);
-            border: 2px dashed rgba(167, 139, 250, 0.4);
-            border-radius: var(--radius-lg);
-            padding: 2.75rem 2rem;
-            text-align: center;
-            backdrop-filter: blur(14px);
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-        }
-
-        .upload-card.drag-over {
-            border-color: #ec4899;
-            background: rgba(236, 72, 153, 0.12);
-            transform: scale(1.01);
-            box-shadow: 0 0 30px rgba(236, 72, 153, 0.35);
-        }
-
-        .upload-card:hover {
-            border-color: rgba(167, 139, 250, 0.7);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.25);
-        }
-
-        .upload-icon-circle {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 1.25rem;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: #ffffff;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.4);
-        }
-
-        .upload-heading {
-            font-family: var(--font-heading);
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .upload-desc {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            max-width: 520px;
-            margin: 0 auto 1.5rem;
-        }
-
-        .upload-btn-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .file-input-hidden {
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            width: 100%;
-            height: 100%;
-            z-index: 5;
-        }
-
-        .btn-upload {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 28px;
-            border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #8b5cf6, #ec4899);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 1rem;
-            border: none;
-            box-shadow: 0 4px 18px rgba(139, 92, 246, 0.4);
-            pointer-events: none; /* let click bubble to container */
-            transition: all 0.25s ease;
-        }
-
-        .btn-template {
-            display: inline-flex;
-            align-items: center;
             gap: 8px;
-            padding: 11px 20px;
-            border-radius: var(--radius-full);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            color: #34d399;
+            margin-bottom: 2rem;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            z-index: 10;
         }
 
-        .btn-template:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.35);
+        .sync-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #34d399;
+            box-shadow: 0 0 8px #34d399;
+            animation: liveBlink 1.8s infinite;
         }
 
-        .upload-info-tags {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1.25rem;
-            font-size: 0.82rem;
-            color: var(--text-muted);
-            flex-wrap: wrap;
+        @keyframes liveBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
-        .upload-tag-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* STATUS / NOTIFICATION BANNERS */
-        .status-banner {
-            margin-top: 1.25rem;
-            padding: 1rem 1.25rem;
-            border-radius: var(--radius-md);
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 0.95rem;
-            animation: fadeIn 0.3s ease;
-            z-index: 6;
-            position: relative;
-        }
-
-        .status-success {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-            color: #6ee7b7;
-        }
-
-        .status-error {
-            background: rgba(239, 68, 68, 0.18);
-            border: 1px solid rgba(239, 68, 68, 0.45);
-            color: #fca5a5;
-        }
-
-        .status-content {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .status-dismiss {
-            background: transparent;
-            border: none;
-            color: inherit;
-            cursor: pointer;
-            font-size: 1.2rem;
-            line-height: 1;
-            padding: 4px;
-            opacity: 0.75;
-        }
-
-        .status-dismiss:hover {
-            opacity: 1;
-        }
-
-        /* CONTROLS & FILTER SECTION */
+        /* CONTROLS CARD */
         .controls-card {
             background: var(--surface-glass);
             border: 1px solid var(--surface-glass-border);
             border-radius: var(--radius-lg);
-            padding: 1.75rem 2rem;
+            padding: 1.5rem 1.75rem;
             backdrop-filter: blur(14px);
             margin-bottom: 2.5rem;
-            box-shadow: var(--shadow-subtle);
         }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1.2fr auto;
+            grid-template-columns: 2fr 1fr 1fr 1.2fr auto;
             gap: 1rem;
             align-items: end;
         }
@@ -702,11 +515,11 @@
         }
 
         .control-label {
-            font-size: 0.8rem;
-            font-weight: 600;
+            font-size: 0.78rem;
+            font-weight: 700;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.05em;
         }
 
         .search-input-wrapper {
@@ -727,7 +540,7 @@
             width: 100%;
             padding: 10px 14px 10px 40px;
             border-radius: var(--radius-sm);
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(10, 14, 25, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ffffff;
             font-family: inherit;
@@ -738,7 +551,7 @@
 
         .search-input:focus {
             border-color: var(--primary-light);
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(10, 14, 25, 0.85);
             box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
         }
 
@@ -746,7 +559,7 @@
             width: 100%;
             padding: 10px 14px;
             border-radius: var(--radius-sm);
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(10, 14, 25, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ffffff;
             font-family: inherit;
@@ -762,7 +575,7 @@
         }
 
         .custom-select option {
-            background: #1e1b4b;
+            background: #15102a;
             color: #ffffff;
         }
 
@@ -810,34 +623,6 @@
             color: #fde047;
         }
 
-        .demo-mode-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(245, 158, 11, 0.18);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #fcd34d;
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            font-size: 0.8rem;
-            font-weight: 700;
-            letter-spacing: 0.02em;
-        }
-
-        .demo-pulse {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #f59e0b;
-            box-shadow: 0 0 8px #f59e0b;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
         /* STICKY NOTES WALL GRID */
         .wall-section {
             margin-bottom: 5rem;
@@ -856,18 +641,15 @@
             padding: 2.2rem 1.6rem 1.6rem;
             border-radius: 2px 2px 18px 2px;
             box-shadow: var(--shadow-paper);
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), z-index 0s;
+            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
             cursor: default;
-            will-change: transform;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             min-height: 270px;
             box-sizing: border-box;
-            background-repeat: repeat;
         }
 
-        /* Folded Corner Effect via Pseudo-element */
         .sticky-note::after {
             content: '';
             position: absolute;
@@ -880,7 +662,6 @@
             pointer-events: none;
         }
 
-        /* Realistic Translucent Tape at the Top Center */
         .sticky-note-tape {
             position: absolute;
             top: -10px;
@@ -895,76 +676,42 @@
         }
 
         /* Color Schemes for Notes */
-        .note-style-yellow {
-            background-color: var(--note-yellow-bg);
-            border: 1px solid var(--note-yellow-border);
-            color: var(--note-yellow-text);
-        }
+        .note-style-yellow { background-color: var(--note-yellow-bg); border: 1px solid var(--note-yellow-border); color: var(--note-yellow-text); }
         .note-style-yellow .sticky-note-tape { background-color: var(--note-yellow-tape); }
 
-        .note-style-pink {
-            background-color: var(--note-pink-bg);
-            border: 1px solid var(--note-pink-border);
-            color: var(--note-pink-text);
-        }
+        .note-style-pink { background-color: var(--note-pink-bg); border: 1px solid var(--note-pink-border); color: var(--note-pink-text); }
         .note-style-pink .sticky-note-tape { background-color: var(--note-pink-tape); }
 
-        .note-style-blue {
-            background-color: var(--note-blue-bg);
-            border: 1px solid var(--note-blue-border);
-            color: var(--note-blue-text);
-        }
+        .note-style-blue { background-color: var(--note-blue-bg); border: 1px solid var(--note-blue-border); color: var(--note-blue-text); }
         .note-style-blue .sticky-note-tape { background-color: var(--note-blue-tape); }
 
-        .note-style-mint {
-            background-color: var(--note-mint-bg);
-            border: 1px solid var(--note-mint-border);
-            color: var(--note-mint-text);
-        }
+        .note-style-mint { background-color: var(--note-mint-bg); border: 1px solid var(--note-mint-border); color: var(--note-mint-text); }
         .note-style-mint .sticky-note-tape { background-color: var(--note-mint-tape); }
 
-        .note-style-lavender {
-            background-color: var(--note-lavender-bg);
-            border: 1px solid var(--note-lavender-border);
-            color: var(--note-lavender-text);
-        }
+        .note-style-lavender { background-color: var(--note-lavender-bg); border: 1px solid var(--note-lavender-border); color: var(--note-lavender-text); }
         .note-style-lavender .sticky-note-tape { background-color: var(--note-lavender-tape); }
 
-        .note-style-orange {
-            background-color: var(--note-orange-bg);
-            border: 1px solid var(--note-orange-border);
-            color: var(--note-orange-text);
-        }
+        .note-style-orange { background-color: var(--note-orange-bg); border: 1px solid var(--note-orange-border); color: var(--note-orange-text); }
         .note-style-orange .sticky-note-tape { background-color: var(--note-orange-tape); }
 
-        .note-style-cream {
-            background-color: var(--note-cream-bg);
-            border: 1px solid var(--note-cream-border);
-            color: var(--note-cream-text);
-        }
+        .note-style-cream { background-color: var(--note-cream-bg); border: 1px solid var(--note-cream-border); color: var(--note-cream-text); }
         .note-style-cream .sticky-note-tape { background-color: var(--note-cream-tape); }
 
-        .note-style-rose {
-            background-color: var(--note-rose-bg);
-            border: 1px solid var(--note-rose-border);
-            color: var(--note-rose-text);
-        }
+        .note-style-rose { background-color: var(--note-rose-bg); border: 1px solid var(--note-rose-border); color: var(--note-rose-text); }
         .note-style-rose .sticky-note-tape { background-color: var(--note-rose-tape); }
 
-        /* HOVER INTERACTIONS */
         .sticky-note:hover {
             transform: translateY(-8px) rotate(0deg) scale(1.03) !important;
             box-shadow: var(--shadow-hover);
             z-index: 10;
         }
 
-        /* NOTE INTERNAL TYPOGRAPHY */
         .note-dream-title {
             font-family: var(--font-hand);
             font-size: 1.85rem;
             font-weight: 700;
             line-height: 1.25;
-            margin-bottom: 0.9rem;
+            margin-bottom: 0.85rem;
             word-break: break-word;
         }
 
@@ -1000,19 +747,6 @@
             width: fit-content;
         }
 
-        .note-category-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            padding: 3px 10px;
-            border-radius: var(--radius-full);
-            background: rgba(0, 0, 0, 0.08);
-            margin-bottom: 0.85rem;
-            width: fit-content;
-        }
-
         .note-message-box {
             font-size: 0.92rem;
             line-height: 1.45;
@@ -1035,7 +769,8 @@
             gap: 4px;
         }
 
-        /* EMPTY STATE FOR WALL */
+        /* LOADING & EMPTY STATES */
+        .loading-state,
         .empty-wall-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -1045,34 +780,25 @@
             border-radius: var(--radius-lg);
         }
 
-        .empty-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .empty-title {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-desc {
-            color: var(--text-secondary);
-            max-width: 450px;
-            margin: 0 auto 1.5rem;
+        .loading-spinner {
+            width: 44px;
+            height: 44px;
+            border: 4px solid rgba(255, 255, 255, 0.15);
+            border-top-color: #ec4899;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.25rem;
         }
 
         /* ABOUT SECTION */
         .about-section {
-            padding: 4.5rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .about-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-lg);
             padding: 3rem 2.5rem;
             backdrop-filter: blur(16px);
@@ -1098,33 +824,11 @@
             margin-bottom: 1.2rem;
         }
 
-        .feature-list {
-            list-style: none;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: #e2e8f0;
-        }
-
-        .feature-check {
-            color: #34d399;
-        }
-
         .about-quote-box {
             background: rgba(139, 92, 246, 0.12);
             border: 1px solid rgba(139, 92, 246, 0.3);
             border-radius: var(--radius-md);
             padding: 2rem;
-            position: relative;
             text-align: center;
         }
 
@@ -1145,70 +849,11 @@
             letter-spacing: 0.08em;
         }
 
-        /* GUIDE / FORMAT HELPER MODAL or SECTION */
-        .excel-guide-banner {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: var(--radius-md);
-            padding: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .excel-guide-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .columns-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-
-        .columns-table th, .columns-table td {
-            text-align: left;
-            padding: 6px 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .columns-table th {
-            color: var(--text-muted);
-            font-weight: 600;
-        }
-
-        .req-pill {
-            display: inline-block;
-            padding: 1px 6px;
-            background: rgba(239, 68, 68, 0.2);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 700;
-        }
-
-        .opt-pill {
-            display: inline-block;
-            padding: 1px 6px;
-            background: rgba(100, 116, 139, 0.2);
-            color: #cbd5e1;
-            border: 1px solid rgba(100, 116, 139, 0.4);
-            border-radius: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-        }
-
         /* FOOTER */
         .site-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(10, 15, 30, 0.9);
-            padding: 3rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(9, 13, 22, 0.95);
+            padding: 2.75rem 0;
             text-align: center;
             position: relative;
             z-index: 1;
@@ -1218,7 +863,7 @@
             font-family: var(--font-hand);
             font-size: 1.8rem;
             color: #fbcfe8;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
         }
 
         .footer-credit {
@@ -1227,43 +872,24 @@
             font-weight: 500;
         }
 
-        /* ANIMATIONS & KEYFRAMES */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .stagger-in {
-            animation: noteEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation: noteEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
         }
 
         @keyframes noteEntrance {
             from {
                 opacity: 0;
-                transform: translateY(24px) scale(0.92);
+                transform: translateY(20px) scale(0.94);
             }
             to {
                 opacity: 1;
             }
         }
 
-        /* REDUCED MOTION PREFERENCE */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-            .sticky-note:hover {
-                transform: none !important;
-            }
-        }
-
-        /* RESPONSIVE BREAKPOINTS */
+        /* RESPONSIVE */
         @media (max-width: 1024px) {
             .controls-grid {
-                grid-template-columns: 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr;
             }
             .about-card {
                 grid-template-columns: 1fr;
@@ -1272,14 +898,14 @@
         }
 
         @media (max-width: 768px) {
-            .nav-links, .nav-action-btn {
+            .nav-links {
                 display: none;
             }
             .mobile-menu-btn {
                 display: flex;
             }
             .controls-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
             .controls-card {
                 padding: 1.25rem;
@@ -1291,30 +917,12 @@
             .hero {
                 padding: 3rem 0 2rem;
             }
-            .feature-list {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 520px) {
-            .controls-grid {
-                grid-template-columns: 1fr;
-            }
-            .dream-grid {
-                grid-template-columns: 1fr;
-            }
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .btn-reset {
-                width: 100%;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Visual Glow Effects -->
+    <!-- Ambient Visual Background -->
     <div class="ambient-bg" aria-hidden="true">
         <div class="ambient-orb ambient-orb-1"></div>
         <div class="ambient-orb ambient-orb-2"></div>
@@ -1326,24 +934,25 @@
     <header class="site-header">
         <div class="container">
             <div class="nav-wrapper">
-                <a href="#home" class="brand-logo" aria-label="Our Dream Wall Home">
-                    <div class="brand-icon">🌟</div>
-                    <span>OUR DREAM WALL</span>
-                    <span class="brand-badge">2026 Edition</span>
+                <a href="#home" class="brand-logo-group" aria-label="PW Alipurduar Vidyapeeth Dream Wall Home">
+                    <img src="https://theindiawire.com/wp-content/uploads/2023/03/Image-31-i0WHJt-VlLgVt.jpeg" alt="PW Logo" class="pw-logo-img" />
+                    <div class="brand-text-block">
+                        <span class="brand-main-title">OUR DREAM WALL</span>
+                        <span class="brand-sub-title">PW Alipurduar Vidyapeeth</span>
+                    </div>
                 </a>
 
                 <nav aria-label="Main Navigation">
                     <ul class="nav-links">
                         <li><a href="#home">Home</a></li>
-                        <li><a href="#upload-section">Upload</a></li>
-                        <li><a href="#dreams-wall">Wall</a></li>
+                        <li><a href="#dreams-wall">Dream Wall</a></li>
                         <li><a href="#about-section">About</a></li>
                     </ul>
                 </nav>
 
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <a href="#upload-section" class="nav-action-btn">
-                        <span>✨</span> Upload Excel
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" class="btn-add-dream">
+                        <span>✨</span> Add Your Dream
                     </a>
                     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
                         ☰
@@ -1355,9 +964,11 @@
         <!-- Mobile Drawer Navigation -->
         <div class="mobile-drawer" id="mobileDrawer">
             <a href="#home" class="mobile-nav-link">Home</a>
-            <a href="#upload-section" class="mobile-nav-link">Upload Excel</a>
             <a href="#dreams-wall" class="mobile-nav-link">Dream Wall</a>
             <a href="#about-section" class="mobile-nav-link">About Project</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" style="color:#f472b6; font-weight:700;">
+                ✨ Open Google Form
+            </a>
         </div>
     </header>
 
@@ -1373,169 +984,36 @@
                     <div class="floating-item float-4">💡</div>
                 </div>
 
-                <div class="hero-badge-container">
-                    <span>✨</span> Daughters' Day &amp; Student Hopes Special Celebration
+                <div class="hero-badge">
+                    <span>🌟</span> PW Alipurduar Vidyapeeth
                 </div>
 
                 <h1 class="hero-title">OUR DREAM WALL</h1>
                 <div class="hero-subtitle">“Every dream begins with a thought.”</div>
                 <p class="hero-desc">
-                    A vibrant collection of dreams, hopes and ambitions from our students.
-                    Upload your classroom Excel file to watch aspirations illuminate the wall.
+                    A vibrant collection of dreams, hopes and ambitions from the students of <strong>PW Alipurduar Vidyapeeth</strong>.
                 </p>
 
-                <!-- STATISTICS SECTION -->
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper stat-icon-1">✨</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="statTotalDreams">0</div>
-                            <div class="stat-label">Total Dreams</div>
-                        </div>
-                    </div>
+                <!-- Action Buttons: Google Form & Live Sync -->
+                <div class="hero-action-row">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" class="hero-btn-primary">
+                        <span>📝</span> Add Your Sticky Note
+                    </a>
+                    <button type="button" class="hero-btn-sync" id="btnSyncLive" title="Fetch the latest responses from Google Sheets">
+                        <span id="syncIcon">🔄</span> Refresh Live Wall
+                    </button>
+                </div>
 
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper stat-icon-2">🎓</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="statTotalClasses">0</div>
-                            <div class="stat-label">Classes</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper stat-icon-3">🏫</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="statTotalSections">0</div>
-                            <div class="stat-label">Sections</div>
-                        </div>
-                    </div>
-
-                    <div class="stat-card">
-                        <div class="stat-icon-wrapper stat-icon-4">🌈</div>
-                        <div class="stat-info">
-                            <div class="stat-number" id="statTotalCategories">0</div>
-                            <div class="stat-label">Categories</div>
-                        </div>
-                    </div>
+                <!-- Live Sync Status -->
+                <div class="sync-status-bar" id="syncStatusBar">
+                    <div class="sync-pulse"></div>
+                    <span id="syncStatusText">Auto-synced with live Google Sheet</span>
                 </div>
             </div>
         </section>
 
         <div class="container">
-            <!-- UPLOAD SECTION -->
-            <section class="upload-section" id="upload-section" aria-labelledby="uploadHeading">
-                <div class="upload-card" id="dropZone">
-                    <input 
-                        type="file" 
-                        id="excelFileInput" 
-                        class="file-input-hidden" 
-                        accept=".xlsx, .xls, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                        aria-label="Upload Excel File with Student Dreams"
-                    />
-
-                    <div class="upload-icon-circle">📂</div>
-                    <h2 class="upload-heading" id="uploadHeading">Upload the Dream List</h2>
-                    <p class="upload-desc">
-                        Select or drag &amp; drop an Excel file (<strong>.xlsx</strong> or <strong>.xls</strong>) to create the dream wall. 
-                        All processing happens 100% locally in your browser.
-                    </p>
-
-                    <div class="upload-btn-row">
-                        <button type="button" class="btn-upload" tabindex="-1">
-                            <span>📎</span> Choose Excel File
-                        </button>
-                        <button type="button" class="btn-template" id="btnDownloadSample" title="Download a sample Excel file template">
-                            <span>📥</span> Download Sample Template
-                        </button>
-                    </div>
-
-                    <div class="upload-info-tags">
-                        <span class="upload-tag-item">🔒 100% Private &amp; Offline</span>
-                        <span class="upload-tag-item">⚡ Instant SheetJS Parsing</span>
-                        <span class="upload-tag-item">📋 Supports .xlsx &amp; .xls</span>
-                    </div>
-                </div>
-
-                <!-- Status / Alert Banners -->
-                <div id="statusSuccessBanner" class="status-banner status-success" role="status" aria-live="polite">
-                    <div class="status-content">
-                        <span style="font-size: 1.3rem;">✓</span>
-                        <span id="statusSuccessText">125 dreams loaded successfully</span>
-                    </div>
-                    <button type="button" class="status-dismiss" id="dismissSuccessBtn" aria-label="Dismiss message">✕</button>
-                </div>
-
-                <div id="statusErrorBanner" class="status-banner status-error" role="alert" aria-live="assertive">
-                    <div class="status-content">
-                        <span style="font-size: 1.3rem;">⚠️</span>
-                        <span id="statusErrorText">An error occurred reading your spreadsheet.</span>
-                    </div>
-                    <button type="button" class="status-dismiss" id="dismissErrorBtn" aria-label="Dismiss error message">✕</button>
-                </div>
-
-                <!-- Excel Format Guide -->
-                <div class="excel-guide-banner">
-                    <div class="excel-guide-title">
-                        <span>💡</span> Expected Excel Columns Structure:
-                    </div>
-                    <table class="columns-table">
-                        <thead>
-                            <tr>
-                                <th>Column</th>
-                                <th>Requirement</th>
-                                <th>Description</th>
-                                <th>Example</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong>Class</strong></td>
-                                <td><span class="req-pill">REQUIRED</span></td>
-                                <td>Student's grade or class</td>
-                                <td>10</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Section</strong></td>
-                                <td><span class="req-pill">REQUIRED</span></td>
-                                <td>Classroom section</td>
-                                <td>A</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Dream</strong></td>
-                                <td><span class="req-pill">REQUIRED</span></td>
-                                <td>Aspiration or career goal</td>
-                                <td>Doctor / Astrophysicist</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Name</strong></td>
-                                <td><span class="opt-pill">OPTIONAL</span></td>
-                                <td>Student's name (hidden gracefully if blank)</td>
-                                <td>Rahul Das</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Category</strong></td>
-                                <td><span class="opt-pill">OPTIONAL</span></td>
-                                <td>Field of dream</td>
-                                <td>Medical / Arts / Science</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Message</strong></td>
-                                <td><span class="opt-pill">OPTIONAL</span></td>
-                                <td>Personal quote or message</td>
-                                <td>I want to help people through medicine</td>
-                            </tr>
-                            <tr>
-                                <td><strong>Date</strong></td>
-                                <td><span class="opt-pill">OPTIONAL</span></td>
-                                <td>Submission or graduation date</td>
-                                <td>2026-09-25</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- SEARCH, FILTERS & CONTROLS -->
+            <!-- SEARCH & FILTERS -->
             <section class="controls-section" aria-label="Search and Filter Controls">
                 <div class="controls-card">
                     <div class="controls-grid">
@@ -1548,33 +1026,17 @@
                                     type="text" 
                                     id="searchInput" 
                                     class="search-input" 
-                                    placeholder="Search student, dream, category..."
+                                    placeholder="Search by student, dream, batch, message..."
                                     autocomplete="off"
                                 />
                             </div>
                         </div>
 
-                        <!-- Class Filter -->
+                        <!-- Batch Filter -->
                         <div class="control-group">
-                            <label class="control-label" for="classFilter">Class</label>
-                            <select id="classFilter" class="custom-select">
-                                <option value="">All Classes</option>
-                            </select>
-                        </div>
-
-                        <!-- Section Filter -->
-                        <div class="control-group">
-                            <label class="control-label" for="sectionFilter">Section</label>
-                            <select id="sectionFilter" class="custom-select">
-                                <option value="">All Sections</option>
-                            </select>
-                        </div>
-
-                        <!-- Category Filter -->
-                        <div class="control-group">
-                            <label class="control-label" for="categoryFilter">Category</label>
-                            <select id="categoryFilter" class="custom-select">
-                                <option value="">All Categories</option>
+                            <label class="control-label" for="batchFilter">Batch Code</label>
+                            <select id="batchFilter" class="custom-select">
+                                <option value="">All Batches</option>
                             </select>
                         </div>
 
@@ -1586,14 +1048,13 @@
                                 <option value="oldest">Oldest First</option>
                                 <option value="name-asc">Name (A–Z)</option>
                                 <option value="name-desc">Name (Z–A)</option>
-                                <option value="class-asc">Class (Ascending)</option>
-                                <option value="random">Random Wall</option>
+                                <option value="random">Shuffle / Random</option>
                             </select>
                         </div>
 
                         <!-- Reset Button -->
                         <div class="control-group">
-                            <button type="button" id="btnResetFilters" class="btn-reset" title="Reset all search queries and dropdown filters">
+                            <button type="button" id="btnResetFilters" class="btn-reset" title="Reset all search queries and filters">
                                 <span>↺</span> Clear Filters
                             </button>
                         </div>
@@ -1605,9 +1066,8 @@
                             Showing <strong>0</strong> of <strong>0</strong> dreams
                         </div>
 
-                        <div id="demoBadge" class="demo-mode-indicator">
-                            <div class="demo-pulse"></div>
-                            <span>Demo Dreams Mode (Upload Excel to replace)</span>
+                        <div style="font-size:0.85rem; color:var(--text-muted);">
+                            Want to share your goal? <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" style="color:#f472b6; font-weight:700; text-decoration:none;">Click here to submit your dream</a>
                         </div>
                     </div>
                 </div>
@@ -1616,7 +1076,12 @@
             <!-- STICKY NOTES WALL -->
             <section class="wall-section" id="dreams-wall" aria-label="Student Dream Sticky Notes Wall">
                 <div class="dream-grid" id="dreamGrid">
-                    <!-- Sticky Notes will be injected here dynamically -->
+                    <!-- Loading Spinner Initial State -->
+                    <div class="loading-state" id="loadingState">
+                        <div class="loading-spinner"></div>
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #ffffff;">Loading dreams from Google Sheet...</div>
+                        <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Connecting to PW Alipurduar Vidyapeeth database</div>
+                    </div>
                 </div>
             </section>
 
@@ -1624,21 +1089,13 @@
             <section class="about-section" id="about-section">
                 <div class="about-card">
                     <div class="about-content">
-                        <h2>Every Dream Deserves a Spotlight</h2>
+                        <h2>PW Alipurduar Vidyapeeth Dream Wall</h2>
                         <p>
-                            Every student has a dream. This wall gives those dreams a place to be seen, 
-                            remembered and celebrated. Whether it is stepping onto Mars, healing the sick, 
-                            creating inspiring art, or teaching the next generation, every ambition matters.
+                            Every student holds boundless potential and a unique aspiration. This digital wall gives those dreams a proud place to be remembered, cherished, and celebrated.
                         </p>
                         <p>
-                            Designed especially to foster courage, ambition, and confidence in all young minds.
+                            From future doctors and engineers to civil servants and innovators, we celebrate the spirit of every aspiring learner at PW Alipurduar Vidyapeeth.
                         </p>
-                        <ul class="feature-list">
-                            <li class="feature-item"><span class="feature-check">✓</span> 100% Client-Side Privacy</li>
-                            <li class="feature-item"><span class="feature-check">✓</span> Instant Real-Time Search</li>
-                            <li class="feature-item"><span class="feature-check">✓</span> Realistic Paper Physics</li>
-                            <li class="feature-item"><span class="feature-check">✓</span> Easy Excel Integration</li>
-                        </ul>
                     </div>
 
                     <div class="about-quote-box">
@@ -1646,7 +1103,7 @@
                             “The future belongs to those who believe in the beauty of their dreams.”
                         </div>
                         <div class="about-quote-author">
-                            — Eleanor Roosevelt
+                            — Physics Wallah Vidyapeeth
                         </div>
                     </div>
                 </div>
@@ -1658,7 +1115,7 @@
     <footer class="site-footer">
         <div class="container">
             <div class="footer-motto">“Dream big. Start small. Never stop believing.”</div>
-            <div class="footer-credit">Made with ❤️ for our students • Our Dream Wall</div>
+            <div class="footer-credit">Made with ❤️ for the students of PW Alipurduar Vidyapeeth</div>
         </div>
     </footer>
 
@@ -1667,7 +1124,10 @@
         (function () {
             'use strict';
 
-            // Available Pastel Color Palettes for Sticky Notes
+            // Google Sheet Live CSV Endpoint
+            const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1ZK4SqUiBOThBKPzCnqZoOcV7b6s-JmsMr1vVZnsE0Es/gviz/tq?tqx=out:csv&gid=1817076388';
+
+            // Pastel Sticky Note Color Themes
             const NOTE_COLOR_STYLES = [
                 'note-style-yellow',
                 'note-style-pink',
@@ -1679,175 +1139,24 @@
                 'note-style-rose'
             ];
 
-            // Category Emoji Mapping
-            const CATEGORY_EMOJIS = {
-                'medical': '🩺',
-                'medicine': '🩺',
-                'doctor': '🩺',
-                'engineering': '⚙️',
-                'technology': '💻',
-                'tech': '💻',
-                'computer': '💻',
-                'science': '🔬',
-                'scientific': '🔬',
-                'space': '🚀',
-                'astronomy': '🪐',
-                'sports': '🏏',
-                'cricket': '🏏',
-                'football': '⚽',
-                'athletics': '🏃',
-                'arts': '🎨',
-                'art': '🎨',
-                'design': '🖌️',
-                'music': '🎵',
-                'dance': '💃',
-                'literature': '📚',
-                'teaching': '👩‍🏫',
-                'education': '🎓',
-                'law': '⚖️',
-                'judiciary': '⚖️',
-                'aviation': '✈️',
-                'pilot': '👨‍✈️',
-                'business': '📈',
-                'entrepreneur': '💡',
-                'social': '🤝',
-                'humanities': '🌍',
-                'environment': '🌱',
-                'default': '✨'
-            };
-
-            // Sample Demo Dreams Data
-            const SAMPLE_DREAMS = [
-                {
-                    name: 'Rahul Das',
-                    classVal: '10',
-                    sectionVal: 'A',
-                    dream: 'Doctor',
-                    category: 'Medical',
-                    message: 'I want to help people through medicine and build free clinics in rural villages.',
-                    date: '2026-09-25',
-                    id: 1
-                },
-                {
-                    name: '',
-                    classVal: '9',
-                    sectionVal: 'B',
-                    dream: 'Aerospace Engineer',
-                    category: 'Space & Engineering',
-                    message: 'I want to build rockets that take humans to Mars and explore deep space.',
-                    date: '2026-09-24',
-                    id: 2
-                },
-                {
-                    name: 'Arjun Sen',
-                    classVal: '10',
-                    sectionVal: 'A',
-                    dream: 'National Cricketer',
-                    category: 'Sports',
-                    message: 'I want to play for my country, score centuries and inspire upcoming athletes.',
-                    date: '2026-09-25',
-                    id: 3
-                },
-                {
-                    name: 'Ananya Mukherjee',
-                    classVal: '11',
-                    sectionVal: 'Science',
-                    dream: 'Astrophysicist & Researcher',
-                    category: 'Science',
-                    message: 'I want to decode dark matter and work with space telescopes at NASA or ISRO.',
-                    date: '2026-09-22',
-                    id: 4
-                },
-                {
-                    name: 'Pooja Roy',
-                    classVal: '8',
-                    sectionVal: 'C',
-                    dream: 'Children\'s Book Illustrator',
-                    category: 'Arts',
-                    message: 'I want to paint magical worlds that bring smiles and kindle imagination in kids.',
-                    date: '2026-09-21',
-                    id: 5
-                },
-                {
-                    name: 'Sneha Banerjee',
-                    classVal: '12',
-                    sectionVal: 'Commerce',
-                    dream: 'Green Tech Entrepreneur',
-                    category: 'Business',
-                    message: 'I want to create sustainable clean-energy solutions for everyday households.',
-                    date: '2026-09-20',
-                    id: 6
-                },
-                {
-                    name: '',
-                    classVal: '7',
-                    sectionVal: 'A',
-                    dream: 'Wildlife Veterinarian',
-                    category: 'Medical',
-                    message: 'I want to care for endangered forest animals and promote biodiversity conservation.',
-                    date: '2026-09-18',
-                    id: 7
-                },
-                {
-                    name: 'Rohan Sharma',
-                    classVal: '11',
-                    sectionVal: 'Science',
-                    dream: 'AI & Robotics Pioneer',
-                    category: 'Technology',
-                    message: 'I want to build intelligent robotic assistants that aid surgeons in critical surgeries.',
-                    date: '2026-09-19',
-                    id: 8
-                }
-            ];
-
-            // State Management
+            // State
             let allDreams = [];
-            let isDemoData = true;
-            let currentFileName = '';
+            let isFetching = false;
 
             // DOM Elements
             const dreamGrid = document.getElementById('dreamGrid');
-            const excelFileInput = document.getElementById('excelFileInput');
-            const dropZone = document.getElementById('dropZone');
-            const btnDownloadSample = document.getElementById('btnDownloadSample');
-
-            const statusSuccessBanner = document.getElementById('statusSuccessBanner');
-            const statusSuccessText = document.getElementById('statusSuccessText');
-            const dismissSuccessBtn = document.getElementById('dismissSuccessBtn');
-
-            const statusErrorBanner = document.getElementById('statusErrorBanner');
-            const statusErrorText = document.getElementById('statusErrorText');
-            const dismissErrorBtn = document.getElementById('dismissErrorBtn');
-
             const searchInput = document.getElementById('searchInput');
-            const classFilter = document.getElementById('classFilter');
-            const sectionFilter = document.getElementById('sectionFilter');
-            const categoryFilter = document.getElementById('categoryFilter');
+            const batchFilter = document.getElementById('batchFilter');
             const sortBy = document.getElementById('sortBy');
             const btnResetFilters = document.getElementById('btnResetFilters');
-
             const visibleCounter = document.getElementById('visibleCounter');
-            const demoBadge = document.getElementById('demoBadge');
-
-            const statTotalDreams = document.getElementById('statTotalDreams');
-            const statTotalClasses = document.getElementById('statTotalClasses');
-            const statTotalSections = document.getElementById('statTotalSections');
-            const statTotalCategories = document.getElementById('statTotalCategories');
+            const btnSyncLive = document.getElementById('btnSyncLive');
+            const syncStatusText = document.getElementById('syncStatusText');
 
             const mobileMenuBtn = document.getElementById('mobileMenuBtn');
             const mobileDrawer = document.getElementById('mobileDrawer');
 
-            // Category Emoji Helper
-            function getCategoryEmoji(categoryStr) {
-                if (!categoryStr) return CATEGORY_EMOJIS.default;
-                const clean = String(categoryStr).toLowerCase().trim();
-                for (const [key, emoji] of Object.entries(CATEGORY_EMOJIS)) {
-                    if (clean.includes(key)) return emoji;
-                }
-                return CATEGORY_EMOJIS.default;
-            }
-
-            // Clean String Sanitizer / Stringifier
+            // Clean string helper
             function cleanStr(val) {
                 if (val === null || val === undefined) return '';
                 const s = String(val).trim();
@@ -1855,21 +1164,7 @@
                 return s;
             }
 
-            // Format Date Helper
-            function formatDisplayDate(dateVal) {
-                if (!dateVal) return '';
-                if (dateVal instanceof Date && !isNaN(dateVal)) {
-                    return dateVal.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-                }
-                const s = String(dateVal).trim();
-                const parsed = Date.parse(s);
-                if (!isNaN(parsed)) {
-                    return new Date(parsed).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-                }
-                return s;
-            }
-
-            // Escape HTML for safe rendering
+            // HTML Escape helper
             function escapeHtml(str) {
                 if (!str) return '';
                 return String(str)
@@ -1880,24 +1175,31 @@
                     .replace(/'/g, '&#039;');
             }
 
-            // Assign a deterministic-like but organic rotation and color to note
+            // Date Formatter
+            function formatDisplayDate(dateVal) {
+                if (!dateVal) return '';
+                const parsed = Date.parse(dateVal);
+                if (!isNaN(parsed)) {
+                    return new Date(parsed).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+                }
+                return String(dateVal).split(' ')[0]; // Fallback to date part
+            }
+
+            // Get rotation & color for note
             function getNoteStyleAttrs(index, dreamObj) {
                 const colorClass = NOTE_COLOR_STYLES[index % NOTE_COLOR_STYLES.length];
-                // Subtle rotation between -2.5deg and +2.5deg
-                const pseudoSeed = (index * 17 + (dreamObj.dream ? dreamObj.dream.length : 0)) % 100;
+                const pseudoSeed = (index * 19 + (dreamObj.dream ? dreamObj.dream.length : 0)) % 100;
                 const deg = ((pseudoSeed / 100) * 5 - 2.5).toFixed(1);
                 return { colorClass, deg };
             }
 
-            // Create Sticky Note HTML
+            // Render a single note
             function renderStickyNoteCard(dreamObj, index) {
                 const { colorClass, deg } = getNoteStyleAttrs(index, dreamObj);
                 const hasName = Boolean(dreamObj.name && dreamObj.name.trim().length > 0);
-                const hasCategory = Boolean(dreamObj.category && dreamObj.category.trim().length > 0);
+                const hasBatch = Boolean(dreamObj.batchCode && dreamObj.batchCode.trim().length > 0);
                 const hasMessage = Boolean(dreamObj.message && dreamObj.message.trim().length > 0);
                 const hasDate = Boolean(dreamObj.date && dreamObj.date.trim().length > 0);
-
-                const categoryEmoji = getCategoryEmoji(dreamObj.category);
 
                 let cardHtml = `
                     <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}">
@@ -1915,18 +1217,10 @@
                             </div>`;
                 }
 
-                cardHtml += `
-                            <div class="note-meta-row">
-                                <span>Class ${escapeHtml(dreamObj.classVal)}</span>
-                                <span>•</span>
-                                <span>Sec ${escapeHtml(dreamObj.sectionVal)}</span>
-                            </div>`;
-
-                if (hasCategory) {
+                if (hasBatch) {
                     cardHtml += `
-                            <div class="note-category-badge">
-                                <span>${categoryEmoji}</span>
-                                <span>${escapeHtml(dreamObj.category)}</span>
+                            <div class="note-meta-row">
+                                <span>Batch: ${escapeHtml(dreamObj.batchCode)}</span>
                             </div>`;
                 }
 
@@ -1953,116 +1247,47 @@
                 return cardHtml;
             }
 
-            // Update Dynamic Filters (Class, Section, Category)
+            // Update Dynamic Batch Filter
             function populateDynamicFilters(dreams) {
-                const classes = new Set();
-                const sections = new Set();
-                const categories = new Set();
+                const batches = new Set();
 
                 dreams.forEach(item => {
-                    if (item.classVal) classes.add(item.classVal);
-                    if (item.sectionVal) sections.add(item.sectionVal);
-                    if (item.category && item.category.trim()) categories.add(item.category.trim());
+                    if (item.batchCode && item.batchCode.trim()) {
+                        batches.add(item.batchCode.trim());
+                    }
                 });
 
-                // Preserve current selections if valid
-                const currentClass = classFilter.value;
-                const currentSec = sectionFilter.value;
-                const currentCat = categoryFilter.value;
+                const currentBatch = batchFilter.value;
 
-                // Populate Class
-                classFilter.innerHTML = '<option value="">All Classes</option>';
-                Array.from(classes)
-                    .sort((a, b) => {
-                        const numA = parseFloat(a);
-                        const numB = parseFloat(b);
-                        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-                        return String(a).localeCompare(String(b));
-                    })
-                    .forEach(cls => {
-                        const opt = document.createElement('option');
-                        opt.value = cls;
-                        opt.textContent = `Class ${cls}`;
-                        if (cls === currentClass) opt.selected = true;
-                        classFilter.appendChild(opt);
-                    });
-
-                // Populate Section
-                sectionFilter.innerHTML = '<option value="">All Sections</option>';
-                Array.from(sections)
+                batchFilter.innerHTML = '<option value="">All Batches</option>';
+                Array.from(batches)
                     .sort((a, b) => String(a).localeCompare(String(b)))
-                    .forEach(sec => {
+                    .forEach(b => {
                         const opt = document.createElement('option');
-                        opt.value = sec;
-                        opt.textContent = `Section ${sec}`;
-                        if (sec === currentSec) opt.selected = true;
-                        sectionFilter.appendChild(opt);
-                    });
-
-                // Populate Category
-                categoryFilter.innerHTML = '<option value="">All Categories</option>';
-                Array.from(categories)
-                    .sort((a, b) => String(a).localeCompare(String(b)))
-                    .forEach(cat => {
-                        const opt = document.createElement('option');
-                        opt.value = cat;
-                        opt.textContent = `${getCategoryEmoji(cat)} ${cat}`;
-                        if (cat === currentCat) opt.selected = true;
-                        categoryFilter.appendChild(opt);
+                        opt.value = b;
+                        opt.textContent = `Batch: ${b}`;
+                        if (b === currentBatch) opt.selected = true;
+                        batchFilter.appendChild(opt);
                     });
             }
 
-            // Calculate Statistics
-            function updateStatistics(dreams) {
-                const classes = new Set();
-                const sections = new Set();
-                const categories = new Set();
-
-                dreams.forEach(item => {
-                    if (item.classVal) classes.add(item.classVal);
-                    if (item.sectionVal) sections.add(item.sectionVal);
-                    if (item.category && item.category.trim()) categories.add(item.category.trim().toLowerCase());
-                });
-
-                statTotalDreams.textContent = dreams.length.toLocaleString();
-                statTotalClasses.textContent = classes.size.toLocaleString();
-                statTotalSections.textContent = sections.size.toLocaleString();
-                statTotalCategories.textContent = categories.size.toLocaleString();
-            }
-
-            // Filter, Sort and Render Wall
+            // Filter & Render
             function updateDreamWall() {
                 const query = searchInput.value.toLowerCase().trim();
-                const selectedClass = classFilter.value;
-                const selectedSection = sectionFilter.value;
-                const selectedCategory = categoryFilter.value;
+                const selectedBatch = batchFilter.value;
                 const sortMode = sortBy.value;
 
                 // 1. Filter
                 let filtered = allDreams.filter(item => {
-                    // Class Filter
-                    if (selectedClass && String(item.classVal) !== selectedClass) {
+                    if (selectedBatch && String(item.batchCode).toLowerCase() !== selectedBatch.toLowerCase()) {
                         return false;
                     }
-                    // Section Filter
-                    if (selectedSection && String(item.sectionVal).toLowerCase() !== selectedSection.toLowerCase()) {
-                        return false;
-                    }
-                    // Category Filter
-                    if (selectedCategory && (!item.category || item.category.toLowerCase() !== selectedCategory.toLowerCase())) {
-                        return false;
-                    }
-                    // Search Query
                     if (query) {
                         const searchCorpus = [
                             item.name,
                             item.dream,
-                            item.category,
-                            item.message,
-                            `class ${item.classVal}`,
-                            `section ${item.sectionVal}`,
-                            item.classVal,
-                            item.sectionVal
+                            item.batchCode,
+                            item.message
                         ].filter(Boolean).join(' ').toLowerCase();
 
                         if (!searchCorpus.includes(query)) {
@@ -2086,11 +1311,6 @@
                         const nameA = a.name ? a.name.trim() : '';
                         const nameB = b.name ? b.name.trim() : '';
                         return nameB.localeCompare(nameA);
-                    } else if (sortMode === 'class-asc') {
-                        const numA = parseFloat(a.classVal);
-                        const numB = parseFloat(b.classVal);
-                        if (!isNaN(numA) && !isNaN(numB)) return numA - numB;
-                        return String(a.classVal).localeCompare(String(b.classVal));
                     } else if (sortMode === 'random') {
                         return 0.5 - Math.random();
                     }
@@ -2101,9 +1321,11 @@
                 if (filtered.length === 0) {
                     dreamGrid.innerHTML = `
                         <div class="empty-wall-state">
-                            <div class="empty-icon">🔍</div>
-                            <div class="empty-title">No Dreams Found</div>
-                            <p class="empty-desc">No student dreams match your active filters or search term. Try resetting your search filters.</p>
+                            <div style="font-size: 3rem; margin-bottom: 0.8rem;">🔍</div>
+                            <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: #ffffff; margin-bottom: 0.5rem;">No Dreams Found</h3>
+                            <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
+                                No student dreams match your current filter. Try resetting your search filters or be the first to post a new dream!
+                            </p>
                             <button type="button" class="btn-reset" onclick="document.getElementById('btnResetFilters').click();">
                                 Clear All Filters
                             </button>
@@ -2114,246 +1336,125 @@
 
                 // Update Counter
                 visibleCounter.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${allDreams.length}</strong> dreams`;
-
-                // Demo badge visibility
-                demoBadge.style.display = isDemoData ? 'inline-flex' : 'none';
             }
 
-            // Notification / Alert Helpers
-            function showErrorBanner(msg) {
-                statusErrorText.textContent = msg;
-                statusErrorBanner.style.display = 'flex';
-                statusSuccessBanner.style.display = 'none';
-                statusErrorBanner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            // Fetch live CSV from Google Sheet
+            async function fetchLiveGoogleSheetData() {
+                if (isFetching) return;
+                isFetching = true;
 
-            function showSuccessBanner(msg) {
-                statusSuccessText.textContent = msg;
-                statusSuccessBanner.style.display = 'flex';
-                statusErrorBanner.style.display = 'none';
-            }
+                btnSyncLive.classList.add('spinning');
+                syncStatusText.textContent = 'Fetching latest responses...';
 
-            function hideBanners() {
-                statusSuccessBanner.style.display = 'none';
-                statusErrorBanner.style.display = 'none';
-            }
+                try {
+                    // Add cache buster to always fetch the freshest submissions
+                    const url = `${GOOGLE_SHEET_CSV_URL}&_cb=${Date.now()}`;
+                    const res = await fetch(url);
+                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
 
-            // Process Excel File with SheetJS
-            function handleExcelFile(file) {
-                if (!file) return;
-                hideBanners();
+                    const csvText = await res.text();
+                    
+                    // Parse CSV using SheetJS
+                    const workbook = XLSX.read(csvText, { type: 'string' });
+                    const sheetName = workbook.SheetNames[0];
+                    const rawJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: '', raw: false });
 
-                // Validate file extension
-                const fileName = file.name.toLowerCase();
-                const isExcel = fileName.endsWith('.xlsx') || fileName.endsWith('.xls') || fileName.endsWith('.csv');
-                if (!isExcel) {
-                    showErrorBanner(`The selected file "${file.name}" is not a valid Excel spreadsheet (.xlsx or .xls). Please choose an Excel file.`);
-                    return;
-                }
-
-                currentFileName = file.name;
-
-                const reader = new FileReader();
-
-                reader.onload = function (e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        // Parse Workbook
-                        const workbook = XLSX.read(data, { type: 'array', cellDates: true, dateNF: 'yyyy-mm-dd' });
-
-                        if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
-                            showErrorBanner('The uploaded Excel file does not contain any sheets or tables.');
-                            return;
-                        }
-
-                        // Grab the first sheet
-                        const firstSheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[firstSheetName];
-
-                        // Convert to JSON with headers
-                        const rawJson = XLSX.utils.sheet_to_json(worksheet, { defval: '', raw: false });
-
-                        if (!rawJson || rawJson.length === 0) {
-                            showErrorBanner('The spreadsheet appears to be completely empty. Please add student dreams and upload again.');
-                            return;
-                        }
-
-                        // Validate Columns (Case-insensitive matching for user convenience)
-                        const firstRow = rawJson[0];
-                        const keys = Object.keys(firstRow);
-
-                        function findKey(targetName) {
-                            return keys.find(k => k.trim().toLowerCase() === targetName.toLowerCase());
-                        }
-
-                        const classKey = findKey('Class');
-                        const sectionKey = findKey('Section');
-                        const dreamKey = findKey('Dream');
-                        const nameKey = findKey('Name');
-                        const categoryKey = findKey('Category');
-                        const messageKey = findKey('Message');
-                        const dateKey = findKey('Date');
-
-                        // Check Required Columns
-                        const missingRequired = [];
-                        if (!classKey) missingRequired.push('Class');
-                        if (!sectionKey) missingRequired.push('Section');
-                        if (!dreamKey) missingRequired.push('Dream');
-
-                        if (missingRequired.length > 0) {
-                            showErrorBanner(`We couldn't find the required column(s): ${missingRequired.join(', ')} in your Excel file. Please ensure your spreadsheet has headers: "Class", "Section", and "Dream".`);
-                            return;
-                        }
-
-                        // Parse and Clean Rows
-                        const parsedDreams = [];
-                        let rowId = 1;
-
-                        rawJson.forEach(row => {
-                            const rawDream = cleanStr(row[dreamKey]);
-                            const rawClass = cleanStr(row[classKey]);
-                            const rawSection = cleanStr(row[sectionKey]);
-
-                            // Skip rows where all required fields are empty
-                            if (!rawDream && !rawClass && !rawSection) {
-                                return;
-                            }
-
-                            // If a row has partial data, handle gracefully
-                            if (!rawDream) return; // dream is fundamental
-
-                            parsedDreams.push({
-                                id: rowId++,
-                                name: nameKey ? cleanStr(row[nameKey]) : '',
-                                classVal: rawClass || '—',
-                                sectionVal: rawSection || '—',
-                                dream: rawDream,
-                                category: categoryKey ? cleanStr(row[categoryKey]) : '',
-                                message: messageKey ? cleanStr(row[messageKey]) : '',
-                                date: dateKey ? cleanStr(row[dateKey]) : ''
-                            });
-                        });
-
-                        if (parsedDreams.length === 0) {
-                            showErrorBanner('No valid student dream records could be extracted. Please check if your "Dream" column has entries.');
-                            return;
-                        }
-
-                        // Set real data
-                        allDreams = parsedDreams;
-                        isDemoData = false;
-
-                        // Update UI
-                        populateDynamicFilters(allDreams);
-                        updateStatistics(allDreams);
+                    if (!rawJson || rawJson.length === 0) {
+                        allDreams = [];
                         updateDreamWall();
-
-                        showSuccessBanner(`✓ ${parsedDreams.length} student dreams loaded successfully from "${file.name}"!`);
-
-                        // Scroll smoothly down to the dream wall
-                        const wallEl = document.getElementById('dreams-wall');
-                        if (wallEl) {
-                            setTimeout(() => {
-                                wallEl.scrollIntoView({ behavior: 'smooth' });
-                            }, 300);
-                        }
-
-                    } catch (err) {
-                        console.error('SheetJS Parsing Error:', err);
-                        showErrorBanner('Unable to read the Excel file. Please ensure the file is not password protected or corrupted.');
+                        syncStatusText.textContent = 'Google Sheet connected (0 responses yet)';
+                        return;
                     }
-                };
 
-                reader.onerror = function () {
-                    showErrorBanner('Error reading file from disk.');
-                };
+                    // Map fields
+                    const firstRow = rawJson[0];
+                    const keys = Object.keys(firstRow);
 
-                reader.readAsArrayBuffer(file);
+                    function findKey(patterns) {
+                        return keys.find(k => {
+                            const cleanK = k.toLowerCase().trim();
+                            return patterns.some(p => cleanK.includes(p.toLowerCase()));
+                        });
+                    }
+
+                    const timestampKey = findKey(['timestamp', 'date', 'time']);
+                    const nameKey = findKey(['your name', 'name', 'student']);
+                    const batchKey = findKey(['batch code', 'batch', 'class', 'section']);
+                    const dreamKey = findKey(['what is your dream', 'dream', 'future goal', 'goal']);
+                    const messageKey = findKey(['your message', 'message', 'why is this your dream', 'quote']);
+
+                    const parsed = [];
+                    let rowId = 1;
+
+                    rawJson.forEach(row => {
+                        const dream = dreamKey ? cleanStr(row[dreamKey]) : '';
+                        if (!dream) return; // Skip empty dreams
+
+                        parsed.push({
+                            id: rowId++,
+                            date: timestampKey ? cleanStr(row[timestampKey]) : '',
+                            name: nameKey ? cleanStr(row[nameKey]) : '',
+                            batchCode: batchKey ? cleanStr(row[batchKey]) : '',
+                            dream: dream,
+                            message: messageKey ? cleanStr(row[messageKey]) : ''
+                        });
+                    });
+
+                    allDreams = parsed;
+                    populateDynamicFilters(allDreams);
+                    updateDreamWall();
+
+                    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    syncStatusText.textContent = `Auto-synced (${allDreams.length} dreams loaded • Last updated at ${timeStr})`;
+
+                } catch (err) {
+                    console.error('Error fetching Google Sheet:', err);
+                    syncStatusText.textContent = 'Sync issue. Click "Refresh Live Wall" to retry.';
+                    
+                    if (allDreams.length === 0) {
+                        dreamGrid.innerHTML = `
+                            <div class="empty-wall-state">
+                                <div style="font-size: 3rem; margin-bottom: 0.8rem;">⚠️</div>
+                                <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: #ffffff; margin-bottom: 0.5rem;">Unable to load Google Sheet</h3>
+                                <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
+                                    Please check your internet connection or try refreshing the live wall.
+                                </p>
+                                <button type="button" class="btn-reset" onclick="window.fetchLiveGoogleSheetData();">
+                                    🔄 Retry Sync
+                                </button>
+                            </div>`;
+                    }
+                } finally {
+                    isFetching = false;
+                    btnSyncLive.classList.remove('spinning');
+                }
             }
 
-            // Generate Sample Excel Template for Download
-            function downloadSampleTemplate() {
-                const sampleData = [
-                    { Name: "Rahul Das", Class: "10", Section: "A", Dream: "Doctor", Category: "Medical", Message: "I want to help people through medicine", Date: "2026-09-25" },
-                    { Name: "", Class: "9", Section: "B", Dream: "Aerospace Engineer", Category: "Engineering", Message: "I want to build rockets to Mars", Date: "2026-09-25" },
-                    { Name: "Arjun Sen", Class: "10", Section: "A", Dream: "Cricketer", Category: "Sports", Message: "I want to play for my country", Date: "2026-09-25" },
-                    { Name: "Ananya Mukherjee", Class: "11", Section: "Science", Dream: "Astrophysicist", Category: "Science", Message: "I want to discover new exoplanets", Date: "2026-09-24" },
-                    { Name: "Pooja Roy", Class: "8", Section: "C", Dream: "Author & Illustrator", Category: "Arts", Message: "I want to write inspirational storybooks", Date: "2026-09-23" }
-                ];
+            // Expose globally for retry buttons
+            window.fetchLiveGoogleSheetData = fetchLiveGoogleSheetData;
 
-                const ws = XLSX.utils.json_to_sheet(sampleData);
-                const wb = XLSX.utils.book_new();
-                XLSX.utils.book_append_sheet(wb, ws, "Student Dreams");
-                XLSX.writeFile(wb, "Student_Dreams_Template.xlsx");
-            }
-
-            // Setup Event Listeners
+            // Events
             function initEvents() {
-                // File Input Change
-                excelFileInput.addEventListener('change', function (e) {
-                    if (e.target.files && e.target.files.length > 0) {
-                        handleExcelFile(e.target.files[0]);
-                    }
-                });
-
-                // Drag & Drop
-                ['dragenter', 'dragover'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        dropZone.classList.add('drag-over');
-                    });
-                });
-
-                ['dragleave', 'drop'].forEach(eventName => {
-                    dropZone.addEventListener(eventName, function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        dropZone.classList.remove('drag-over');
-                    });
-                });
-
-                dropZone.addEventListener('drop', function (e) {
-                    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-                        handleExcelFile(e.dataTransfer.files[0]);
-                    }
-                });
-
-                // Download Template Button
-                btnDownloadSample.addEventListener('click', function (e) {
-                    e.stopPropagation(); // prevent triggering file picker
-                    downloadSampleTemplate();
-                });
-
-                // Banner Dismissals
-                dismissSuccessBtn.addEventListener('click', () => statusSuccessBanner.style.display = 'none');
-                dismissErrorBtn.addEventListener('click', () => statusErrorBanner.style.display = 'none');
-
-                // Filter & Search Controls
                 searchInput.addEventListener('input', updateDreamWall);
-                classFilter.addEventListener('change', updateDreamWall);
-                sectionFilter.addEventListener('change', updateDreamWall);
-                categoryFilter.addEventListener('change', updateDreamWall);
+                batchFilter.addEventListener('change', updateDreamWall);
                 sortBy.addEventListener('change', updateDreamWall);
 
-                // Reset Filters Button
                 btnResetFilters.addEventListener('click', function () {
                     searchInput.value = '';
-                    classFilter.value = '';
-                    sectionFilter.value = '';
-                    categoryFilter.value = '';
+                    batchFilter.value = '';
                     sortBy.value = 'newest';
                     updateDreamWall();
                 });
 
-                // Mobile Navigation Drawer Toggle
+                btnSyncLive.addEventListener('click', fetchLiveGoogleSheetData);
+
+                // Mobile Navigation
                 mobileMenuBtn.addEventListener('click', function () {
                     const isOpen = mobileDrawer.classList.toggle('open');
                     mobileMenuBtn.setAttribute('aria-expanded', isOpen);
                     mobileMenuBtn.textContent = isOpen ? '✕' : '☰';
                 });
 
-                // Close mobile drawer when link clicked
                 document.querySelectorAll('.mobile-nav-link').forEach(link => {
                     link.addEventListener('click', () => {
                         mobileDrawer.classList.remove('open');
@@ -2363,18 +1464,12 @@
                 });
             }
 
-            // Initial Bootstrap
+            // Init
             function init() {
-                allDreams = [...SAMPLE_DREAMS];
-                isDemoData = true;
-
                 initEvents();
-                populateDynamicFilters(allDreams);
-                updateStatistics(allDreams);
-                updateDreamWall();
+                fetchLiveGoogleSheetData();
             }
 
-            // Run when DOM is ready
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
