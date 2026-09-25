@@ -875,9 +875,10 @@ function advance(dir, withLike=false){
 
     setTimeout(()=>{
         stage.classList.remove('next-anim');
+        // Circular wrap — last card → back to first, first card → back to last
         current = current + dir;
-        if(current >= filtered.length) current = filtered.length - 1;
-        if(current < 0) current = 0;
+        if(current >= filtered.length) current = 0;
+        if(current < 0) current = filtered.length - 1;
         if(!hintSeen){ hintSeen=true; hintEl.classList.add('hidden'); }
         renderDeck();
     }, 340);
@@ -1044,23 +1045,35 @@ async function fetchSheet(manual=false){
         if(!rows.length){ all=[]; updateCounts(); applyFilters(); syncTxt.textContent='No responses yet.'; return; }
 
         const keys = Object.keys(rows[0]);
-        const fk = pats => keys.find(k=>pats.some(p=>k.toLowerCase().includes(p.toLowerCase())));
 
-        const tsKey  = fk(['timestamp','date','time']);
-        const roleKey= fk(['your role','role','i am a']);
-        const nameKey= fk(['name','your name','student']);
-        const msgKey = fk(['your message','message','dream','future goal','goal','wish']);
+        // Exact-first column detector
+        const fk = (exactList, fuzzyList) => {
+            let f = keys.find(k => exactList.some(p => k.trim().toLowerCase() === p.toLowerCase()));
+            if(!f && fuzzyList) f = keys.find(k => fuzzyList.some(p => k.toLowerCase().includes(p.toLowerCase())));
+            return f;
+        };
+
+        const tsKey   = fk(['timestamp'],               ['timestamp','date','time']);
+        const roleKey = fk(['your role','role'],         ['role','i am a','designation']);
+        const nameKey = fk(['name','your name'],         ['student name','your name']);
+        // Dream column matched before message
+        const dreamKey= fk(['what is your dream / future goal?','dream','future goal'],['dream','goal','ambition','aspiration']);
+        const msgKey  = fk(['your message?','your message','message'], ['message','quote','blessing','words']);
 
         const parsed=[]; let id=1;
         rows.forEach(row=>{
-            let msg = msgKey ? clean(row[msgKey]) : '';
-            if(!msg){
+            let dream = dreamKey ? clean(row[dreamKey]) : '';
+            let msg   = msgKey   ? clean(row[msgKey])   : '';
+            // If no dedicated dream col, promote message to dream slot
+            if(!dream && msg){ dream = msg; msg = ''; }
+            // Last fallback
+            if(!dream){
                 for(const k of keys){
-                    if(k!==tsKey && k!==roleKey && k!==nameKey){ const v=clean(row[k]); if(v){msg=v;break;} }
+                    if(k!==tsKey && k!==roleKey && k!==nameKey){ const v=clean(row[k]); if(v){dream=v;break;} }
                 }
             }
-            if(!msg) return;
-            parsed.push({ id:id++, date:tsKey?clean(row[tsKey]):'', role:roleKey?clean(row[roleKey]):'Student', name:nameKey?clean(row[nameKey]):'', message:msg });
+            if(!dream) return;
+            parsed.push({ id:id++, date:tsKey?clean(row[tsKey]):'', role:roleKey?clean(row[roleKey]):'Student', name:nameKey?clean(row[nameKey]):'', message:dream, extra:msg });
         });
 
         const isNew = parsed.length > all.length;
