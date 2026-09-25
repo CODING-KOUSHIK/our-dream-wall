@@ -2,17 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Our Dream Wall — PW Alipurduar Vidyapeeth</title>
-    <meta name="description" content="A live digital dream wall celebrating the aspirations, ambitions, and dreams of students at PW Alipurduar Vidyapeeth.">
+    <meta name="description" content="A live digital wall of dreams, aspirations, and wishes from Students, Teachers, and Parents at PW Alipurduar Vidyapeeth.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- SheetJS (XLSX) library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <!-- Canvas Confetti for Celebration Effects -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
     <style>
         :root {
@@ -21,7 +24,7 @@
             --font-hand: 'Caveat', cursive;
 
             /* Brand & Theme Colors */
-            --bg-gradient: linear-gradient(135deg, #090d16 0%, #15102a 35%, #240c49 70%, #090d16 100%);
+            --bg-gradient: linear-gradient(140deg, #090d16 0%, #130f28 35%, #200b42 70%, #090d16 100%);
             --primary: #8b5cf6;
             --primary-light: #a78bfa;
             --secondary: #ec4899;
@@ -73,20 +76,21 @@
             --note-rose-text: #881337;
             --note-rose-tape: rgba(251, 113, 133, 0.5);
 
-            --radius-sm: 8px;
-            --radius-md: 14px;
-            --radius-lg: 20px;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
             --radius-full: 9999px;
 
             --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            --shadow-hover: 0 22px 35px -5px rgba(0, 0, 0, 0.45), 0 12px 18px -6px rgba(0, 0, 0, 0.3);
+            --shadow-hover: 0 24px 38px -5px rgba(0, 0, 0, 0.5), 0 14px 20px -6px rgba(0, 0, 0, 0.3);
         }
 
-        /* RESET */
+        /* RESET & BASE */
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         html {
@@ -103,6 +107,7 @@
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            padding-bottom: 4rem;
         }
 
         /* Ambient Glow & Starry Background */
@@ -177,7 +182,7 @@
             width: 100%;
             max-width: 1320px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1.25rem;
             position: relative;
             z-index: 1;
         }
@@ -189,7 +194,7 @@
             z-index: 100;
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            background: rgba(9, 13, 22, 0.82);
+            background: rgba(9, 13, 22, 0.85);
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             transition: all 0.3s ease;
         }
@@ -198,13 +203,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 76px;
+            height: 74px;
         }
 
         .brand-logo-group {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             text-decoration: none;
             color: #ffffff;
         }
@@ -212,11 +217,16 @@
         .pw-logo-img {
             width: 44px;
             height: 44px;
-            border-radius: 10px;
+            border-radius: 12px;
             object-fit: cover;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
             background: #ffffff;
+            transition: transform 0.25s ease;
+        }
+
+        .brand-logo-group:hover .pw-logo-img {
+            transform: scale(1.05) rotate(-3deg);
         }
 
         .brand-text-block {
@@ -227,7 +237,7 @@
         .brand-main-title {
             font-family: var(--font-heading);
             font-weight: 800;
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             letter-spacing: -0.02em;
             line-height: 1.15;
             background: linear-gradient(135deg, #ffffff 40%, #ddd6fe 100%);
@@ -253,10 +263,9 @@
         .nav-links a {
             text-decoration: none;
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.95rem;
             transition: color 0.2s ease;
-            position: relative;
         }
 
         .nav-links a:hover {
@@ -267,70 +276,32 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 9px 20px;
+            padding: 10px 22px;
             border-radius: var(--radius-full);
             background: linear-gradient(135deg, #ec4899, #8b5cf6);
             color: #ffffff;
             font-weight: 700;
             font-size: 0.92rem;
             text-decoration: none;
-            box-shadow: 0 4px 14px rgba(236, 72, 153, 0.4);
-            transition: all 0.25s ease;
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.45);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
             border: none;
             cursor: pointer;
         }
 
         .btn-add-dream:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 22px rgba(236, 72, 153, 0.6);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.65);
             color: #ffffff;
         }
 
-        .mobile-menu-btn {
-            display: none;
-            background: transparent;
-            border: 1px solid var(--surface-glass-border);
-            color: #ffffff;
-            width: 40px;
-            height: 40px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-        }
-
-        .mobile-drawer {
-            display: none;
-            position: fixed;
-            top: 76px;
-            left: 0;
-            right: 0;
-            background: rgba(10, 14, 25, 0.96);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            z-index: 99;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mobile-drawer.open {
-            display: flex;
-        }
-
-        .mobile-drawer a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 1.1rem;
-            font-weight: 600;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        .btn-add-dream:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* HERO SECTION */
         .hero {
-            padding: 4.5rem 0 2.5rem;
+            padding: 3.5rem 0 2rem;
             text-align: center;
             position: relative;
         }
@@ -346,18 +317,19 @@
             font-size: 0.85rem;
             font-weight: 700;
             color: #fbcfe8;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
             text-transform: uppercase;
             letter-spacing: 0.06em;
+            backdrop-filter: blur(8px);
         }
 
         .hero-title {
             font-family: var(--font-heading);
-            font-size: clamp(2.5rem, 5.5vw, 4.2rem);
-            font-weight: 800;
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 900;
             line-height: 1.1;
             letter-spacing: -0.03em;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             background: linear-gradient(135deg, #ffffff 30%, #ddd6fe 60%, #fbcfe8 90%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -365,20 +337,21 @@
 
         .hero-subtitle {
             font-family: var(--font-hand);
-            font-size: clamp(1.7rem, 3.2vw, 2.3rem);
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
             color: #fde047;
-            margin-bottom: 1rem;
+            margin-bottom: 0.85rem;
             line-height: 1.3;
             transform: rotate(-1.5deg);
             display: inline-block;
-            text-shadow: 0 2px 10px rgba(253, 224, 71, 0.3);
+            text-shadow: 0 2px 12px rgba(253, 224, 71, 0.35);
         }
 
         .hero-desc {
-            max-width: 680px;
-            margin: 0 auto 2rem;
-            font-size: 1.1rem;
+            max-width: 650px;
+            margin: 0 auto 1.75rem;
+            font-size: 1.05rem;
             color: var(--text-secondary);
+            line-height: 1.6;
         }
 
         .hero-action-row {
@@ -387,27 +360,27 @@
             justify-content: center;
             gap: 1rem;
             flex-wrap: wrap;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .hero-btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            padding: 13px 30px;
+            padding: 14px 32px;
             border-radius: var(--radius-full);
             background: linear-gradient(135deg, #ec4899, #8b5cf6);
             color: #ffffff;
-            font-weight: 700;
+            font-weight: 800;
             font-size: 1.05rem;
             text-decoration: none;
-            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
-            transition: all 0.25s ease;
+            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.5);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         .hero-btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 28px rgba(236, 72, 153, 0.6);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.7);
             color: #ffffff;
         }
 
@@ -415,7 +388,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 22px;
+            padding: 13px 24px;
             border-radius: var(--radius-full);
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -424,6 +397,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
+            touch-action: manipulation;
         }
 
         .hero-btn-sync:hover {
@@ -433,36 +407,11 @@
         }
 
         .hero-btn-sync.spinning #syncIcon {
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
         @keyframes spin {
             100% { transform: rotate(360deg); }
-        }
-
-        /* FLOATING STICKERS */
-        .floating-stickers {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .floating-item {
-            position: absolute;
-            font-size: 1.8rem;
-            opacity: 0.7;
-            animation: floatSlow 6s ease-in-out infinite alternate;
-        }
-
-        .float-1 { top: 15%; left: 6%; animation-delay: 0s; }
-        .float-2 { top: 25%; right: 8%; animation-delay: 1.5s; }
-        .float-3 { bottom: 20%; left: 10%; animation-delay: 3s; }
-        .float-4 { bottom: 15%; right: 12%; animation-delay: 4.5s; }
-
-        @keyframes floatSlow {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(-16px) rotate(6deg); }
         }
 
         /* LIVE SYNC STATUS BADGE */
@@ -473,7 +422,7 @@
             gap: 8px;
             font-size: 0.85rem;
             color: #34d399;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             font-weight: 600;
         }
 
@@ -491,19 +440,71 @@
             50% { opacity: 0.3; }
         }
 
+        /* INTERACTIVE ROLE FILTER TABS / PILLS */
+        .role-tabs-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.75rem;
+            flex-wrap: wrap;
+        }
+
+        .role-tab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--radius-full);
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            touch-action: manipulation;
+        }
+
+        .role-tab-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .role-tab-btn.active {
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            border-color: transparent;
+            color: #ffffff;
+            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.45);
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .role-tab-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 7px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 0, 0, 0.25);
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
         /* CONTROLS CARD */
         .controls-card {
             background: var(--surface-glass);
             border: 1px solid var(--surface-glass-border);
             border-radius: var(--radius-lg);
-            padding: 1.5rem 1.75rem;
+            padding: 1.25rem 1.5rem;
             backdrop-filter: blur(14px);
             margin-bottom: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .controls-grid {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1.2fr auto;
+            grid-template-columns: 2fr 1.2fr auto;
             gap: 1rem;
             align-items: end;
         }
@@ -538,13 +539,13 @@
 
         .search-input {
             width: 100%;
-            padding: 10px 14px 10px 40px;
+            padding: 11px 14px 11px 40px;
             border-radius: var(--radius-sm);
             background: rgba(10, 14, 25, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ffffff;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             outline: none;
             transition: all 0.2s ease;
         }
@@ -557,13 +558,13 @@
 
         .custom-select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 11px 14px;
             border-radius: var(--radius-sm);
             background: rgba(10, 14, 25, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ffffff;
             font-family: inherit;
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             outline: none;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -575,22 +576,22 @@
         }
 
         .custom-select option {
-            background: #15102a;
+            background: #130f28;
             color: #ffffff;
         }
 
         .btn-reset {
-            padding: 10px 18px;
+            padding: 11px 20px;
             border-radius: var(--radius-sm);
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.18);
             color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 0.92rem;
             cursor: pointer;
             transition: all 0.2s ease;
             white-space: nowrap;
-            height: 42px;
+            height: 44px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -630,8 +631,8 @@
 
         .dream-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.85rem;
             align-items: start;
         }
 
@@ -639,15 +640,16 @@
         .sticky-note {
             position: relative;
             padding: 2.2rem 1.6rem 1.6rem;
-            border-radius: 2px 2px 18px 2px;
+            border-radius: 4px 4px 22px 4px;
             box-shadow: var(--shadow-paper);
             transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: default;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 270px;
+            min-height: 250px;
             box-sizing: border-box;
+            user-select: none;
         }
 
         .sticky-note::after {
@@ -657,8 +659,8 @@
             right: 0;
             width: 28px;
             height: 28px;
-            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.15) 50%);
-            border-bottom-right-radius: 18px;
+            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.18) 50%);
+            border-bottom-right-radius: 22px;
             pointer-events: none;
         }
 
@@ -706,67 +708,173 @@
             z-index: 10;
         }
 
-        .note-dream-title {
+        .sticky-note:active {
+            transform: translateY(-2px) scale(1.01) !important;
+        }
+
+        .note-message-main {
             font-family: var(--font-hand);
             font-size: 1.85rem;
             font-weight: 700;
-            line-height: 1.25;
-            margin-bottom: 0.85rem;
+            line-height: 1.3;
+            margin-bottom: 1rem;
             word-break: break-word;
-        }
-
-        .note-dream-quote-open,
-        .note-dream-quote-close {
-            opacity: 0.6;
-            font-size: 1.4rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .note-author-name {
             font-family: var(--font-heading);
             font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.35rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
         .note-meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            font-size: 0.75rem;
+            opacity: 0.85;
+            font-weight: 700;
+        }
+
+        .note-role-badge {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 0.82rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            opacity: 0.85;
-            margin-bottom: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.06);
-            width: fit-content;
-        }
-
-        .note-message-box {
-            font-size: 0.92rem;
-            line-height: 1.45;
-            opacity: 0.9;
-            margin-top: 0.5rem;
-            font-style: italic;
-            border-left: 2.5px solid rgba(0, 0, 0, 0.2);
-            padding-left: 9px;
-            word-break: break-word;
-        }
-
-        .note-footer-date {
-            margin-top: 1.1rem;
+            gap: 4px;
             font-size: 0.75rem;
-            opacity: 0.65;
-            font-weight: 600;
-            display: flex;
-            justify-content: flex-end;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 3px 9px;
+            border-radius: var(--radius-full);
+            background: rgba(0, 0, 0, 0.12);
+        }
+
+        .note-like-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
             gap: 4px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: inherit;
+            opacity: 0.85;
+            padding: 4px 8px;
+            border-radius: var(--radius-full);
+            transition: all 0.2s ease;
+        }
+
+        .note-like-btn:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.08);
+            transform: scale(1.1);
+        }
+
+        .note-like-btn.liked {
+            color: #e11d48;
+            opacity: 1;
+        }
+
+        /* MODAL POPUP FOR READING FULL NOTE ON MOBILE / DESKTOP */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.8);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            animation: modalFadeIn 0.25s ease;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 480px;
+            padding: 2.5rem 2rem 2rem;
+            border-radius: 4px 4px 26px 4px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            position: relative;
+            transform: scale(0.95);
+            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: inherit;
+            transition: transform 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            transform: scale(1.15) rotate(90deg);
+        }
+
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* FLOATING ACTION BUTTON (MOBILE QUICK POST) */
+        .floating-fab-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 90;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 24px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, #ec4899, #8b5cf6);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1rem;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.6);
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            animation: fabPulse 3s infinite alternate;
+        }
+
+        .floating-fab-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 14px 36px rgba(236, 72, 153, 0.8);
+            color: #ffffff;
+        }
+
+        @keyframes fabPulse {
+            0% { box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45); }
+            100% { box-shadow: 0 12px 34px rgba(139, 92, 246, 0.65); }
         }
 
         /* LOADING & EMPTY STATES */
@@ -800,17 +908,17 @@
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-lg);
-            padding: 3rem 2.5rem;
+            padding: 2.75rem 2rem;
             backdrop-filter: blur(16px);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 3rem;
+            gap: 2.5rem;
             align-items: center;
         }
 
         .about-content h2 {
             font-family: var(--font-heading);
-            font-size: 2.2rem;
+            font-size: 2.1rem;
             font-weight: 800;
             color: #ffffff;
             line-height: 1.2;
@@ -853,7 +961,7 @@
         .site-footer {
             border-top: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(9, 13, 22, 0.95);
-            padding: 2.75rem 0;
+            padding: 2.5rem 0;
             text-align: center;
             position: relative;
             z-index: 1;
@@ -887,9 +995,9 @@
         }
 
         /* RESPONSIVE */
-        @media (max-width: 1024px) {
+        @media (max-width: 900px) {
             .controls-grid {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: 1fr;
             }
             .about-card {
                 grid-template-columns: 1fr;
@@ -897,25 +1005,25 @@
             }
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 640px) {
             .nav-links {
                 display: none;
             }
-            .mobile-menu-btn {
-                display: flex;
-            }
-            .controls-grid {
-                grid-template-columns: 1fr;
-            }
-            .controls-card {
-                padding: 1.25rem;
-            }
             .dream-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 1.25rem;
             }
             .hero {
-                padding: 3rem 0 2rem;
+                padding: 2.5rem 0 1.5rem;
+            }
+            .hero-title {
+                font-size: 2.4rem;
+            }
+            .floating-fab-btn {
+                bottom: 18px;
+                right: 18px;
+                padding: 12px 20px;
+                font-size: 0.92rem;
             }
         }
     </style>
@@ -950,25 +1058,12 @@
                     </ul>
                 </nav>
 
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" class="btn-add-dream">
-                        <span>✨</span> Add Your Dream
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="btn-add-dream" id="topAddBtn">
+                        <span>✨</span> Add Note
                     </a>
-                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle navigation menu" aria-expanded="false">
-                        ☰
-                    </button>
                 </div>
             </div>
-        </div>
-
-        <!-- Mobile Drawer Navigation -->
-        <div class="mobile-drawer" id="mobileDrawer">
-            <a href="#home" class="mobile-nav-link">Home</a>
-            <a href="#dreams-wall" class="mobile-nav-link">Dream Wall</a>
-            <a href="#about-section" class="mobile-nav-link">About Project</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" style="color:#f472b6; font-weight:700;">
-                ✨ Open Google Form
-            </a>
         </div>
     </header>
 
@@ -976,28 +1071,20 @@
         <!-- HERO SECTION -->
         <section class="hero" id="home">
             <div class="container">
-                <!-- Floating Decorative Paper Notes -->
-                <div class="floating-stickers" aria-hidden="true">
-                    <div class="floating-item float-1">🚀</div>
-                    <div class="floating-item float-2">🎨</div>
-                    <div class="floating-item float-3">🩺</div>
-                    <div class="floating-item float-4">💡</div>
-                </div>
-
                 <div class="hero-badge">
-                    <span>🌟</span> PW Alipurduar Vidyapeeth
+                    <span>🌟</span> PW Alipurduar Vidyapeeth Community
                 </div>
 
                 <h1 class="hero-title">OUR DREAM WALL</h1>
                 <div class="hero-subtitle">“Every dream begins with a thought.”</div>
                 <p class="hero-desc">
-                    A vibrant collection of dreams, hopes and ambitions from the students of <strong>PW Alipurduar Vidyapeeth</strong>.
+                    A live digital wall of dreams, aspirations, and wishes from our <strong>Students, Teachers &amp; Parents</strong>.
                 </p>
 
                 <!-- Action Buttons: Google Form & Live Sync -->
                 <div class="hero-action-row">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" class="hero-btn-primary">
-                        <span>📝</span> Add Your Sticky Note
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="hero-btn-primary" id="heroAddBtn">
+                        <span>📝</span> Post Your Sticky Note
                     </a>
                     <button type="button" class="hero-btn-sync" id="btnSyncLive" title="Fetch the latest responses from Google Sheets">
                         <span id="syncIcon">🔄</span> Refresh Live Wall
@@ -1009,35 +1096,47 @@
                     <div class="sync-pulse"></div>
                     <span id="syncStatusText">Auto-synced with live Google Sheet</span>
                 </div>
+
+                <!-- INTERACTIVE ROLE FILTER TABS -->
+                <div class="role-tabs-container" id="roleTabs">
+                    <button type="button" class="role-tab-btn active" data-role="all">
+                        <span>🌟 All Notes</span>
+                        <span class="role-tab-count" id="countAll">0</span>
+                    </button>
+                    <button type="button" class="role-tab-btn" data-role="student">
+                        <span>🎓 Students</span>
+                        <span class="role-tab-count" id="countStudent">0</span>
+                    </button>
+                    <button type="button" class="role-tab-btn" data-role="teacher">
+                        <span>👩‍🏫 Teachers</span>
+                        <span class="role-tab-count" id="countTeacher">0</span>
+                    </button>
+                    <button type="button" class="role-tab-btn" data-role="parent">
+                        <span>👨‍👩‍👧 Parents</span>
+                        <span class="role-tab-count" id="countParent">0</span>
+                    </button>
+                </div>
             </div>
         </section>
 
         <div class="container">
-            <!-- SEARCH & FILTERS -->
+            <!-- SEARCH & SORT CONTROLS -->
             <section class="controls-section" aria-label="Search and Filter Controls">
                 <div class="controls-card">
                     <div class="controls-grid">
                         <!-- Search Box -->
                         <div class="control-group">
-                            <label class="control-label" for="searchInput">Search Dreams</label>
+                            <label class="control-label" for="searchInput">Search Dreams &amp; Messages</label>
                             <div class="search-input-wrapper">
                                 <span class="search-icon">🔍</span>
                                 <input 
                                     type="text" 
                                     id="searchInput" 
                                     class="search-input" 
-                                    placeholder="Search by student, dream, batch, message..."
+                                    placeholder="Search by name, message, role..."
                                     autocomplete="off"
                                 />
                             </div>
-                        </div>
-
-                        <!-- Batch Filter -->
-                        <div class="control-group">
-                            <label class="control-label" for="batchFilter">Batch Code</label>
-                            <select id="batchFilter" class="custom-select">
-                                <option value="">All Batches</option>
-                            </select>
                         </div>
 
                         <!-- Sort Options -->
@@ -1055,7 +1154,7 @@
                         <!-- Reset Button -->
                         <div class="control-group">
                             <button type="button" id="btnResetFilters" class="btn-reset" title="Reset all search queries and filters">
-                                <span>↺</span> Clear Filters
+                                <span>↺</span> Reset
                             </button>
                         </div>
                     </div>
@@ -1063,11 +1162,11 @@
                     <!-- Meta / Count Bar -->
                     <div class="controls-meta-bar">
                         <div class="counter-badge" id="visibleCounter">
-                            Showing <strong>0</strong> of <strong>0</strong> dreams
+                            Showing <strong>0</strong> of <strong>0</strong> notes
                         </div>
 
                         <div style="font-size:0.85rem; color:var(--text-muted);">
-                            Want to share your goal? <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform" target="_blank" rel="noopener noreferrer" style="color:#f472b6; font-weight:700; text-decoration:none;">Click here to submit your dream</a>
+                            ✨ Tap any sticky note to view full size!
                         </div>
                     </div>
                 </div>
@@ -1079,7 +1178,7 @@
                     <!-- Loading Spinner Initial State -->
                     <div class="loading-state" id="loadingState">
                         <div class="loading-spinner"></div>
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #ffffff;">Loading dreams from Google Sheet...</div>
+                        <div style="font-weight: 600; font-size: 1.1rem; color: #ffffff;">Loading notes from Google Sheet...</div>
                         <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Connecting to PW Alipurduar Vidyapeeth database</div>
                     </div>
                 </div>
@@ -1089,18 +1188,18 @@
             <section class="about-section" id="about-section">
                 <div class="about-card">
                     <div class="about-content">
-                        <h2>PW Alipurduar Vidyapeeth Dream Wall</h2>
+                        <h2>PW Alipurduar Vidyapeeth Community Wall</h2>
                         <p>
-                            Every student holds boundless potential and a unique aspiration. This digital wall gives those dreams a proud place to be remembered, cherished, and celebrated.
+                            Every student holds boundless potential, every teacher provides invaluable guidance, and every parent offers endless encouragement.
                         </p>
                         <p>
-                            From future doctors and engineers to civil servants and innovators, we celebrate the spirit of every aspiring learner at PW Alipurduar Vidyapeeth.
+                            This digital wall brings our entire community together. From ambitious student dreams to inspiring teacher blessings and proud parental wishes, every voice matters.
                         </p>
                     </div>
 
                     <div class="about-quote-box">
                         <div class="about-quote-text">
-                            “The future belongs to those who believe in the beauty of their dreams.”
+                            “Together, we nurture the dreams of tomorrow.”
                         </div>
                         <div class="about-quote-author">
                             — Physics Wallah Vidyapeeth
@@ -1111,11 +1210,24 @@
         </div>
     </main>
 
+    <!-- FULL NOTE POPUP MODAL -->
+    <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-card" id="modalCard">
+            <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Close note view">✕</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <!-- MOBILE FLOATING ACTION BUTTON (QUICK ADD) -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="floating-fab-btn" id="floatingFab">
+        <span>✍️</span> Add Note
+    </a>
+
     <!-- FOOTER -->
     <footer class="site-footer">
         <div class="container">
             <div class="footer-motto">“Dream big. Start small. Never stop believing.”</div>
-            <div class="footer-credit">Made with ❤️ for the students of PW Alipurduar Vidyapeeth</div>
+            <div class="footer-credit">Made with ❤️ for the Students, Teachers &amp; Parents of PW Alipurduar Vidyapeeth</div>
         </div>
     </footer>
 
@@ -1141,20 +1253,29 @@
 
             // State
             let allDreams = [];
+            let activeRoleFilter = 'all';
             let isFetching = false;
+            let likedNotes = JSON.parse(localStorage.getItem('pw_liked_notes') || '{}');
 
             // DOM Elements
             const dreamGrid = document.getElementById('dreamGrid');
             const searchInput = document.getElementById('searchInput');
-            const batchFilter = document.getElementById('batchFilter');
             const sortBy = document.getElementById('sortBy');
             const btnResetFilters = document.getElementById('btnResetFilters');
             const visibleCounter = document.getElementById('visibleCounter');
             const btnSyncLive = document.getElementById('btnSyncLive');
             const syncStatusText = document.getElementById('syncStatusText');
+            const roleTabs = document.getElementById('roleTabs');
 
-            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-            const mobileDrawer = document.getElementById('mobileDrawer');
+            const countAll = document.getElementById('countAll');
+            const countStudent = document.getElementById('countStudent');
+            const countTeacher = document.getElementById('countTeacher');
+            const countParent = document.getElementById('countParent');
+
+            const noteModal = document.getElementById('noteModal');
+            const modalCard = document.getElementById('modalCard');
+            const modalContent = document.getElementById('modalContent');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
 
             // Clean string helper
             function cleanStr(val) {
@@ -1182,32 +1303,74 @@
                 if (!isNaN(parsed)) {
                     return new Date(parsed).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
                 }
-                return String(dateVal).split(' ')[0]; // Fallback to date part
+                return String(dateVal).split(' ')[0];
+            }
+
+            // Normalize Role
+            function getRoleInfo(roleStr) {
+                if (!roleStr) return { label: 'Student', icon: '🎓', key: 'student' };
+                const clean = roleStr.toLowerCase();
+                if (clean.includes('teacher') || clean.includes('faculty')) {
+                    return { label: 'Teacher', icon: '👩‍🏫', key: 'teacher' };
+                }
+                if (clean.includes('parent') || clean.includes('guardian')) {
+                    return { label: 'Parent', icon: '👨‍👩‍👧', key: 'parent' };
+                }
+                return { label: 'Student', icon: '🎓', key: 'student' };
             }
 
             // Get rotation & color for note
             function getNoteStyleAttrs(index, dreamObj) {
                 const colorClass = NOTE_COLOR_STYLES[index % NOTE_COLOR_STYLES.length];
-                const pseudoSeed = (index * 19 + (dreamObj.dream ? dreamObj.dream.length : 0)) % 100;
-                const deg = ((pseudoSeed / 100) * 5 - 2.5).toFixed(1);
+                const pseudoSeed = (index * 19 + (dreamObj.message ? dreamObj.message.length : 0)) % 100;
+                const deg = ((pseudoSeed / 100) * 4.5 - 2.25).toFixed(1);
                 return { colorClass, deg };
             }
 
-            // Render a single note
+            // Trigger Confetti Effect
+            function triggerCelebration() {
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 40,
+                        spread: 60,
+                        origin: { y: 0.85 }
+                    });
+                }
+            }
+
+            // Render a single note card
             function renderStickyNoteCard(dreamObj, index) {
                 const { colorClass, deg } = getNoteStyleAttrs(index, dreamObj);
                 const hasName = Boolean(dreamObj.name && dreamObj.name.trim().length > 0);
-                const hasBatch = Boolean(dreamObj.batchCode && dreamObj.batchCode.trim().length > 0);
-                const hasMessage = Boolean(dreamObj.message && dreamObj.message.trim().length > 0);
                 const hasDate = Boolean(dreamObj.date && dreamObj.date.trim().length > 0);
+                const role = getRoleInfo(dreamObj.role);
+                const isLiked = Boolean(likedNotes[dreamObj.id]);
 
-                let cardHtml = `
-                    <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}">
+                return `
+                    <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}" onclick="window.openNoteModal(${dreamObj.id})">
                         <div class="sticky-note-tape" aria-hidden="true"></div>
                         
                         <div class="note-body-top">
-                            <div class="note-dream-title">
-                                <span class="note-dream-quote-open">“</span>${escapeHtml(dreamObj.dream)}<span class="note-dream-quote-close">”</span>
+                            <div class="note-message-main">
+                                “${escapeHtml(dreamObj.message)}”
+                            </div>`;
+                }
+
+            // Full render with internal content
+            function renderStickyNoteCardFull(dreamObj, index) {
+                const { colorClass, deg } = getNoteStyleAttrs(index, dreamObj);
+                const hasName = Boolean(dreamObj.name && dreamObj.name.trim().length > 0);
+                const hasDate = Boolean(dreamObj.date && dreamObj.date.trim().length > 0);
+                const role = getRoleInfo(dreamObj.role);
+                const isLiked = Boolean(likedNotes[dreamObj.id]);
+
+                let cardHtml = `
+                    <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}" onclick="window.openNoteModal(${dreamObj.id})">
+                        <div class="sticky-note-tape" aria-hidden="true"></div>
+                        
+                        <div class="note-body-top">
+                            <div class="note-message-main">
+                                “${escapeHtml(dreamObj.message)}”
                             </div>`;
 
                 if (hasName) {
@@ -1217,77 +1380,67 @@
                             </div>`;
                 }
 
-                if (hasBatch) {
-                    cardHtml += `
-                            <div class="note-meta-row">
-                                <span>Batch: ${escapeHtml(dreamObj.batchCode)}</span>
-                            </div>`;
-                }
-
-                if (hasMessage) {
-                    cardHtml += `
-                            <div class="note-message-box">
-                                ${escapeHtml(dreamObj.message)}
-                            </div>`;
-                }
-
                 cardHtml += `
-                        </div>`;
+                        </div>
+
+                        <div class="note-meta-row">
+                            <span class="note-role-badge">${role.icon} ${escapeHtml(role.label)}</span>
+                            <div style="display:flex; align-items:center; gap:8px;">`;
 
                 if (hasDate) {
-                    cardHtml += `
-                        <div class="note-footer-date">
-                            <span>📅</span> <span>${escapeHtml(formatDisplayDate(dreamObj.date))}</span>
-                        </div>`;
+                    cardHtml += `<span>📅 ${escapeHtml(formatDisplayDate(dreamObj.date))}</span>`;
                 }
 
                 cardHtml += `
+                                <button type="button" class="note-like-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike(event, ${dreamObj.id})" aria-label="Like note">
+                                    ${isLiked ? '❤️' : '🤍'}
+                                </button>
+                            </div>
+                        </div>
                     </article>`;
 
                 return cardHtml;
             }
 
-            // Update Dynamic Batch Filter
-            function populateDynamicFilters(dreams) {
-                const batches = new Set();
+            // Update Counts in Tabs
+            function updateRoleCounts() {
+                let studentCount = 0;
+                let teacherCount = 0;
+                let parentCount = 0;
 
-                dreams.forEach(item => {
-                    if (item.batchCode && item.batchCode.trim()) {
-                        batches.add(item.batchCode.trim());
-                    }
+                allDreams.forEach(item => {
+                    const r = getRoleInfo(item.role).key;
+                    if (r === 'student') studentCount++;
+                    else if (r === 'teacher') teacherCount++;
+                    else if (r === 'parent') parentCount++;
                 });
 
-                const currentBatch = batchFilter.value;
-
-                batchFilter.innerHTML = '<option value="">All Batches</option>';
-                Array.from(batches)
-                    .sort((a, b) => String(a).localeCompare(String(b)))
-                    .forEach(b => {
-                        const opt = document.createElement('option');
-                        opt.value = b;
-                        opt.textContent = `Batch: ${b}`;
-                        if (b === currentBatch) opt.selected = true;
-                        batchFilter.appendChild(opt);
-                    });
+                countAll.textContent = allDreams.length;
+                countStudent.textContent = studentCount;
+                countTeacher.textContent = teacherCount;
+                countParent.textContent = parentCount;
             }
 
-            // Filter & Render
+            // Filter & Render Wall
             function updateDreamWall() {
                 const query = searchInput.value.toLowerCase().trim();
-                const selectedBatch = batchFilter.value;
                 const sortMode = sortBy.value;
 
                 // 1. Filter
                 let filtered = allDreams.filter(item => {
-                    if (selectedBatch && String(item.batchCode).toLowerCase() !== selectedBatch.toLowerCase()) {
-                        return false;
+                    // Role Tab Filter
+                    if (activeRoleFilter !== 'all') {
+                        const r = getRoleInfo(item.role).key;
+                        if (r !== activeRoleFilter) return false;
                     }
+                    // Search Query
                     if (query) {
+                        const roleObj = getRoleInfo(item.role);
                         const searchCorpus = [
                             item.name,
-                            item.dream,
-                            item.batchCode,
-                            item.message
+                            item.message,
+                            item.role,
+                            roleObj.label
                         ].filter(Boolean).join(' ').toLowerCase();
 
                         if (!searchCorpus.includes(query)) {
@@ -1322,24 +1475,84 @@
                     dreamGrid.innerHTML = `
                         <div class="empty-wall-state">
                             <div style="font-size: 3rem; margin-bottom: 0.8rem;">🔍</div>
-                            <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: #ffffff; margin-bottom: 0.5rem;">No Dreams Found</h3>
+                            <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: #ffffff; margin-bottom: 0.5rem;">No Notes Found</h3>
                             <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
-                                No student dreams match your current filter. Try resetting your search filters or be the first to post a new dream!
+                                No sticky notes match your current filter. Try resetting your search filters or be the first to post a new note!
                             </p>
                             <button type="button" class="btn-reset" onclick="document.getElementById('btnResetFilters').click();">
                                 Clear All Filters
                             </button>
                         </div>`;
                 } else {
-                    dreamGrid.innerHTML = filtered.map((item, idx) => renderStickyNoteCard(item, idx)).join('');
+                    dreamGrid.innerHTML = filtered.map((item, idx) => renderStickyNoteCardFull(item, idx)).join('');
                 }
 
                 // Update Counter
-                visibleCounter.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${allDreams.length}</strong> dreams`;
+                visibleCounter.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${allDreams.length}</strong> notes`;
             }
 
+            // Open Full Screen / Modal View for Note
+            window.openNoteModal = function (id) {
+                const note = allDreams.find(item => item.id === id);
+                if (!note) return;
+
+                const role = getRoleInfo(note.role);
+                const { colorClass } = getNoteStyleAttrs(id, note);
+
+                modalCard.className = `modal-card ${colorClass}`;
+                modalContent.innerHTML = `
+                    <div style="margin-bottom: 1.25rem;">
+                        <span class="note-role-badge" style="font-size: 0.85rem; padding: 4px 12px;">${role.icon} ${escapeHtml(role.label)}</span>
+                    </div>
+                    <div style="font-family: var(--font-hand); font-size: 2.2rem; line-height: 1.35; font-weight: 700; margin-bottom: 1.5rem; word-break: break-word;">
+                        “${escapeHtml(note.message)}”
+                    </div>
+                    ${note.name ? `
+                    <div style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;">
+                        — ${escapeHtml(note.name)}
+                    </div>` : ''}
+                    ${note.date ? `
+                    <div style="font-size: 0.85rem; opacity: 0.75; font-weight: 600; margin-top: 1rem;">
+                        📅 Submitted on ${escapeHtml(formatDisplayDate(note.date))}
+                    </div>` : ''}
+                `;
+
+                noteModal.classList.add('open');
+                noteModal.setAttribute('aria-hidden', 'false');
+            };
+
+            // Close Modal
+            function closeModal() {
+                noteModal.classList.remove('open');
+                noteModal.setAttribute('aria-hidden', 'true');
+            }
+
+            modalCloseBtn.addEventListener('click', closeModal);
+            noteModal.addEventListener('click', function (e) {
+                if (e.target === noteModal) closeModal();
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && noteModal.classList.contains('open')) {
+                    closeModal();
+                }
+            });
+
+            // Like / Heart Toggle
+            window.toggleLike = function (e, id) {
+                e.stopPropagation(); // prevent modal opening
+                if (likedNotes[id]) {
+                    delete likedNotes[id];
+                } else {
+                    likedNotes[id] = true;
+                    triggerCelebration();
+                }
+                localStorage.setItem('pw_liked_notes', JSON.stringify(likedNotes));
+                updateDreamWall();
+            };
+
             // Fetch live CSV from Google Sheet
-            async function fetchLiveGoogleSheetData() {
+            async function fetchLiveGoogleSheetData(isManual = false) {
                 if (isFetching) return;
                 isFetching = true;
 
@@ -1347,26 +1560,24 @@
                 syncStatusText.textContent = 'Fetching latest responses...';
 
                 try {
-                    // Add cache buster to always fetch the freshest submissions
                     const url = `${GOOGLE_SHEET_CSV_URL}&_cb=${Date.now()}`;
                     const res = await fetch(url);
                     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
 
                     const csvText = await res.text();
                     
-                    // Parse CSV using SheetJS
                     const workbook = XLSX.read(csvText, { type: 'string' });
                     const sheetName = workbook.SheetNames[0];
                     const rawJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: '', raw: false });
 
                     if (!rawJson || rawJson.length === 0) {
                         allDreams = [];
+                        updateRoleCounts();
                         updateDreamWall();
                         syncStatusText.textContent = 'Google Sheet connected (0 responses yet)';
                         return;
                     }
 
-                    // Map fields
                     const firstRow = rawJson[0];
                     const keys = Object.keys(firstRow);
 
@@ -1378,34 +1589,49 @@
                     }
 
                     const timestampKey = findKey(['timestamp', 'date', 'time']);
-                    const nameKey = findKey(['your name', 'name', 'student']);
-                    const batchKey = findKey(['batch code', 'batch', 'class', 'section']);
-                    const dreamKey = findKey(['what is your dream', 'dream', 'future goal', 'goal']);
-                    const messageKey = findKey(['your message', 'message', 'why is this your dream', 'quote']);
+                    const roleKey = findKey(['your role', 'role', 'i am a', 'who are you']);
+                    const nameKey = findKey(['name', 'your name', 'student', 'author']);
+                    const messageKey = findKey(['your message', 'message', 'what is your dream', 'dream', 'future goal', 'goal', 'wish']);
 
                     const parsed = [];
                     let rowId = 1;
 
                     rawJson.forEach(row => {
-                        const dream = dreamKey ? cleanStr(row[dreamKey]) : '';
-                        if (!dream) return; // Skip empty dreams
+                        // Find message from messageKey or any available content
+                        let msg = messageKey ? cleanStr(row[messageKey]) : '';
+                        if (!msg) {
+                            // Fallback to any non-timestamp, non-role, non-name cell
+                            for (const k of keys) {
+                                if (k !== timestampKey && k !== roleKey && k !== nameKey) {
+                                    const val = cleanStr(row[k]);
+                                    if (val) { msg = val; break; }
+                                }
+                            }
+                        }
+
+                        if (!msg) return;
 
                         parsed.push({
                             id: rowId++,
                             date: timestampKey ? cleanStr(row[timestampKey]) : '',
+                            role: roleKey ? cleanStr(row[roleKey]) : 'Student',
                             name: nameKey ? cleanStr(row[nameKey]) : '',
-                            batchCode: batchKey ? cleanStr(row[batchKey]) : '',
-                            dream: dream,
-                            message: messageKey ? cleanStr(row[messageKey]) : ''
+                            message: msg
                         });
                     });
 
+                    const isNewCount = parsed.length > allDreams.length;
                     allDreams = parsed;
-                    populateDynamicFilters(allDreams);
+
+                    updateRoleCounts();
                     updateDreamWall();
 
+                    if (isManual || isNewCount) {
+                        triggerCelebration();
+                    }
+
                     const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    syncStatusText.textContent = `Auto-synced (${allDreams.length} dreams loaded • Last updated at ${timeStr})`;
+                    syncStatusText.textContent = `Auto-synced (${allDreams.length} notes loaded • Last updated at ${timeStr})`;
 
                 } catch (err) {
                     console.error('Error fetching Google Sheet:', err);
@@ -1419,7 +1645,7 @@
                                 <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
                                     Please check your internet connection or try refreshing the live wall.
                                 </p>
-                                <button type="button" class="btn-reset" onclick="window.fetchLiveGoogleSheetData();">
+                                <button type="button" class="btn-reset" onclick="window.fetchLiveGoogleSheetData(true);">
                                     🔄 Retry Sync
                                 </button>
                             </div>`;
@@ -1430,44 +1656,46 @@
                 }
             }
 
-            // Expose globally for retry buttons
             window.fetchLiveGoogleSheetData = fetchLiveGoogleSheetData;
 
             // Events
             function initEvents() {
+                // Role Tabs Click
+                roleTabs.addEventListener('click', function (e) {
+                    const btn = e.target.closest('.role-tab-btn');
+                    if (!btn) return;
+
+                    document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeRoleFilter = btn.getAttribute('data-role');
+                    updateDreamWall();
+                });
+
                 searchInput.addEventListener('input', updateDreamWall);
-                batchFilter.addEventListener('change', updateDreamWall);
                 sortBy.addEventListener('change', updateDreamWall);
 
                 btnResetFilters.addEventListener('click', function () {
                     searchInput.value = '';
-                    batchFilter.value = '';
                     sortBy.value = 'newest';
+                    activeRoleFilter = 'all';
+                    document.querySelectorAll('.role-tab-btn').forEach(b => {
+                        b.classList.toggle('active', b.getAttribute('data-role') === 'all');
+                    });
                     updateDreamWall();
                 });
 
-                btnSyncLive.addEventListener('click', fetchLiveGoogleSheetData);
+                btnSyncLive.addEventListener('click', () => fetchLiveGoogleSheetData(true));
 
-                // Mobile Navigation
-                mobileMenuBtn.addEventListener('click', function () {
-                    const isOpen = mobileDrawer.classList.toggle('open');
-                    mobileMenuBtn.setAttribute('aria-expanded', isOpen);
-                    mobileMenuBtn.textContent = isOpen ? '✕' : '☰';
-                });
-
-                document.querySelectorAll('.mobile-nav-link').forEach(link => {
-                    link.addEventListener('click', () => {
-                        mobileDrawer.classList.remove('open');
-                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-                        mobileMenuBtn.textContent = '☰';
-                    });
-                });
+                // Auto poll every 35 seconds to keep the wall effortlessly synced
+                setInterval(() => {
+                    fetchLiveGoogleSheetData(false);
+                }, 35000);
             }
 
             // Init
             function init() {
                 initEvents();
-                fetchLiveGoogleSheetData();
+                fetchLiveGoogleSheetData(false);
             }
 
             if (document.readyState === 'loading') {
