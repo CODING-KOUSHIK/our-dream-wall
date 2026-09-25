@@ -5,16 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Our Dream Wall — PW Alipurduar Vidyapeeth</title>
     <meta name="description" content="A live digital wall of dreams, aspirations, and wishes from Students, Teachers, and Parents at PW Alipurduar Vidyapeeth.">
-
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- SheetJS (XLSX) library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-    <!-- Canvas Confetti for Celebration Effects -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 
     <style>
@@ -22,1688 +16,1082 @@
             --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-heading: 'Outfit', sans-serif;
             --font-hand: 'Caveat', cursive;
-
-            /* Brand & Theme Colors */
-            --bg-gradient: linear-gradient(140deg, #090d16 0%, #130f28 35%, #200b42 70%, #090d16 100%);
+            --bg: linear-gradient(140deg, #090d16 0%, #130f28 40%, #1e0a3c 75%, #090d16 100%);
             --primary: #8b5cf6;
-            --primary-light: #a78bfa;
             --secondary: #ec4899;
             --accent: #f59e0b;
-            --surface-glass: rgba(255, 255, 255, 0.06);
-            --surface-glass-border: rgba(255, 255, 255, 0.12);
-            --text-primary: #f8fafc;
-            --text-secondary: #cbd5e1;
-            --text-muted: #94a3b8;
+            --glass: rgba(255,255,255,0.06);
+            --glass-border: rgba(255,255,255,0.12);
+            --text: #f8fafc;
+            --text-2: #cbd5e1;
+            --text-3: #94a3b8;
+            --radius: 9999px;
 
-            /* Sticky Note Palettes (Pastel with paper depth) */
-            --note-yellow-bg: #fef08a;
-            --note-yellow-border: #fde047;
-            --note-yellow-text: #713f12;
-            --note-yellow-tape: rgba(250, 204, 21, 0.55);
-
-            --note-pink-bg: #fbcfe8;
-            --note-pink-border: #f472b6;
-            --note-pink-text: #831843;
-            --note-pink-tape: rgba(244, 114, 182, 0.5);
-
-            --note-blue-bg: #bae6fd;
-            --note-blue-border: #38bdf8;
-            --note-blue-text: #0c4a6e;
-            --note-blue-tape: rgba(56, 189, 248, 0.5);
-
-            --note-mint-bg: #bbf7d0;
-            --note-mint-border: #4ade80;
-            --note-mint-text: #14532d;
-            --note-mint-tape: rgba(74, 222, 128, 0.5);
-
-            --note-lavender-bg: #e9d5ff;
-            --note-lavender-border: #c084fc;
-            --note-lavender-text: #581c87;
-            --note-lavender-tape: rgba(192, 132, 252, 0.5);
-
-            --note-orange-bg: #fed7aa;
-            --note-orange-border: #fb923c;
-            --note-orange-text: #7c2d12;
-            --note-orange-tape: rgba(251, 146, 60, 0.5);
-
-            --note-cream-bg: #fef3c7;
-            --note-cream-border: #fcd34d;
-            --note-cream-text: #78350f;
-            --note-cream-tape: rgba(252, 211, 77, 0.5);
-
-            --note-rose-bg: #ffe4e6;
-            --note-rose-border: #fb7185;
-            --note-rose-text: #881337;
-            --note-rose-tape: rgba(251, 113, 133, 0.5);
-
-            --radius-sm: 10px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-full: 9999px;
-
-            --shadow-paper: 0 10px 25px -5px rgba(0, 0, 0, 0.35), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-            --shadow-hover: 0 24px 38px -5px rgba(0, 0, 0, 0.5), 0 14px 20px -6px rgba(0, 0, 0, 0.3);
+            /* Note Palettes */
+            --n-yellow: #fef08a; --n-yellow-b: #fde047; --n-yellow-t: #713f12; --n-yellow-tape: rgba(250,204,21,.55);
+            --n-pink: #fbcfe8;   --n-pink-b: #f472b6;   --n-pink-t: #831843;   --n-pink-tape: rgba(244,114,182,.5);
+            --n-blue: #bae6fd;   --n-blue-b: #38bdf8;   --n-blue-t: #0c4a6e;   --n-blue-tape: rgba(56,189,248,.5);
+            --n-mint: #bbf7d0;   --n-mint-b: #4ade80;   --n-mint-t: #14532d;   --n-mint-tape: rgba(74,222,128,.5);
+            --n-lav: #e9d5ff;    --n-lav-b: #c084fc;    --n-lav-t: #581c87;    --n-lav-tape: rgba(192,132,252,.5);
+            --n-ora: #fed7aa;    --n-ora-b: #fb923c;    --n-ora-t: #7c2d12;    --n-ora-tape: rgba(251,146,60,.5);
+            --n-cream: #fef3c7;  --n-cream-b: #fcd34d;  --n-cream-t: #78350f;  --n-cream-tape: rgba(252,211,77,.5);
+            --n-rose: #ffe4e6;   --n-rose-b: #fb7185;   --n-rose-t: #881337;   --n-rose-tape: rgba(251,113,133,.5);
         }
 
-        /* RESET & BASE */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            color-scheme: dark;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; color-scheme: dark; }
 
         body {
             font-family: var(--font-sans);
-            background: var(--bg-gradient);
+            background: var(--bg);
             background-attachment: fixed;
-            color: var(--text-primary);
+            color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
             overflow-x: hidden;
-            position: relative;
-            padding-bottom: 4rem;
         }
 
-        /* Ambient Glow & Starry Background */
-        .ambient-bg {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
+        /* ─── AMBIENT ──────────────────────────────────────────── */
+        .ambient-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .orb {
+            position: absolute; border-radius: 50%; filter: blur(110px); opacity: .22;
+            animation: floatOrb 22s ease-in-out infinite alternate;
         }
+        .orb-1 { width: 520px; height: 520px; background: radial-gradient(circle,#8b5cf6,#3b82f6); top: -100px; left: -100px; }
+        .orb-2 { width: 460px; height: 460px; background: radial-gradient(circle,#ec4899,#f43f5e); bottom: 0; right: -100px; animation-duration: 26s; animation-delay: -7s; }
+        .orb-3 { width: 380px; height: 380px; background: radial-gradient(circle,#06b6d4,#10b981); top: 38%; left: 20%; animation-duration: 30s; animation-delay: -14s; }
+        @keyframes floatOrb { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,55px) scale(1.09)} 100%{transform:translate(-30px,25px) scale(.94)} }
 
-        .ambient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.25;
-            animation: floatOrb 20s ease-in-out infinite alternate;
+        .stars { position: fixed; inset: 0; background-image: radial-gradient(1.5px 1.5px at 22px 33px,#fff,transparent),radial-gradient(1.5px 1.5px at 75px 155px,#e2e8f0,transparent),radial-gradient(1px 1px at 150px 75px,#fbcfe8,transparent),radial-gradient(2px 2px at 270px 248px,#fde047,transparent),radial-gradient(1.5px 1.5px at 360px 105px,#a78bfa,transparent),radial-gradient(1px 1px at 495px 320px,#67e8f9,transparent); background-size: 510px 510px; opacity: .38; pointer-events: none; z-index: 0; }
+
+        /* ─── HEADER ──────────────────────────────────────────────── */
+        header {
+            position: sticky; top: 0; z-index: 100;
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(9,13,22,.82);
+            border-bottom: 1px solid rgba(255,255,255,.08);
         }
-
-        .ambient-orb-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #8b5cf6, #3b82f6);
-            top: -80px;
-            left: -80px;
+        .nav { display: flex; align-items: center; justify-content: space-between; height: 70px; padding: 0 1.25rem; max-width: 1200px; margin: 0 auto; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-img { width: 42px; height: 42px; border-radius: 10px; object-fit: cover; border: 2px solid rgba(255,255,255,.18); box-shadow: 0 4px 14px rgba(0,0,0,.4); transition: transform .25s ease; }
+        .brand:hover .logo-img { transform: scale(1.06) rotate(-3deg); }
+        .brand-txt { display: flex; flex-direction: column; }
+        .brand-title { font-family: var(--font-heading); font-weight: 800; font-size: 1.18rem; letter-spacing: -.02em; background: linear-gradient(135deg,#fff 40%,#ddd6fe 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-sub { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #f472b6; }
+        .nav-links { display: flex; gap: 1.6rem; list-style: none; }
+        .nav-links a { text-decoration: none; color: var(--text-2); font-weight: 600; font-size: .92rem; transition: color .2s; }
+        .nav-links a:hover { color: #fff; }
+        .add-btn {
+            display: inline-flex; align-items: center; gap: 7px; padding: 9px 20px;
+            border-radius: var(--radius); background: linear-gradient(135deg,#ec4899,#8b5cf6);
+            color: #fff; font-weight: 700; font-size: .9rem; text-decoration: none;
+            box-shadow: 0 4px 16px rgba(236,72,153,.45); transition: all .25s cubic-bezier(.2,.8,.2,1);
         }
+        .add-btn:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 8px 28px rgba(236,72,153,.65); color: #fff; }
 
-        .ambient-orb-2 {
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, #ec4899, #f43f5e);
-            bottom: 5%;
-            right: -80px;
-            animation-duration: 24s;
-            animation-delay: -6s;
-        }
-
-        .ambient-orb-3 {
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle, #06b6d4, #10b981);
-            top: 40%;
-            left: 25%;
-            animation-duration: 28s;
-            animation-delay: -12s;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(40px, 50px) scale(1.08); }
-            100% { transform: translate(-30px, 25px) scale(0.95); }
-        }
-
-        .star-field {
-            position: fixed;
-            inset: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 70px 150px, #e2e8f0, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 140px 70px, #fbcfe8, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 260px 240px, #fde047, rgba(0,0,0,0)),
-                radial-gradient(1.5px 1.5px at 350px 100px, #a78bfa, rgba(0,0,0,0)),
-                radial-gradient(1px 1px at 480px 310px, #67e8f9, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 500px 500px;
-            opacity: 0.35;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 1.25rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* HEADER */
-        .site-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            background: rgba(9, 13, 22, 0.85);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-        }
-
-        .nav-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 74px;
-        }
-
-        .brand-logo-group {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            color: #ffffff;
-        }
-
-        .pw-logo-img {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
-            background: #ffffff;
-            transition: transform 0.25s ease;
-        }
-
-        .brand-logo-group:hover .pw-logo-img {
-            transform: scale(1.05) rotate(-3deg);
-        }
-
-        .brand-text-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-main-title {
-            font-family: var(--font-heading);
-            font-weight: 800;
-            font-size: 1.2rem;
-            letter-spacing: -0.02em;
-            line-height: 1.15;
-            background: linear-gradient(135deg, #ffffff 40%, #ddd6fe 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .brand-sub-title {
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: #f472b6;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 1.75rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: color 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: #ffffff;
-        }
-
-        .btn-add-dream {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 22px;
-            border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 0.92rem;
-            text-decoration: none;
-            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.45);
-            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn-add-dream:hover {
-            transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.65);
-            color: #ffffff;
-        }
-
-        .btn-add-dream:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* HERO SECTION */
-        .hero {
-            padding: 3.5rem 0 2rem;
-            text-align: center;
-            position: relative;
-        }
-
+        /* ─── HERO ─────────────────────────────────────────────────── */
+        .hero { padding: 3rem 1.25rem 1.5rem; text-align: center; position: relative; max-width: 900px; margin: 0 auto; }
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 18px;
-            background: rgba(236, 72, 153, 0.15);
-            border: 1px solid rgba(236, 72, 153, 0.35);
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #fbcfe8;
-            margin-bottom: 1.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            backdrop-filter: blur(8px);
+            display: inline-flex; align-items: center; gap: 8px; padding: 5px 16px;
+            background: rgba(236,72,153,.15); border: 1px solid rgba(236,72,153,.35);
+            border-radius: var(--radius); font-size: .82rem; font-weight: 700; color: #fbcfe8;
+            margin-bottom: 1.2rem; text-transform: uppercase; letter-spacing: .06em;
+        }
+        .hero-title { font-family: var(--font-heading); font-size: clamp(2.2rem,6vw,3.8rem); font-weight: 900; letter-spacing: -.03em; background: linear-gradient(135deg,#fff 30%,#ddd6fe 60%,#fbcfe8 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: .6rem; }
+        .hero-quote { font-family: var(--font-hand); font-size: clamp(1.6rem,4vw,2.2rem); color: #fde047; display: inline-block; transform: rotate(-1.5deg); text-shadow: 0 2px 12px rgba(253,224,71,.3); margin-bottom: .8rem; }
+        .hero-desc { color: var(--text-2); font-size: 1rem; margin-bottom: 1.5rem; }
+        .hero-actions { display: flex; align-items: center; justify-content: center; gap: .85rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 9px; padding: 12px 28px;
+            border-radius: var(--radius); background: linear-gradient(135deg,#ec4899,#8b5cf6);
+            color: #fff; font-weight: 800; font-size: 1rem; text-decoration: none;
+            box-shadow: 0 8px 24px rgba(236,72,153,.5); transition: all .25s cubic-bezier(.2,.8,.2,1);
+        }
+        .btn-primary:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 32px rgba(236,72,153,.7); color: #fff; }
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px;
+            border-radius: var(--radius); background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.2); color: var(--text-2);
+            font-size: .92rem; font-weight: 600; cursor: pointer; transition: all .2s ease;
+        }
+        .btn-ghost:hover { background: rgba(255,255,255,.15); color: #fff; border-color: rgba(255,255,255,.35); }
+        .btn-ghost.spinning #syncIcon { animation: spin .8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .sync-status { display: flex; align-items: center; justify-content: center; gap: 7px; font-size: .84rem; color: #34d399; font-weight: 600; margin-bottom: 1.5rem; }
+        .pulse { width: 8px; height: 8px; border-radius: 50%; background: #34d399; box-shadow: 0 0 8px #34d399; animation: blink 1.8s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+        /* ─── ROLE TABS ────────────────────────────────────────────── */
+        .role-tabs { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 0 1.25rem 1.5rem; }
+        .role-tab {
+            display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px;
+            border-radius: var(--radius); background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.14); color: var(--text-2);
+            font-size: .88rem; font-weight: 700; cursor: pointer;
+            transition: all .25s cubic-bezier(.2,.8,.2,1); touch-action: manipulation;
+        }
+        .role-tab:hover { background: rgba(255,255,255,.14); color: #fff; transform: translateY(-2px); }
+        .role-tab.active { background: linear-gradient(135deg,#ec4899,#8b5cf6); border-color: transparent; color: #fff; box-shadow: 0 4px 18px rgba(236,72,153,.45); transform: translateY(-2px) scale(1.03); }
+        .tab-count { padding: 1px 7px; border-radius: var(--radius); background: rgba(0,0,0,.25); font-size: .72rem; font-weight: 800; }
+
+        /* ─── SWIPE DECK CONTAINER ──────────────────────────────────── */
+        .deck-wrapper {
+            position: relative; z-index: 1;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 0 1.25rem 2rem;
         }
 
-        .hero-title {
-            font-family: var(--font-heading);
-            font-size: clamp(2.4rem, 6vw, 4.2rem);
-            font-weight: 900;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(135deg, #ffffff 30%, #ddd6fe 60%, #fbcfe8 90%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-family: var(--font-hand);
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-            color: #fde047;
-            margin-bottom: 0.85rem;
-            line-height: 1.3;
-            transform: rotate(-1.5deg);
-            display: inline-block;
-            text-shadow: 0 2px 12px rgba(253, 224, 71, 0.35);
-        }
-
-        .hero-desc {
-            max-width: 650px;
-            margin: 0 auto 1.75rem;
-            font-size: 1.05rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        .hero-action-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+        /* Search + Sort controls above deck */
+        .deck-controls {
+            width: 100%; max-width: 700px;
+            display: grid; grid-template-columns: 1fr auto auto;
+            gap: .75rem; align-items: center;
             margin-bottom: 1.5rem;
         }
+        .search-wrap { position: relative; }
+        .search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: .95rem; pointer-events: none; color: var(--text-3); }
+        .search-in {
+            width: 100%; padding: 10px 13px 10px 38px;
+            border-radius: 10px; background: rgba(10,14,25,.65);
+            border: 1px solid rgba(255,255,255,.15); color: #fff;
+            font-family: inherit; font-size: .9rem; outline: none; transition: all .2s;
+        }
+        .search-in:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,.25); }
+        .deck-select {
+            padding: 10px 13px; border-radius: 10px;
+            background: rgba(10,14,25,.65); border: 1px solid rgba(255,255,255,.15);
+            color: #fff; font-family: inherit; font-size: .88rem;
+            outline: none; cursor: pointer; transition: border-color .2s;
+        }
+        .deck-select:focus { border-color: var(--primary); }
+        .deck-select option { background: #130f28; }
+        .btn-clear {
+            padding: 10px 14px; border-radius: 10px;
+            background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.16);
+            color: var(--text-2); font-weight: 700; font-size: .85rem;
+            cursor: pointer; transition: all .2s; white-space: nowrap;
+        }
+        .btn-clear:hover { background: rgba(255,255,255,.17); color: #fff; }
 
-        .hero-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 1.05rem;
-            text-decoration: none;
-            box-shadow: 0 8px 24px rgba(236, 72, 153, 0.5);
-            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+        /* Card progress bar */
+        .deck-progress-bar {
+            width: 100%; max-width: 700px;
+            height: 4px; background: rgba(255,255,255,.1);
+            border-radius: var(--radius); margin-bottom: 1.25rem; overflow: hidden;
+        }
+        .deck-progress-fill {
+            height: 100%; border-radius: var(--radius);
+            background: linear-gradient(90deg,#ec4899,#8b5cf6);
+            transition: width .35s ease;
         }
 
-        .hero-btn-primary:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 12px 32px rgba(236, 72, 153, 0.7);
-            color: #ffffff;
-        }
-
-        .hero-btn-sync {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 13px 24px;
-            border-radius: var(--radius-full);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            touch-action: manipulation;
-        }
-
-        .hero-btn-sync:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.35);
-        }
-
-        .hero-btn-sync.spinning #syncIcon {
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        /* LIVE SYNC STATUS BADGE */
-        .sync-status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 0.85rem;
-            color: #34d399;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .sync-pulse {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #34d399;
-            box-shadow: 0 0 8px #34d399;
-            animation: liveBlink 1.8s infinite;
-        }
-
-        @keyframes liveBlink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        /* INTERACTIVE ROLE FILTER TABS / PILLS */
-        .role-tabs-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 1.75rem;
-            flex-wrap: wrap;
-        }
-
-        .role-tab-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: var(--radius-full);
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-secondary);
-            font-size: 0.92rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
-            touch-action: manipulation;
-        }
-
-        .role-tab-btn:hover {
-            background: rgba(255, 255, 255, 0.14);
-            color: #ffffff;
-            transform: translateY(-2px);
-        }
-
-        .role-tab-btn.active {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            border-color: transparent;
-            color: #ffffff;
-            box-shadow: 0 4px 18px rgba(236, 72, 153, 0.45);
-            transform: translateY(-2px) scale(1.02);
-        }
-
-        .role-tab-count {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2px 7px;
-            border-radius: var(--radius-full);
-            background: rgba(0, 0, 0, 0.25);
-            font-size: 0.75rem;
-            font-weight: 800;
-        }
-
-        /* CONTROLS CARD */
-        .controls-card {
-            background: var(--surface-glass);
-            border: 1px solid var(--surface-glass-border);
-            border-radius: var(--radius-lg);
-            padding: 1.25rem 1.5rem;
-            backdrop-filter: blur(14px);
-            margin-bottom: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-        }
-
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 2fr 1.2fr auto;
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .control-label {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .search-input-wrapper {
+        /* The swipe deck area itself */
+        .deck-stage {
             position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 14px;
-            color: var(--text-muted);
-            pointer-events: none;
-            font-size: 1rem;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 11px 14px 11px 40px;
-            border-radius: var(--radius-sm);
-            background: rgba(10, 14, 25, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-light);
-            background: rgba(10, 14, 25, 0.85);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
-        }
-
-        .custom-select {
-            width: 100%;
-            padding: 11px 14px;
-            border-radius: var(--radius-sm);
-            background: rgba(10, 14, 25, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .custom-select:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
-        }
-
-        .custom-select option {
-            background: #130f28;
-            color: #ffffff;
-        }
-
-        .btn-reset {
-            padding: 11px 20px;
-            border-radius: var(--radius-sm);
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: var(--text-secondary);
-            font-weight: 700;
-            font-size: 0.92rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-reset:hover {
-            background: rgba(255, 255, 255, 0.18);
-            color: #ffffff;
-        }
-
-        .controls-meta-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 1.25rem;
-            padding-top: 1.25rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .counter-badge {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .counter-badge strong {
-            color: #fde047;
-        }
-
-        /* STICKY NOTES WALL GRID */
-        .wall-section {
-            margin-bottom: 5rem;
-        }
-
-        .dream-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1.85rem;
-            align-items: start;
-        }
-
-        /* STICKY NOTE CARD COMPONENT */
-        .sticky-note {
-            position: relative;
-            padding: 2.2rem 1.6rem 1.6rem;
-            border-radius: 4px 4px 22px 4px;
-            box-shadow: var(--shadow-paper);
-            transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 250px;
-            box-sizing: border-box;
+            width: 100%; max-width: 440px;
+            height: 520px;
+            perspective: 1000px;
+            margin: 0 auto;
+            touch-action: none;
             user-select: none;
         }
 
-        .sticky-note::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 28px;
-            height: 28px;
-            background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.18) 50%);
-            border-bottom-right-radius: 22px;
-            pointer-events: none;
-        }
-
-        .sticky-note-tape {
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 70px;
-            height: 22px;
-            backdrop-filter: blur(2px);
-            border-radius: 2px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 2;
-        }
-
-        /* Color Schemes for Notes */
-        .note-style-yellow { background-color: var(--note-yellow-bg); border: 1px solid var(--note-yellow-border); color: var(--note-yellow-text); }
-        .note-style-yellow .sticky-note-tape { background-color: var(--note-yellow-tape); }
-
-        .note-style-pink { background-color: var(--note-pink-bg); border: 1px solid var(--note-pink-border); color: var(--note-pink-text); }
-        .note-style-pink .sticky-note-tape { background-color: var(--note-pink-tape); }
-
-        .note-style-blue { background-color: var(--note-blue-bg); border: 1px solid var(--note-blue-border); color: var(--note-blue-text); }
-        .note-style-blue .sticky-note-tape { background-color: var(--note-blue-tape); }
-
-        .note-style-mint { background-color: var(--note-mint-bg); border: 1px solid var(--note-mint-border); color: var(--note-mint-text); }
-        .note-style-mint .sticky-note-tape { background-color: var(--note-mint-tape); }
-
-        .note-style-lavender { background-color: var(--note-lavender-bg); border: 1px solid var(--note-lavender-border); color: var(--note-lavender-text); }
-        .note-style-lavender .sticky-note-tape { background-color: var(--note-lavender-tape); }
-
-        .note-style-orange { background-color: var(--note-orange-bg); border: 1px solid var(--note-orange-border); color: var(--note-orange-text); }
-        .note-style-orange .sticky-note-tape { background-color: var(--note-orange-tape); }
-
-        .note-style-cream { background-color: var(--note-cream-bg); border: 1px solid var(--note-cream-border); color: var(--note-cream-text); }
-        .note-style-cream .sticky-note-tape { background-color: var(--note-cream-tape); }
-
-        .note-style-rose { background-color: var(--note-rose-bg); border: 1px solid var(--note-rose-border); color: var(--note-rose-text); }
-        .note-style-rose .sticky-note-tape { background-color: var(--note-rose-tape); }
-
-        .sticky-note:hover {
-            transform: translateY(-8px) rotate(0deg) scale(1.03) !important;
-            box-shadow: var(--shadow-hover);
-            z-index: 10;
-        }
-
-        .sticky-note:active {
-            transform: translateY(-2px) scale(1.01) !important;
-        }
-
-        .note-message-main {
-            font-family: var(--font-hand);
-            font-size: 1.85rem;
-            font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 1rem;
-            word-break: break-word;
-            display: -webkit-box;
-            -webkit-line-clamp: 5;
-            -webkit-box-orient: vertical;
+        /* Each card (top 3 rendered) */
+        .swipe-card {
+            position: absolute; inset: 0;
+            border-radius: 8px 8px 28px 8px;
+            box-shadow: 0 14px 40px -8px rgba(0,0,0,.5), 0 8px 16px -6px rgba(0,0,0,.3);
+            padding: 2.5rem 1.85rem 1.75rem;
+            display: flex; flex-direction: column; justify-content: space-between;
+            will-change: transform;
+            cursor: grab;
             overflow: hidden;
+            transition: box-shadow .3s ease;
+        }
+        .swipe-card:active { cursor: grabbing; }
+
+        /* Background card layers (depth effect) */
+        .swipe-card.depth-1 {
+            transform: scale(.94) translateY(22px);
+            opacity: .75;
+            pointer-events: none;
+            transition: transform .4s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
+        }
+        .swipe-card.depth-2 {
+            transform: scale(.88) translateY(44px);
+            opacity: .45;
+            pointer-events: none;
+            transition: transform .4s cubic-bezier(.2,.8,.2,1), opacity .4s ease;
         }
 
-        .note-author-name {
-            font-family: var(--font-heading);
-            font-size: 1.15rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        /* When deck is animating next, promote depth cards */
+        .deck-stage.next-anim .swipe-card.depth-1 { transform: scale(.97) translateY(11px); opacity: .88; }
+        .deck-stage.next-anim .swipe-card.depth-2 { transform: scale(.94) translateY(22px); opacity: .65; }
+
+        /* Tape */
+        .card-tape {
+            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 68px; height: 21px; border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.12); z-index: 2;
         }
 
-        .note-meta-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            margin-top: 0.75rem;
-            padding-top: 0.75rem;
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-            font-size: 0.75rem;
-            opacity: 0.85;
-            font-weight: 700;
+        /* Folded corner */
+        .swipe-card::after {
+            content: ''; position: absolute; bottom: 0; right: 0;
+            width: 26px; height: 26px;
+            background: linear-gradient(135deg,transparent 50%,rgba(0,0,0,.18) 50%);
+            border-bottom-right-radius: 28px; pointer-events: none;
         }
 
-        .note-role-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            padding: 3px 9px;
-            border-radius: var(--radius-full);
-            background: rgba(0, 0, 0, 0.12);
+        /* LIKE / DISLIKE VISUAL INDICATORS while dragging */
+        .card-stamp {
+            position: absolute; top: 1.4rem; font-size: 3.5rem; font-weight: 900;
+            opacity: 0; transition: opacity .15s ease; pointer-events: none;
+            text-shadow: 0 4px 16px rgba(0,0,0,.35);
+        }
+        .stamp-like   { right: 1.4rem; }
+        .stamp-skip   { left:  1.4rem; }
+
+        /* Note typography */
+        .card-message {
+            font-family: var(--font-hand); font-size: 2rem; font-weight: 700;
+            line-height: 1.3; word-break: break-word;
+            display: -webkit-box; -webkit-line-clamp: 7; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .card-author {
+            font-family: var(--font-heading); font-size: 1.15rem; font-weight: 800;
+            margin-top: .85rem; display: flex; align-items: center; gap: 6px;
+        }
+        .card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: .85rem; padding-top: .85rem;
+            border-top: 1px solid rgba(0,0,0,.1);
+            font-size: .75rem; font-weight: 700; opacity: .85;
+        }
+        .role-badge {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: var(--radius);
+            background: rgba(0,0,0,.12); font-size: .75rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: .04em;
+        }
+        .card-date { opacity: .7; }
+
+        /* Colour themes */
+        .n-yellow { background: var(--n-yellow); border: 1px solid var(--n-yellow-b); color: var(--n-yellow-t); }
+        .n-yellow .card-tape { background: var(--n-yellow-tape); }
+        .n-pink   { background: var(--n-pink);   border: 1px solid var(--n-pink-b);   color: var(--n-pink-t);   }
+        .n-pink   .card-tape { background: var(--n-pink-tape); }
+        .n-blue   { background: var(--n-blue);   border: 1px solid var(--n-blue-b);   color: var(--n-blue-t);   }
+        .n-blue   .card-tape { background: var(--n-blue-tape); }
+        .n-mint   { background: var(--n-mint);   border: 1px solid var(--n-mint-b);   color: var(--n-mint-t);   }
+        .n-mint   .card-tape { background: var(--n-mint-tape); }
+        .n-lav    { background: var(--n-lav);    border: 1px solid var(--n-lav-b);    color: var(--n-lav-t);    }
+        .n-lav    .card-tape { background: var(--n-lav-tape); }
+        .n-ora    { background: var(--n-ora);    border: 1px solid var(--n-ora-b);    color: var(--n-ora-t);    }
+        .n-ora    .card-tape { background: var(--n-ora-tape); }
+        .n-cream  { background: var(--n-cream);  border: 1px solid var(--n-cream-b);  color: var(--n-cream-t);  }
+        .n-cream  .card-tape { background: var(--n-cream-tape); }
+        .n-rose   { background: var(--n-rose);   border: 1px solid var(--n-rose-b);   color: var(--n-rose-t);   }
+        .n-rose   .card-tape { background: var(--n-rose-tape); }
+
+        /* ─── DECK NAVIGATION ─────────────────────────────────────── */
+        .deck-nav {
+            display: flex; align-items: center; gap: 1.5rem;
+            margin-top: 2rem; justify-content: center;
+        }
+        .nav-circle {
+            width: 56px; height: 56px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; cursor: pointer; border: none;
+            transition: all .25s cubic-bezier(.2,.8,.2,1);
+            touch-action: manipulation;
+        }
+        .nav-skip  { background: rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.18); color: #fff; }
+        .nav-skip:hover  { background: rgba(239,68,68,.2);  border-color: #ef4444; transform: scale(1.1) translateY(-2px); }
+        .nav-like  { background: linear-gradient(135deg,#ec4899,#8b5cf6); color: #fff; box-shadow: 0 6px 20px rgba(236,72,153,.5); }
+        .nav-like:hover  { transform: scale(1.12) translateY(-3px); box-shadow: 0 10px 28px rgba(236,72,153,.7); }
+        .nav-prev  { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.14); color: var(--text-2); width: 42px; height: 42px; font-size: 1rem; }
+        .nav-prev:hover  { background: rgba(255,255,255,.14); color: #fff; transform: scale(1.05); }
+
+        /* Card counter pill */
+        .deck-counter {
+            background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+            padding: 5px 16px; border-radius: var(--radius);
+            font-size: .88rem; font-weight: 700; color: var(--text-2);
+        }
+        .deck-counter strong { color: #fde047; }
+
+        /* Dot pagination */
+        .deck-dots { display: flex; gap: 6px; align-items: center; margin-top: 1.25rem; justify-content: center; flex-wrap: wrap; max-width: 340px; margin-left: auto; margin-right: auto; }
+        .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.2); transition: all .3s ease; cursor: pointer; }
+        .dot.active { width: 24px; border-radius: 4px; background: linear-gradient(90deg,#ec4899,#8b5cf6); }
+        .dot.near { background: rgba(255,255,255,.45); }
+
+        /* Swipe hint text */
+        .swipe-hint {
+            font-size: .82rem; color: var(--text-3); font-weight: 600;
+            display: flex; align-items: center; gap: 6px; justify-content: center;
+            margin-top: .85rem; opacity: 1; transition: opacity .5s ease;
+        }
+        .swipe-hint.hidden { opacity: 0; }
+
+        /* Empty / Loading */
+        .deck-empty {
+            width: 100%; max-width: 440px; padding: 3.5rem 2rem; text-align: center;
+            background: var(--glass); border: 1px solid var(--glass-border);
+            border-radius: 20px; backdrop-filter: blur(12px);
+        }
+        .deck-spinner {
+            width: 44px; height: 44px; border: 4px solid rgba(255,255,255,.12);
+            border-top-color: #ec4899; border-radius: 50%;
+            animation: spin .8s linear infinite; margin: 0 auto 1.25rem;
         }
 
-        .note-like-btn {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 0.82rem;
-            font-weight: 800;
-            color: inherit;
-            opacity: 0.85;
-            padding: 4px 8px;
-            border-radius: var(--radius-full);
-            transition: all 0.2s ease;
-        }
-
-        .note-like-btn:hover {
-            opacity: 1;
-            background: rgba(0, 0, 0, 0.08);
-            transform: scale(1.1);
-        }
-
-        .note-like-btn.liked {
-            color: #e11d48;
-            opacity: 1;
-        }
-
-        /* MODAL POPUP FOR READING FULL NOTE ON MOBILE / DESKTOP */
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 8, 15, 0.8);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            animation: modalFadeIn 0.25s ease;
-        }
-
-        .modal-overlay.open {
-            display: flex;
-        }
-
-        .modal-card {
-            width: 100%;
-            max-width: 480px;
-            padding: 2.5rem 2rem 2rem;
-            border-radius: 4px 4px 26px 4px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            position: relative;
-            transform: scale(0.95);
-            animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            max-height: 85vh;
-            overflow-y: auto;
-        }
-
-        .modal-close-btn {
-            position: absolute;
-            top: 12px;
-            right: 14px;
-            background: rgba(0, 0, 0, 0.15);
-            border: none;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            font-size: 1.1rem;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: inherit;
-            transition: transform 0.2s ease;
-        }
-
-        .modal-close-btn:hover {
-            transform: scale(1.15) rotate(90deg);
-        }
-
-        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        /* FLOATING ACTION BUTTON (MOBILE QUICK POST) */
-        .floating-fab-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 90;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 24px;
-            border-radius: var(--radius-full);
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 1rem;
-            text-decoration: none;
-            box-shadow: 0 10px 30px rgba(236, 72, 153, 0.6);
-            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            animation: fabPulse 3s infinite alternate;
-        }
-
-        .floating-fab-btn:hover {
-            transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 14px 36px rgba(236, 72, 153, 0.8);
-            color: #ffffff;
-        }
-
-        @keyframes fabPulse {
-            0% { box-shadow: 0 8px 24px rgba(236, 72, 153, 0.45); }
-            100% { box-shadow: 0 12px 34px rgba(139, 92, 246, 0.65); }
-        }
-
-        /* LOADING & EMPTY STATES */
-        .loading-state,
-        .empty-wall-state {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 4rem 2rem;
-            background: var(--surface-glass);
-            border: 1px solid var(--surface-glass-border);
-            border-radius: var(--radius-lg);
-        }
-
-        .loading-spinner {
-            width: 44px;
-            height: 44px;
-            border: 4px solid rgba(255, 255, 255, 0.15);
-            border-top-color: #ec4899;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 1.25rem;
-        }
-
-        /* ABOUT SECTION */
-        .about-section {
-            padding: 4rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
+        /* ─── ABOUT ────────────────────────────────────────────────── */
+        .about-wrap { max-width: 900px; margin: 0 auto; padding: 3.5rem 1.25rem; border-top: 1px solid rgba(255,255,255,.08); }
         .about-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: var(--radius-lg);
-            padding: 2.75rem 2rem;
-            backdrop-filter: blur(16px);
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
+            background: linear-gradient(135deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+            border: 1px solid rgba(255,255,255,.1); border-radius: 22px;
+            padding: 2.75rem 2rem; backdrop-filter: blur(16px);
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center;
+        }
+        .about-card h2 { font-family: var(--font-heading); font-size: 2rem; font-weight: 800; margin-bottom: 1rem; }
+        .about-card p  { color: var(--text-2); font-size: 1rem; line-height: 1.7; margin-bottom: 1rem; }
+        .quote-box { background: rgba(139,92,246,.12); border: 1px solid rgba(139,92,246,.3); border-radius: 16px; padding: 2rem; text-align: center; }
+        .quote-txt  { font-family: var(--font-hand); font-size: 1.95rem; color: #fde047; line-height: 1.4; margin-bottom: .85rem; }
+        .quote-auth { font-family: var(--font-heading); font-weight: 700; font-size: .9rem; text-transform: uppercase; letter-spacing: .08em; }
+
+        /* ─── FOOTER ───────────────────────────────────────────────── */
+        footer { background: rgba(9,13,22,.95); border-top: 1px solid rgba(255,255,255,.08); padding: 2.25rem 1.25rem; text-align: center; position: relative; z-index: 1; }
+        .footer-motto  { font-family: var(--font-hand); font-size: 1.75rem; color: #fbcfe8; margin-bottom: .4rem; }
+        .footer-credit { color: var(--text-3); font-size: .88rem; font-weight: 500; }
+
+        /* ─── FLOATING FAB ─────────────────────────────────────────── */
+        .fab {
+            position: fixed; bottom: 22px; right: 22px; z-index: 90;
+            display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px;
+            border-radius: var(--radius); background: linear-gradient(135deg,#ec4899,#8b5cf6);
+            color: #fff; font-weight: 800; font-size: .95rem; text-decoration: none;
+            box-shadow: 0 10px 30px rgba(236,72,153,.6);
+            animation: fabGlow 3s infinite alternate;
+            transition: all .3s cubic-bezier(.2,.8,.2,1);
+        }
+        .fab:hover { transform: translateY(-4px) scale(1.05); box-shadow: 0 14px 38px rgba(236,72,153,.8); color: #fff; }
+        @keyframes fabGlow { 0%{box-shadow:0 8px 24px rgba(236,72,153,.45)} 100%{box-shadow:0 12px 36px rgba(139,92,246,.65)} }
+
+        /* ─── RESPONSIVE ───────────────────────────────────────────── */
+
+        /* Hamburger button (mobile only) */
+        .ham-btn {
+            display: none;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.18);
+            color: #fff;
+            width: 42px; height: 42px;
+            border-radius: 10px;
+            font-size: 1.25rem;
+            cursor: pointer;
             align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background .2s;
+        }
+        .ham-btn:hover { background: rgba(255,255,255,.18); }
+
+        /* Mobile Slide-Down Drawer */
+        .mobile-drawer {
+            display: none;
+            position: fixed;
+            top: 70px; left: 0; right: 0;
+            background: rgba(9,13,22,.97);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255,255,255,.1);
+            padding: 1.25rem 1.5rem 1.5rem;
+            z-index: 98;
+            flex-direction: column;
+            gap: .5rem;
+            box-shadow: 0 16px 40px rgba(0,0,0,.6);
+        }
+        .mobile-drawer.open { display: flex; }
+        .mobile-drawer a {
+            text-decoration: none; color: var(--text-2);
+            font-size: 1.1rem; font-weight: 700;
+            padding: .85rem 1rem;
+            border-radius: 12px;
+            transition: background .2s, color .2s;
+        }
+        .mobile-drawer a:hover { background: rgba(255,255,255,.08); color: #fff; }
+        .mobile-drawer .drawer-form-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-top: .5rem; padding: 13px; border-radius: var(--radius);
+            background: linear-gradient(135deg,#ec4899,#8b5cf6);
+            color: #fff; font-weight: 800; font-size: 1rem;
+            text-decoration: none; box-shadow: 0 6px 20px rgba(236,72,153,.45);
         }
 
-        .about-content h2 {
-            font-family: var(--font-heading);
-            font-size: 2.1rem;
-            font-weight: 800;
-            color: #ffffff;
-            line-height: 1.2;
-            margin-bottom: 1.2rem;
-        }
+        @media(max-width:768px){
+            /* Header */
+            .nav-links  { display: none; }
+            .add-btn    { display: none; }
+            .ham-btn    { display: flex; }
 
-        .about-content p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 1.2rem;
-        }
+            /* Hero compact */
+            .hero { padding: 2rem 1rem 1.25rem; }
+            .hero-badge { font-size: .75rem; padding: 4px 13px; }
+            .hero-desc  { font-size: .92rem; margin-bottom: 1rem; }
+            .hero-actions { gap: .65rem; }
+            .btn-primary  { padding: 11px 20px; font-size: .92rem; }
+            .btn-ghost    { padding: 10px 18px; font-size: .88rem; }
 
-        .about-quote-box {
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            border-radius: var(--radius-md);
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .about-quote-text {
-            font-family: var(--font-hand);
-            font-size: 2rem;
-            color: #fde047;
-            line-height: 1.4;
-            margin-bottom: 1rem;
-        }
-
-        .about-quote-author {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            color: #ffffff;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        /* FOOTER */
-        .site-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(9, 13, 22, 0.95);
-            padding: 2.5rem 0;
-            text-align: center;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-motto {
-            font-family: var(--font-hand);
-            font-size: 1.8rem;
-            color: #fbcfe8;
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-credit {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .stagger-in {
-            animation: noteEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-        }
-
-        @keyframes noteEntrance {
-            from {
-                opacity: 0;
-                transform: translateY(20px) scale(0.94);
+            /* Role tabs — horizontal scroll */
+            .role-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                justify-content: flex-start;
+                padding: 0 1rem 1.25rem;
+                gap: 8px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
             }
-            to {
-                opacity: 1;
-            }
-        }
+            .role-tabs::-webkit-scrollbar { display: none; }
+            .role-tab { flex-shrink: 0; font-size: .82rem; padding: 8px 14px; }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .controls-grid {
+            /* Deck controls stacked */
+            .deck-controls {
                 grid-template-columns: 1fr;
+                gap: .65rem;
             }
+            .deck-controls .search-wrap { grid-column: auto; }
+
+            /* Deck stage — use svh for modern, fallback vh */
+            .deck-stage {
+                height: 55vh;
+                height: 55svh;
+                max-width: 100%;
+            }
+
+            /* Bigger nav buttons */
+            .nav-circle { width: 52px; height: 52px; font-size: 1.2rem; }
+            .nav-like   { width: 60px; height: 60px; font-size: 1.5rem; }
+
+            /* FAB: keep bottom-right but raise above browser nav bar */
+            .fab {
+                bottom: calc(16px + env(safe-area-inset-bottom));
+                right: 16px;
+                padding: 12px 18px;
+                font-size: .88rem;
+            }
+
+            /* About */
             .about-card {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 1.75rem;
+                padding: 2rem 1.25rem;
             }
+            .about-card h2 { font-size: 1.65rem; }
         }
 
-        @media (max-width: 640px) {
-            .nav-links {
-                display: none;
+        @media(max-width:400px){
+            .deck-stage {
+                height: 50vh;
+                height: 50svh;
             }
-            .dream-grid {
-                grid-template-columns: 1fr;
-                gap: 1.25rem;
-            }
-            .hero {
-                padding: 2.5rem 0 1.5rem;
-            }
-            .hero-title {
-                font-size: 2.4rem;
-            }
-            .floating-fab-btn {
-                bottom: 18px;
-                right: 18px;
-                padding: 12px 20px;
-                font-size: 0.92rem;
-            }
+            .card-message { font-size: 1.6rem; }
+            .swipe-card   { padding: 2rem 1.35rem 1.4rem; }
+            .deck-nav     { gap: 1rem; }
+            .nav-circle   { width: 46px; height: 46px; font-size: 1rem; }
+            .nav-like     { width: 54px; height: 54px; font-size: 1.3rem; }
+        }
+
+        /* Safe-area for phones with notches / home bars */
+        @supports(padding: env(safe-area-inset-bottom)){
+            body   { padding-bottom: calc(80px + env(safe-area-inset-bottom)); }
+            footer { padding-bottom: calc(1.5rem + env(safe-area-inset-bottom)); }
+        }
+
+        /* ─── ANIMATIONS ───────────────────────────────────────────── */
+        @keyframes enterFromBottom { from { opacity: 0; transform: translateY(30px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes flyOffRight { to { transform: translateX(140%) rotate(30deg); opacity: 0; } }
+        @keyframes flyOffLeft  { to { transform: translateX(-140%) rotate(-30deg); opacity: 0; } }
+
+        @media(prefers-reduced-motion:reduce){
+            *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Ambient Visual Background -->
-    <div class="ambient-bg" aria-hidden="true">
-        <div class="ambient-orb ambient-orb-1"></div>
-        <div class="ambient-orb ambient-orb-2"></div>
-        <div class="ambient-orb ambient-orb-3"></div>
+<div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+<div class="stars" aria-hidden="true"></div>
+
+<!-- HEADER -->
+<header>
+    <div class="nav">
+        <a href="#top" class="brand">
+            <img src="https://theindiawire.com/wp-content/uploads/2023/03/Image-31-i0WHJt-VlLgVt.jpeg" alt="PW Logo" class="logo-img">
+            <div class="brand-txt">
+                <span class="brand-title">OUR DREAM WALL</span>
+                <span class="brand-sub">PW Alipurduar Vidyapeeth</span>
+            </div>
+        </a>
+        <nav aria-label="Main Navigation">
+            <ul class="nav-links">
+                <li><a href="#top">Home</a></li>
+                <li><a href="#deck-section">Dream Wall</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+        <div style="display:flex;align-items:center;gap:10px">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener" class="add-btn">
+                <span>✨</span> Add Note
+            </a>
+            <button class="ham-btn" id="hamBtn" aria-label="Open menu" aria-expanded="false" type="button">☰</button>
+        </div>
     </div>
-    <div class="star-field" aria-hidden="true"></div>
+</header>
 
-    <!-- SITE HEADER -->
-    <header class="site-header">
-        <div class="container">
-            <div class="nav-wrapper">
-                <a href="#home" class="brand-logo-group" aria-label="PW Alipurduar Vidyapeeth Dream Wall Home">
-                    <img src="https://theindiawire.com/wp-content/uploads/2023/03/Image-31-i0WHJt-VlLgVt.jpeg" alt="PW Logo" class="pw-logo-img" />
-                    <div class="brand-text-block">
-                        <span class="brand-main-title">OUR DREAM WALL</span>
-                        <span class="brand-sub-title">PW Alipurduar Vidyapeeth</span>
-                    </div>
-                </a>
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <a href="#top" class="drawer-link">🏠 Home</a>
+    <a href="#deck-section" class="drawer-link">🃏 Dream Wall</a>
+    <a href="#about" class="drawer-link">ℹ️ About</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener" class="drawer-form-btn">✍️ Post Your Sticky Note</a>
+</div>
 
-                <nav aria-label="Main Navigation">
-                    <ul class="nav-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#dreams-wall">Dream Wall</a></li>
-                        <li><a href="#about-section">About</a></li>
-                    </ul>
-                </nav>
-
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="btn-add-dream" id="topAddBtn">
-                        <span>✨</span> Add Note
-                    </a>
-                </div>
-            </div>
+<main id="top">
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-badge"><span>🌟</span> PW Alipurduar Vidyapeeth Community</div>
+        <h1 class="hero-title">OUR DREAM WALL</h1>
+        <div class="hero-quote">"Every dream begins with a thought."</div>
+        <p class="hero-desc">Live dreams, wishes &amp; blessings from <strong>Students, Teachers &amp; Parents</strong> — swipe to explore every one.</p>
+        <div class="hero-actions">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener" class="btn-primary">
+                <span>📝</span> Post Your Sticky Note
+            </a>
+            <button class="btn-ghost" id="syncBtn" type="button">
+                <span id="syncIcon">🔄</span> Refresh Wall
+            </button>
         </div>
-    </header>
-
-    <main>
-        <!-- HERO SECTION -->
-        <section class="hero" id="home">
-            <div class="container">
-                <div class="hero-badge">
-                    <span>🌟</span> PW Alipurduar Vidyapeeth Community
-                </div>
-
-                <h1 class="hero-title">OUR DREAM WALL</h1>
-                <div class="hero-subtitle">“Every dream begins with a thought.”</div>
-                <p class="hero-desc">
-                    A live digital wall of dreams, aspirations, and wishes from our <strong>Students, Teachers &amp; Parents</strong>.
-                </p>
-
-                <!-- Action Buttons: Google Form & Live Sync -->
-                <div class="hero-action-row">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="hero-btn-primary" id="heroAddBtn">
-                        <span>📝</span> Post Your Sticky Note
-                    </a>
-                    <button type="button" class="hero-btn-sync" id="btnSyncLive" title="Fetch the latest responses from Google Sheets">
-                        <span id="syncIcon">🔄</span> Refresh Live Wall
-                    </button>
-                </div>
-
-                <!-- Live Sync Status -->
-                <div class="sync-status-bar" id="syncStatusBar">
-                    <div class="sync-pulse"></div>
-                    <span id="syncStatusText">Auto-synced with live Google Sheet</span>
-                </div>
-
-                <!-- INTERACTIVE ROLE FILTER TABS -->
-                <div class="role-tabs-container" id="roleTabs">
-                    <button type="button" class="role-tab-btn active" data-role="all">
-                        <span>🌟 All Notes</span>
-                        <span class="role-tab-count" id="countAll">0</span>
-                    </button>
-                    <button type="button" class="role-tab-btn" data-role="student">
-                        <span>🎓 Students</span>
-                        <span class="role-tab-count" id="countStudent">0</span>
-                    </button>
-                    <button type="button" class="role-tab-btn" data-role="teacher">
-                        <span>👩‍🏫 Teachers</span>
-                        <span class="role-tab-count" id="countTeacher">0</span>
-                    </button>
-                    <button type="button" class="role-tab-btn" data-role="parent">
-                        <span>👨‍👩‍👧 Parents</span>
-                        <span class="role-tab-count" id="countParent">0</span>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <div class="container">
-            <!-- SEARCH & SORT CONTROLS -->
-            <section class="controls-section" aria-label="Search and Filter Controls">
-                <div class="controls-card">
-                    <div class="controls-grid">
-                        <!-- Search Box -->
-                        <div class="control-group">
-                            <label class="control-label" for="searchInput">Search Dreams &amp; Messages</label>
-                            <div class="search-input-wrapper">
-                                <span class="search-icon">🔍</span>
-                                <input 
-                                    type="text" 
-                                    id="searchInput" 
-                                    class="search-input" 
-                                    placeholder="Search by name, message, role..."
-                                    autocomplete="off"
-                                />
-                            </div>
-                        </div>
-
-                        <!-- Sort Options -->
-                        <div class="control-group">
-                            <label class="control-label" for="sortBy">Sort By</label>
-                            <select id="sortBy" class="custom-select">
-                                <option value="newest">Newest First</option>
-                                <option value="oldest">Oldest First</option>
-                                <option value="name-asc">Name (A–Z)</option>
-                                <option value="name-desc">Name (Z–A)</option>
-                                <option value="random">Shuffle / Random</option>
-                            </select>
-                        </div>
-
-                        <!-- Reset Button -->
-                        <div class="control-group">
-                            <button type="button" id="btnResetFilters" class="btn-reset" title="Reset all search queries and filters">
-                                <span>↺</span> Reset
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Meta / Count Bar -->
-                    <div class="controls-meta-bar">
-                        <div class="counter-badge" id="visibleCounter">
-                            Showing <strong>0</strong> of <strong>0</strong> notes
-                        </div>
-
-                        <div style="font-size:0.85rem; color:var(--text-muted);">
-                            ✨ Tap any sticky note to view full size!
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- STICKY NOTES WALL -->
-            <section class="wall-section" id="dreams-wall" aria-label="Student Dream Sticky Notes Wall">
-                <div class="dream-grid" id="dreamGrid">
-                    <!-- Loading Spinner Initial State -->
-                    <div class="loading-state" id="loadingState">
-                        <div class="loading-spinner"></div>
-                        <div style="font-weight: 600; font-size: 1.1rem; color: #ffffff;">Loading notes from Google Sheet...</div>
-                        <div style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Connecting to PW Alipurduar Vidyapeeth database</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- ABOUT SECTION -->
-            <section class="about-section" id="about-section">
-                <div class="about-card">
-                    <div class="about-content">
-                        <h2>PW Alipurduar Vidyapeeth Community Wall</h2>
-                        <p>
-                            Every student holds boundless potential, every teacher provides invaluable guidance, and every parent offers endless encouragement.
-                        </p>
-                        <p>
-                            This digital wall brings our entire community together. From ambitious student dreams to inspiring teacher blessings and proud parental wishes, every voice matters.
-                        </p>
-                    </div>
-
-                    <div class="about-quote-box">
-                        <div class="about-quote-text">
-                            “Together, we nurture the dreams of tomorrow.”
-                        </div>
-                        <div class="about-quote-author">
-                            — Physics Wallah Vidyapeeth
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- FULL NOTE POPUP MODAL -->
-    <div class="modal-overlay" id="noteModal" role="dialog" aria-modal="true" aria-hidden="true">
-        <div class="modal-card" id="modalCard">
-            <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Close note view">✕</button>
-            <div id="modalContent"></div>
+        <div class="sync-status">
+            <div class="pulse"></div>
+            <span id="syncTxt">Auto-synced with live Google Sheet</span>
         </div>
     </div>
 
-    <!-- MOBILE FLOATING ACTION BUTTON (QUICK ADD) -->
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener noreferrer" class="floating-fab-btn" id="floatingFab">
-        <span>✍️</span> Add Note
-    </a>
+    <!-- ROLE TABS -->
+    <div class="role-tabs" id="roleTabs">
+        <button class="role-tab active" data-role="all" type="button">🌟 All <span class="tab-count" id="cAll">0</span></button>
+        <button class="role-tab" data-role="student" type="button">🎓 Students <span class="tab-count" id="cStudent">0</span></button>
+        <button class="role-tab" data-role="teacher" type="button">👩‍🏫 Teachers <span class="tab-count" id="cTeacher">0</span></button>
+        <button class="role-tab" data-role="parent" type="button">👨‍👩‍👧 Parents <span class="tab-count" id="cParent">0</span></button>
+    </div>
 
-    <!-- FOOTER -->
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-motto">“Dream big. Start small. Never stop believing.”</div>
-            <div class="footer-credit">Made with ❤️ for the Students, Teachers &amp; Parents of PW Alipurduar Vidyapeeth</div>
+    <!-- SWIPE DECK SECTION -->
+    <section id="deck-section" class="deck-wrapper">
+
+        <!-- Controls -->
+        <div class="deck-controls">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input class="search-in" id="searchIn" type="text" placeholder="Search name, message, role…" autocomplete="off">
+            </div>
+            <select class="deck-select" id="sortSel">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name-asc">Name A–Z</option>
+                <option value="random">Shuffle</option>
+            </select>
+            <button class="btn-clear" id="clearBtn" type="button">↺ Reset</button>
         </div>
-    </footer>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        (function () {
-            'use strict';
+        <!-- Progress Bar -->
+        <div class="deck-progress-bar"><div class="deck-progress-fill" id="progressFill"></div></div>
 
-            // Google Sheet Live CSV Endpoint
-            const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1ZK4SqUiBOThBKPzCnqZoOcV7b6s-JmsMr1vVZnsE0Es/gviz/tq?tqx=out:csv&gid=1817076388';
+        <!-- Stage -->
+        <div class="deck-stage" id="deckStage">
+            <div class="deck-empty">
+                <div class="deck-spinner"></div>
+                <div style="font-weight:600;font-size:1.1rem;color:#fff">Loading notes…</div>
+                <div style="color:var(--text-3);font-size:.9rem;margin-top:4px">Connecting to live Google Sheet</div>
+            </div>
+        </div>
 
-            // Pastel Sticky Note Color Themes
-            const NOTE_COLOR_STYLES = [
-                'note-style-yellow',
-                'note-style-pink',
-                'note-style-blue',
-                'note-style-mint',
-                'note-style-lavender',
-                'note-style-orange',
-                'note-style-cream',
-                'note-style-rose'
-            ];
+        <!-- Swipe Hint -->
+        <div class="swipe-hint" id="swipeHint">
+            <span>👈</span> Swipe or drag cards &nbsp;·&nbsp; Tap ❤️ to cheer &nbsp;<span>👉</span>
+        </div>
 
-            // State
-            let allDreams = [];
-            let activeRoleFilter = 'all';
-            let isFetching = false;
-            let likedNotes = JSON.parse(localStorage.getItem('pw_liked_notes') || '{}');
+        <!-- Dot Pagination -->
+        <div class="deck-dots" id="deckDots"></div>
 
-            // DOM Elements
-            const dreamGrid = document.getElementById('dreamGrid');
-            const searchInput = document.getElementById('searchInput');
-            const sortBy = document.getElementById('sortBy');
-            const btnResetFilters = document.getElementById('btnResetFilters');
-            const visibleCounter = document.getElementById('visibleCounter');
-            const btnSyncLive = document.getElementById('btnSyncLive');
-            const syncStatusText = document.getElementById('syncStatusText');
-            const roleTabs = document.getElementById('roleTabs');
+        <!-- Navigation -->
+        <div class="deck-nav">
+            <button class="nav-circle nav-prev" id="prevBtn" type="button" title="Previous">◀</button>
+            <button class="nav-circle nav-skip" id="skipBtn" type="button" title="Skip this note">⏭</button>
+            <div class="deck-counter" id="deckCounter">— / —</div>
+            <button class="nav-circle nav-like" id="likeBtn" type="button" title="Love this note!">❤️</button>
+            <button class="nav-circle nav-prev" id="nextBtn" type="button" title="Next">▶</button>
+        </div>
+    </section>
 
-            const countAll = document.getElementById('countAll');
-            const countStudent = document.getElementById('countStudent');
-            const countTeacher = document.getElementById('countTeacher');
-            const countParent = document.getElementById('countParent');
+    <!-- ABOUT -->
+    <div class="about-wrap" id="about">
+        <div class="about-card">
+            <div>
+                <h2>PW Alipurduar Vidyapeeth Community Wall</h2>
+                <p>Every student holds boundless potential, every teacher provides invaluable guidance, and every parent offers endless encouragement. This wall brings our entire community together.</p>
+                <p>Swipe through the notes, cheer on your fellow community members, and be inspired by the dreams that surround you every day.</p>
+            </div>
+            <div class="quote-box">
+                <div class="quote-txt">"Together, we nurture the dreams of tomorrow."</div>
+                <div class="quote-auth">— Physics Wallah Vidyapeeth</div>
+            </div>
+        </div>
+    </div>
+</main>
 
-            const noteModal = document.getElementById('noteModal');
-            const modalCard = document.getElementById('modalCard');
-            const modalContent = document.getElementById('modalContent');
-            const modalCloseBtn = document.getElementById('modalCloseBtn');
+<!-- FOOTER -->
+<footer>
+    <div class="footer-motto">"Dream big. Start small. Never stop believing."</div>
+    <div class="footer-credit">Made with ❤️ for Students, Teachers &amp; Parents · PW Alipurduar Vidyapeeth</div>
+</footer>
 
-            // Clean string helper
-            function cleanStr(val) {
-                if (val === null || val === undefined) return '';
-                const s = String(val).trim();
-                if (s.toLowerCase() === 'undefined' || s.toLowerCase() === 'null' || s.toLowerCase() === 'nan') return '';
-                return s;
-            }
+<!-- FLOATING FAB -->
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSd7PubFSq-Tc5v3tKfsCzMlDfCSKNrOV9ONHqHHfVLgtvE_2Q/viewform?usp=header" target="_blank" rel="noopener" class="fab">✍️ Add Note</a>
 
-            // HTML Escape helper
-            function escapeHtml(str) {
-                if (!str) return '';
-                return String(str)
-                    .replace(/&/g, '&amp;')
-                    .replace(/</g, '&lt;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;')
-                    .replace(/'/g, '&#039;');
-            }
+<script>
+(function(){
+'use strict';
 
-            // Date Formatter
-            function formatDisplayDate(dateVal) {
-                if (!dateVal) return '';
-                const parsed = Date.parse(dateVal);
-                if (!isNaN(parsed)) {
-                    return new Date(parsed).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+const SHEET_CSV = 'https://docs.google.com/spreadsheets/d/1ZK4SqUiBOThBKPzCnqZoOcV7b6s-JmsMr1vVZnsE0Es/gviz/tq?tqx=out:csv&gid=1817076388';
+const COLORS = ['n-yellow','n-pink','n-blue','n-mint','n-lav','n-ora','n-cream','n-rose'];
+
+// ── State ───────────────────────────────────────────────
+let all = [];
+let filtered = [];
+let current = 0;          // index in filtered[]
+let activeRole = 'all';
+let liked = JSON.parse(localStorage.getItem('pw_liked')||'{}');
+let hintSeen = false;
+let isFetching = false;
+
+// DOM
+const stage      = document.getElementById('deckStage');
+const dotsEl     = document.getElementById('deckDots');
+const counterEl  = document.getElementById('deckCounter');
+const fillEl     = document.getElementById('progressFill');
+const syncBtn    = document.getElementById('syncBtn');
+const syncTxt    = document.getElementById('syncTxt');
+const searchIn   = document.getElementById('searchIn');
+const sortSel    = document.getElementById('sortSel');
+const clearBtn   = document.getElementById('clearBtn');
+const skipBtn    = document.getElementById('skipBtn');
+const likeBtn    = document.getElementById('likeBtn');
+const nextBtn    = document.getElementById('nextBtn');
+const prevBtn    = document.getElementById('prevBtn');
+const hintEl     = document.getElementById('swipeHint');
+const roleTabs   = document.getElementById('roleTabs');
+const cAll       = document.getElementById('cAll');
+const cStudent   = document.getElementById('cStudent');
+const cTeacher   = document.getElementById('cTeacher');
+const cParent    = document.getElementById('cParent');
+
+// ── Hamburger / Mobile Drawer ──────────────────────────────
+const hamBtn       = document.getElementById('hamBtn');
+const mobileDrawer = document.getElementById('mobileDrawer');
+
+function closeDrawer(){
+    mobileDrawer.classList.remove('open');
+    mobileDrawer.setAttribute('aria-hidden','true');
+    hamBtn.setAttribute('aria-expanded','false');
+    hamBtn.textContent = '☰';
+}
+
+if(hamBtn && mobileDrawer){
+    hamBtn.addEventListener('click', () => {
+        const isOpen = mobileDrawer.classList.toggle('open');
+        mobileDrawer.setAttribute('aria-hidden', String(!isOpen));
+        hamBtn.setAttribute('aria-expanded', String(isOpen));
+        hamBtn.textContent = isOpen ? '✕' : '☰';
+    });
+    // Close when any drawer link is tapped
+    mobileDrawer.querySelectorAll('a').forEach(a => a.addEventListener('click', closeDrawer));
+    // Close when backdrop tapped
+    document.addEventListener('click', e => {
+        if(mobileDrawer.classList.contains('open') && !mobileDrawer.contains(e.target) && e.target !== hamBtn){
+            closeDrawer();
+        }
+    });
+}
+
+// ── Helpers ──────────────────────────────────────────────
+const clean = v => { if(v==null)return''; const s=String(v).trim(); return ['undefined','null','nan'].includes(s.toLowerCase())?'':s; };
+const esc   = s => !s?'':(s+'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+const fmtDate = v => { if(!v)return''; const p=Date.parse(v); return isNaN(p)?String(v).split(' ')[0]:new Date(p).toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}); };
+
+function roleInfo(r){
+    if(!r) return {label:'Student',icon:'🎓',key:'student'};
+    const c=r.toLowerCase();
+    if(c.includes('teacher')||c.includes('faculty'))  return {label:'Teacher',icon:'👩‍🏫',key:'teacher'};
+    if(c.includes('parent')||c.includes('guardian'))  return {label:'Parent', icon:'👨‍👩‍👧',key:'parent'};
+    return {label:'Student',icon:'🎓',key:'student'};
+}
+
+function colorFor(idx){ return COLORS[idx % COLORS.length]; }
+function rotFor(idx,msg){ const s=(idx*19+(msg?msg.length:0))%100; return ((s/100)*4.5-2.25).toFixed(1); }
+
+function celebrate(x,y){
+    if(typeof confetti!=='function')return;
+    confetti({ particleCount:45, spread:60, origin:{ x: x??0.5, y: y??0.7 } });
+}
+
+// ── Build card HTML ──────────────────────────────────────
+function cardHTML(note, idx, extraClass=''){
+    const role = roleInfo(note.role);
+    const col  = colorFor(idx);
+    const rot  = rotFor(idx, note.message);
+    const isLiked = !!liked[note.id];
+
+    return `
+    <div class="swipe-card ${col} ${extraClass}" data-idx="${idx}" style="transform:rotate(${rot}deg)">
+        <div class="card-tape" aria-hidden="true"></div>
+        <div class="card-stamp stamp-like" style="color:#ec4899">❤️</div>
+        <div class="card-stamp stamp-skip" style="color:#94a3b8">⏭</div>
+        <div>
+            <div class="card-message">"${esc(note.message)}"</div>
+            ${note.name ? `<div class="card-author"><span>—</span><span>${esc(note.name)}</span></div>` : ''}
+        </div>
+        <div class="card-footer">
+            <span class="role-badge">${role.icon} ${esc(role.label)}</span>
+            <div style="display:flex;align-items:center;gap:10px">
+                ${note.date ? `<span class="card-date">📅 ${esc(fmtDate(note.date))}</span>` : ''}
+                <button type="button" onclick="toggleLikeCard(event,${note.id})"
+                    style="background:transparent;border:none;cursor:pointer;font-size:1.1rem;font-weight:800;color:inherit;padding:3px 6px;border-radius:50%;transition:transform .2s"
+                    title="Cheer for this note">${isLiked?'❤️':'🤍'}</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+// ── Render Deck ──────────────────────────────────────────
+function renderDeck(){
+    if(filtered.length === 0){
+        stage.innerHTML = `
+        <div class="deck-empty">
+            <div style="font-size:3rem;margin-bottom:.8rem">🔍</div>
+            <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:.5rem">No Notes Found</div>
+            <p style="color:var(--text-2);font-size:.95rem">Try resetting your filters or be the first to post!</p>
+            <button class="btn-clear" style="margin-top:1rem" onclick="document.getElementById('clearBtn').click()">↺ Clear Filters</button>
+        </div>`;
+        dotsEl.innerHTML=''; counterEl.innerHTML='— / —'; fillEl.style.width='0%';
+        return;
+    }
+
+    // Clamp current index
+    if(current >= filtered.length) current = filtered.length - 1;
+    if(current < 0) current = 0;
+
+    // Build only the top 3 cards in reverse (bottom first)
+    let html = '';
+    for(let d=2; d>=0; d--){
+        const ni = current + d;
+        if(ni >= filtered.length) continue;
+        const cls = d===1 ? 'depth-1' : d===2 ? 'depth-2' : '';
+        html += cardHTML(filtered[ni], ni, cls);
+    }
+    stage.innerHTML = html;
+
+    // Attach gesture to the top card (no depth class)
+    const topCard = stage.querySelector('.swipe-card:not(.depth-1):not(.depth-2)');
+    if(topCard) attachGesture(topCard);
+
+    updateMeta();
+    renderDots();
+}
+
+// ── Dots ──────────────────────────────────────────────────
+function renderDots(){
+    const total = filtered.length;
+    if(total === 0){ dotsEl.innerHTML=''; return; }
+    const maxDots = 11;
+    let html = '';
+    if(total <= maxDots){
+        for(let i=0;i<total;i++){
+            const cls = i===current ? 'active' : Math.abs(i-current)===1 ? 'near' : '';
+            html += `<div class="dot ${cls}" onclick="jumpTo(${i})" title="Jump to note ${i+1}"></div>`;
+        }
+    } else {
+        // Sliding window of 11 dots
+        let start = Math.max(0, current - 5);
+        let end   = Math.min(total-1, start + maxDots - 1);
+        if(end - start < maxDots-1) start = Math.max(0, end - maxDots + 1);
+        for(let i=start; i<=end; i++){
+            const cls = i===current ? 'active' : Math.abs(i-current)===1 ? 'near' : '';
+            html += `<div class="dot ${cls}" onclick="jumpTo(${i})" title="${i+1}"></div>`;
+        }
+    }
+    dotsEl.innerHTML = html;
+}
+
+// ── Meta (counter + progress) ─────────────────────────────
+function updateMeta(){
+    const total = filtered.length;
+    const idx   = current + 1;
+    counterEl.innerHTML = `<strong>${idx}</strong> / <strong>${total}</strong>`;
+    fillEl.style.width  = total ? `${(idx/total)*100}%` : '0%';
+}
+
+// ── Jump To ────────────────────────────────────────────────
+window.jumpTo = function(idx){
+    current = idx;
+    renderDeck();
+};
+
+// ── Navigate ───────────────────────────────────────────────
+function advance(dir, withLike=false){
+    if(filtered.length===0) return;
+
+    const topCard = stage.querySelector('.swipe-card:not(.depth-1):not(.depth-2)');
+    if(!topCard) return;
+
+    if(withLike && dir > 0){
+        const note = filtered[current];
+        liked[note.id] = true;
+        localStorage.setItem('pw_liked', JSON.stringify(liked));
+        celebrate();
+    }
+
+    // Animate top card off screen
+    const flyClass = dir > 0 ? 'flyOffRight' : 'flyOffLeft';
+    topCard.style.animation = `${flyClass === 'flyOffRight' ? 'flyOffRight' : 'flyOffLeft'} .38s cubic-bezier(.6,0,.8,1) forwards`;
+
+    // Promote depth cards during animation
+    stage.classList.add('next-anim');
+
+    setTimeout(()=>{
+        stage.classList.remove('next-anim');
+        current = current + dir;
+        if(current >= filtered.length) current = filtered.length - 1;
+        if(current < 0) current = 0;
+        if(!hintSeen){ hintSeen=true; hintEl.classList.add('hidden'); }
+        renderDeck();
+    }, 340);
+}
+
+skipBtn.addEventListener('click', () => advance(1, false));
+likeBtn.addEventListener('click', () => advance(1, true));
+nextBtn.addEventListener('click', () => advance(1, false));
+prevBtn.addEventListener('click', () => advance(-1, false));
+
+// Keyboard
+document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight') advance(1, false);
+    else if(e.key==='ArrowLeft') advance(-1, false);
+    else if(e.key===' '){ e.preventDefault(); advance(1, true); }
+});
+
+// ── Like button on card ────────────────────────────────────
+window.toggleLikeCard = function(e, id){
+    e.stopPropagation();
+    if(liked[id]){ delete liked[id]; }
+    else { liked[id]=true; celebrate(e.clientX/window.innerWidth, e.clientY/window.innerHeight); }
+    localStorage.setItem('pw_liked', JSON.stringify(liked));
+    renderDeck();
+};
+
+// ── Touch / Mouse Gesture ──────────────────────────────────
+function attachGesture(card){
+    let startX=0, startY=0, curX=0, isDragging=false, startT=0;
+
+    const likeStamp = card.querySelector('.stamp-like');
+    const skipStamp = card.querySelector('.stamp-skip');
+
+    function onStart(x,y){
+        startX=x; startY=y; curX=x; isDragging=true; startT=Date.now();
+        card.style.transition='none';
+    }
+    function onMove(x){
+        if(!isDragging) return;
+        curX = x;
+        const dx = curX - startX;
+        const rot = rotFor(current, filtered[current]?.message);
+        const tiltDeg = (dx/350)*20;
+        card.style.transform = `translateX(${dx}px) rotate(${(parseFloat(rot)+tiltDeg).toFixed(1)}deg)`;
+        // Stamps
+        const pct = Math.abs(dx)/80;
+        if(dx > 20){
+            likeStamp.style.opacity = Math.min(pct, 1);
+            skipStamp.style.opacity = 0;
+        } else if(dx < -20){
+            skipStamp.style.opacity = Math.min(pct, 1);
+            likeStamp.style.opacity = 0;
+        } else {
+            likeStamp.style.opacity = 0;
+            skipStamp.style.opacity = 0;
+        }
+    }
+    function onEnd(){
+        if(!isDragging) return;
+        isDragging = false;
+        likeStamp.style.opacity = 0;
+        skipStamp.style.opacity = 0;
+        const dx = curX - startX;
+        const dt = Date.now() - startT;
+        const velocity = Math.abs(dx) / dt;
+        const shouldFlip = Math.abs(dx) > 90 || velocity > 0.6;
+
+        if(shouldFlip && dx > 0){
+            card.style.transition = 'transform .38s cubic-bezier(.6,0,.8,1), opacity .38s';
+            card.style.transform  = 'translateX(140%) rotate(30deg)';
+            card.style.opacity    = '0';
+            setTimeout(()=>{ advance(1, true); }, 340);
+        } else if(shouldFlip && dx < 0){
+            card.style.transition = 'transform .38s cubic-bezier(.6,0,.8,1), opacity .38s';
+            card.style.transform  = 'translateX(-140%) rotate(-30deg)';
+            card.style.opacity    = '0';
+            setTimeout(()=>{ advance(1, false); }, 340);
+        } else {
+            // Snap back
+            const rot = rotFor(current, filtered[current]?.message);
+            card.style.transition = 'transform .4s cubic-bezier(.2,.8,.2,1)';
+            card.style.transform  = `rotate(${rot}deg)`;
+        }
+    }
+
+    // Touch
+    card.addEventListener('touchstart', e=>{ const t=e.touches[0]; onStart(t.clientX, t.clientY); }, {passive:true});
+    card.addEventListener('touchmove',  e=>{ onMove(e.touches[0].clientX); }, {passive:true});
+    card.addEventListener('touchend',   ()=>{ onEnd(); });
+
+    // Mouse
+    card.addEventListener('mousedown', e=>{ onStart(e.clientX, e.clientY); });
+    document.addEventListener('mousemove', e=>{ if(isDragging) onMove(e.clientX); });
+    document.addEventListener('mouseup',   ()=>{ if(isDragging) onEnd(); });
+}
+
+// ── Filter & Sort ─────────────────────────────────────────
+function applyFilters(){
+    const q   = searchIn.value.toLowerCase().trim();
+    const sort = sortSel.value;
+
+    filtered = all.filter(item => {
+        if(activeRole !== 'all' && roleInfo(item.role).key !== activeRole) return false;
+        if(q){
+            const corpus = [item.name, item.message, item.role, roleInfo(item.role).label].filter(Boolean).join(' ').toLowerCase();
+            if(!corpus.includes(q)) return false;
+        }
+        return true;
+    });
+
+    filtered.sort((a,b)=>{
+        if(sort==='newest') return (new Date(b.date||0)-new Date(a.date||0))||b.id-a.id;
+        if(sort==='oldest') return (new Date(a.date||0)-new Date(b.date||0))||a.id-b.id;
+        if(sort==='name-asc'){ const na=a.name||'zzz',nb=b.name||'zzz'; return na.localeCompare(nb); }
+        if(sort==='random') return .5-Math.random();
+        return 0;
+    });
+
+    current = 0;
+    renderDeck();
+}
+
+function updateCounts(){
+    let ns=0,nt=0,np=0;
+    all.forEach(item=>{ const k=roleInfo(item.role).key; if(k==='student')ns++; else if(k==='teacher')nt++; else if(k==='parent')np++; });
+    cAll.textContent=all.length; cStudent.textContent=ns; cTeacher.textContent=nt; cParent.textContent=np;
+}
+
+// ── Role Tabs ─────────────────────────────────────────────
+roleTabs.addEventListener('click', e=>{
+    const btn = e.target.closest('.role-tab');
+    if(!btn) return;
+    document.querySelectorAll('.role-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeRole = btn.dataset.role;
+    applyFilters();
+});
+
+searchIn.addEventListener('input', applyFilters);
+sortSel.addEventListener('change', applyFilters);
+clearBtn.addEventListener('click', ()=>{
+    searchIn.value=''; sortSel.value='newest'; activeRole='all';
+    document.querySelectorAll('.role-tab').forEach(b=>b.classList.toggle('active', b.dataset.role==='all'));
+    applyFilters();
+});
+
+// ── Fetch Google Sheet ────────────────────────────────────
+async function fetchSheet(manual=false){
+    if(isFetching) return;
+    isFetching=true;
+    syncBtn.classList.add('spinning');
+    syncTxt.textContent='Fetching latest responses…';
+
+    try {
+        const url = `${SHEET_CSV}&_cb=${Date.now()}`;
+        const res = await fetch(url);
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const csv = await res.text();
+
+        const wb = XLSX.read(csv, {type:'string'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, {defval:'', raw:false});
+
+        if(!rows.length){ all=[]; updateCounts(); applyFilters(); syncTxt.textContent='No responses yet.'; return; }
+
+        const keys = Object.keys(rows[0]);
+        const fk = pats => keys.find(k=>pats.some(p=>k.toLowerCase().includes(p.toLowerCase())));
+
+        const tsKey  = fk(['timestamp','date','time']);
+        const roleKey= fk(['your role','role','i am a']);
+        const nameKey= fk(['name','your name','student']);
+        const msgKey = fk(['your message','message','dream','future goal','goal','wish']);
+
+        const parsed=[]; let id=1;
+        rows.forEach(row=>{
+            let msg = msgKey ? clean(row[msgKey]) : '';
+            if(!msg){
+                for(const k of keys){
+                    if(k!==tsKey && k!==roleKey && k!==nameKey){ const v=clean(row[k]); if(v){msg=v;break;} }
                 }
-                return String(dateVal).split(' ')[0];
             }
+            if(!msg) return;
+            parsed.push({ id:id++, date:tsKey?clean(row[tsKey]):'', role:roleKey?clean(row[roleKey]):'Student', name:nameKey?clean(row[nameKey]):'', message:msg });
+        });
 
-            // Normalize Role
-            function getRoleInfo(roleStr) {
-                if (!roleStr) return { label: 'Student', icon: '🎓', key: 'student' };
-                const clean = roleStr.toLowerCase();
-                if (clean.includes('teacher') || clean.includes('faculty')) {
-                    return { label: 'Teacher', icon: '👩‍🏫', key: 'teacher' };
-                }
-                if (clean.includes('parent') || clean.includes('guardian')) {
-                    return { label: 'Parent', icon: '👨‍👩‍👧', key: 'parent' };
-                }
-                return { label: 'Student', icon: '🎓', key: 'student' };
-            }
+        const isNew = parsed.length > all.length;
+        all = parsed;
+        updateCounts();
+        applyFilters();
+        if((manual||isNew) && parsed.length) celebrate();
 
-            // Get rotation & color for note
-            function getNoteStyleAttrs(index, dreamObj) {
-                const colorClass = NOTE_COLOR_STYLES[index % NOTE_COLOR_STYLES.length];
-                const pseudoSeed = (index * 19 + (dreamObj.message ? dreamObj.message.length : 0)) % 100;
-                const deg = ((pseudoSeed / 100) * 4.5 - 2.25).toFixed(1);
-                return { colorClass, deg };
-            }
+        const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+        syncTxt.textContent = `Auto-synced · ${all.length} notes · Last sync at ${t}`;
 
-            // Trigger Confetti Effect
-            function triggerCelebration() {
-                if (typeof confetti === 'function') {
-                    confetti({
-                        particleCount: 40,
-                        spread: 60,
-                        origin: { y: 0.85 }
-                    });
-                }
-            }
+    } catch(err){
+        console.error(err);
+        syncTxt.textContent='Sync issue — click Refresh Wall to retry.';
+        if(!all.length){
+            stage.innerHTML=`<div class="deck-empty"><div style="font-size:3rem">⚠️</div><div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:#fff;margin:.8rem 0">Could not load sheet</div><p style="color:var(--text-2)">Check your connection and retry.</p><button class="btn-clear" style="margin-top:1rem" onclick="fetchSheet(true)">🔄 Retry</button></div>`;
+        }
+    } finally {
+        isFetching=false;
+        syncBtn.classList.remove('spinning');
+    }
+}
 
-            // Render a single note card
-            function renderStickyNoteCard(dreamObj, index) {
-                const { colorClass, deg } = getNoteStyleAttrs(index, dreamObj);
-                const hasName = Boolean(dreamObj.name && dreamObj.name.trim().length > 0);
-                const hasDate = Boolean(dreamObj.date && dreamObj.date.trim().length > 0);
-                const role = getRoleInfo(dreamObj.role);
-                const isLiked = Boolean(likedNotes[dreamObj.id]);
+syncBtn.addEventListener('click', ()=>fetchSheet(true));
 
-                return `
-                    <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}" onclick="window.openNoteModal(${dreamObj.id})">
-                        <div class="sticky-note-tape" aria-hidden="true"></div>
-                        
-                        <div class="note-body-top">
-                            <div class="note-message-main">
-                                “${escapeHtml(dreamObj.message)}”
-                            </div>`;
-                }
+// Auto-poll every 35 seconds
+setInterval(()=>fetchSheet(false), 35000);
 
-            // Full render with internal content
-            function renderStickyNoteCardFull(dreamObj, index) {
-                const { colorClass, deg } = getNoteStyleAttrs(index, dreamObj);
-                const hasName = Boolean(dreamObj.name && dreamObj.name.trim().length > 0);
-                const hasDate = Boolean(dreamObj.date && dreamObj.date.trim().length > 0);
-                const role = getRoleInfo(dreamObj.role);
-                const isLiked = Boolean(likedNotes[dreamObj.id]);
-
-                let cardHtml = `
-                    <article class="sticky-note ${colorClass} stagger-in" style="transform: rotate(${deg}deg);" data-id="${dreamObj.id}" onclick="window.openNoteModal(${dreamObj.id})">
-                        <div class="sticky-note-tape" aria-hidden="true"></div>
-                        
-                        <div class="note-body-top">
-                            <div class="note-message-main">
-                                “${escapeHtml(dreamObj.message)}”
-                            </div>`;
-
-                if (hasName) {
-                    cardHtml += `
-                            <div class="note-author-name">
-                                <span>—</span> <span>${escapeHtml(dreamObj.name)}</span>
-                            </div>`;
-                }
-
-                cardHtml += `
-                        </div>
-
-                        <div class="note-meta-row">
-                            <span class="note-role-badge">${role.icon} ${escapeHtml(role.label)}</span>
-                            <div style="display:flex; align-items:center; gap:8px;">`;
-
-                if (hasDate) {
-                    cardHtml += `<span>📅 ${escapeHtml(formatDisplayDate(dreamObj.date))}</span>`;
-                }
-
-                cardHtml += `
-                                <button type="button" class="note-like-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike(event, ${dreamObj.id})" aria-label="Like note">
-                                    ${isLiked ? '❤️' : '🤍'}
-                                </button>
-                            </div>
-                        </div>
-                    </article>`;
-
-                return cardHtml;
-            }
-
-            // Update Counts in Tabs
-            function updateRoleCounts() {
-                let studentCount = 0;
-                let teacherCount = 0;
-                let parentCount = 0;
-
-                allDreams.forEach(item => {
-                    const r = getRoleInfo(item.role).key;
-                    if (r === 'student') studentCount++;
-                    else if (r === 'teacher') teacherCount++;
-                    else if (r === 'parent') parentCount++;
-                });
-
-                countAll.textContent = allDreams.length;
-                countStudent.textContent = studentCount;
-                countTeacher.textContent = teacherCount;
-                countParent.textContent = parentCount;
-            }
-
-            // Filter & Render Wall
-            function updateDreamWall() {
-                const query = searchInput.value.toLowerCase().trim();
-                const sortMode = sortBy.value;
-
-                // 1. Filter
-                let filtered = allDreams.filter(item => {
-                    // Role Tab Filter
-                    if (activeRoleFilter !== 'all') {
-                        const r = getRoleInfo(item.role).key;
-                        if (r !== activeRoleFilter) return false;
-                    }
-                    // Search Query
-                    if (query) {
-                        const roleObj = getRoleInfo(item.role);
-                        const searchCorpus = [
-                            item.name,
-                            item.message,
-                            item.role,
-                            roleObj.label
-                        ].filter(Boolean).join(' ').toLowerCase();
-
-                        if (!searchCorpus.includes(query)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                });
-
-                // 2. Sort
-                filtered.sort((a, b) => {
-                    if (sortMode === 'newest') {
-                        return (new Date(b.date || 0) - new Date(a.date || 0)) || (b.id - a.id);
-                    } else if (sortMode === 'oldest') {
-                        return (new Date(a.date || 0) - new Date(b.date || 0)) || (a.id - b.id);
-                    } else if (sortMode === 'name-asc') {
-                        const nameA = a.name ? a.name.trim() : 'zzz';
-                        const nameB = b.name ? b.name.trim() : 'zzz';
-                        return nameA.localeCompare(nameB);
-                    } else if (sortMode === 'name-desc') {
-                        const nameA = a.name ? a.name.trim() : '';
-                        const nameB = b.name ? b.name.trim() : '';
-                        return nameB.localeCompare(nameA);
-                    } else if (sortMode === 'random') {
-                        return 0.5 - Math.random();
-                    }
-                    return 0;
-                });
-
-                // 3. Render
-                if (filtered.length === 0) {
-                    dreamGrid.innerHTML = `
-                        <div class="empty-wall-state">
-                            <div style="font-size: 3rem; margin-bottom: 0.8rem;">🔍</div>
-                            <h3 style="font-family: var(--font-heading); font-size: 1.5rem; color: #ffffff; margin-bottom: 0.5rem;">No Notes Found</h3>
-                            <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
-                                No sticky notes match your current filter. Try resetting your search filters or be the first to post a new note!
-                            </p>
-                            <button type="button" class="btn-reset" onclick="document.getElementById('btnResetFilters').click();">
-                                Clear All Filters
-                            </button>
-                        </div>`;
-                } else {
-                    dreamGrid.innerHTML = filtered.map((item, idx) => renderStickyNoteCardFull(item, idx)).join('');
-                }
-
-                // Update Counter
-                visibleCounter.innerHTML = `Showing <strong>${filtered.length}</strong> of <strong>${allDreams.length}</strong> notes`;
-            }
-
-            // Open Full Screen / Modal View for Note
-            window.openNoteModal = function (id) {
-                const note = allDreams.find(item => item.id === id);
-                if (!note) return;
-
-                const role = getRoleInfo(note.role);
-                const { colorClass } = getNoteStyleAttrs(id, note);
-
-                modalCard.className = `modal-card ${colorClass}`;
-                modalContent.innerHTML = `
-                    <div style="margin-bottom: 1.25rem;">
-                        <span class="note-role-badge" style="font-size: 0.85rem; padding: 4px 12px;">${role.icon} ${escapeHtml(role.label)}</span>
-                    </div>
-                    <div style="font-family: var(--font-hand); font-size: 2.2rem; line-height: 1.35; font-weight: 700; margin-bottom: 1.5rem; word-break: break-word;">
-                        “${escapeHtml(note.message)}”
-                    </div>
-                    ${note.name ? `
-                    <div style="font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; margin-bottom: 0.5rem;">
-                        — ${escapeHtml(note.name)}
-                    </div>` : ''}
-                    ${note.date ? `
-                    <div style="font-size: 0.85rem; opacity: 0.75; font-weight: 600; margin-top: 1rem;">
-                        📅 Submitted on ${escapeHtml(formatDisplayDate(note.date))}
-                    </div>` : ''}
-                `;
-
-                noteModal.classList.add('open');
-                noteModal.setAttribute('aria-hidden', 'false');
-            };
-
-            // Close Modal
-            function closeModal() {
-                noteModal.classList.remove('open');
-                noteModal.setAttribute('aria-hidden', 'true');
-            }
-
-            modalCloseBtn.addEventListener('click', closeModal);
-            noteModal.addEventListener('click', function (e) {
-                if (e.target === noteModal) closeModal();
-            });
-
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && noteModal.classList.contains('open')) {
-                    closeModal();
-                }
-            });
-
-            // Like / Heart Toggle
-            window.toggleLike = function (e, id) {
-                e.stopPropagation(); // prevent modal opening
-                if (likedNotes[id]) {
-                    delete likedNotes[id];
-                } else {
-                    likedNotes[id] = true;
-                    triggerCelebration();
-                }
-                localStorage.setItem('pw_liked_notes', JSON.stringify(likedNotes));
-                updateDreamWall();
-            };
-
-            // Fetch live CSV from Google Sheet
-            async function fetchLiveGoogleSheetData(isManual = false) {
-                if (isFetching) return;
-                isFetching = true;
-
-                btnSyncLive.classList.add('spinning');
-                syncStatusText.textContent = 'Fetching latest responses...';
-
-                try {
-                    const url = `${GOOGLE_SHEET_CSV_URL}&_cb=${Date.now()}`;
-                    const res = await fetch(url);
-                    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
-
-                    const csvText = await res.text();
-                    
-                    const workbook = XLSX.read(csvText, { type: 'string' });
-                    const sheetName = workbook.SheetNames[0];
-                    const rawJson = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: '', raw: false });
-
-                    if (!rawJson || rawJson.length === 0) {
-                        allDreams = [];
-                        updateRoleCounts();
-                        updateDreamWall();
-                        syncStatusText.textContent = 'Google Sheet connected (0 responses yet)';
-                        return;
-                    }
-
-                    const firstRow = rawJson[0];
-                    const keys = Object.keys(firstRow);
-
-                    function findKey(patterns) {
-                        return keys.find(k => {
-                            const cleanK = k.toLowerCase().trim();
-                            return patterns.some(p => cleanK.includes(p.toLowerCase()));
-                        });
-                    }
-
-                    const timestampKey = findKey(['timestamp', 'date', 'time']);
-                    const roleKey = findKey(['your role', 'role', 'i am a', 'who are you']);
-                    const nameKey = findKey(['name', 'your name', 'student', 'author']);
-                    const messageKey = findKey(['your message', 'message', 'what is your dream', 'dream', 'future goal', 'goal', 'wish']);
-
-                    const parsed = [];
-                    let rowId = 1;
-
-                    rawJson.forEach(row => {
-                        // Find message from messageKey or any available content
-                        let msg = messageKey ? cleanStr(row[messageKey]) : '';
-                        if (!msg) {
-                            // Fallback to any non-timestamp, non-role, non-name cell
-                            for (const k of keys) {
-                                if (k !== timestampKey && k !== roleKey && k !== nameKey) {
-                                    const val = cleanStr(row[k]);
-                                    if (val) { msg = val; break; }
-                                }
-                            }
-                        }
-
-                        if (!msg) return;
-
-                        parsed.push({
-                            id: rowId++,
-                            date: timestampKey ? cleanStr(row[timestampKey]) : '',
-                            role: roleKey ? cleanStr(row[roleKey]) : 'Student',
-                            name: nameKey ? cleanStr(row[nameKey]) : '',
-                            message: msg
-                        });
-                    });
-
-                    const isNewCount = parsed.length > allDreams.length;
-                    allDreams = parsed;
-
-                    updateRoleCounts();
-                    updateDreamWall();
-
-                    if (isManual || isNewCount) {
-                        triggerCelebration();
-                    }
-
-                    const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    syncStatusText.textContent = `Auto-synced (${allDreams.length} notes loaded • Last updated at ${timeStr})`;
-
-                } catch (err) {
-                    console.error('Error fetching Google Sheet:', err);
-                    syncStatusText.textContent = 'Sync issue. Click "Refresh Live Wall" to retry.';
-                    
-                    if (allDreams.length === 0) {
-                        dreamGrid.innerHTML = `
-                            <div class="empty-wall-state">
-                                <div style="font-size: 3rem; margin-bottom: 0.8rem;">⚠️</div>
-                                <h3 style="font-family: var(--font-heading); font-size: 1.4rem; color: #ffffff; margin-bottom: 0.5rem;">Unable to load Google Sheet</h3>
-                                <p style="color: var(--text-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
-                                    Please check your internet connection or try refreshing the live wall.
-                                </p>
-                                <button type="button" class="btn-reset" onclick="window.fetchLiveGoogleSheetData(true);">
-                                    🔄 Retry Sync
-                                </button>
-                            </div>`;
-                    }
-                } finally {
-                    isFetching = false;
-                    btnSyncLive.classList.remove('spinning');
-                }
-            }
-
-            window.fetchLiveGoogleSheetData = fetchLiveGoogleSheetData;
-
-            // Events
-            function initEvents() {
-                // Role Tabs Click
-                roleTabs.addEventListener('click', function (e) {
-                    const btn = e.target.closest('.role-tab-btn');
-                    if (!btn) return;
-
-                    document.querySelectorAll('.role-tab-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    activeRoleFilter = btn.getAttribute('data-role');
-                    updateDreamWall();
-                });
-
-                searchInput.addEventListener('input', updateDreamWall);
-                sortBy.addEventListener('change', updateDreamWall);
-
-                btnResetFilters.addEventListener('click', function () {
-                    searchInput.value = '';
-                    sortBy.value = 'newest';
-                    activeRoleFilter = 'all';
-                    document.querySelectorAll('.role-tab-btn').forEach(b => {
-                        b.classList.toggle('active', b.getAttribute('data-role') === 'all');
-                    });
-                    updateDreamWall();
-                });
-
-                btnSyncLive.addEventListener('click', () => fetchLiveGoogleSheetData(true));
-
-                // Auto poll every 35 seconds to keep the wall effortlessly synced
-                setInterval(() => {
-                    fetchLiveGoogleSheetData(false);
-                }, 35000);
-            }
-
-            // Init
-            function init() {
-                initEvents();
-                fetchLiveGoogleSheetData(false);
-            }
-
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', init);
-            } else {
-                init();
-            }
-        })();
-    </script>
+// Boot
+fetchSheet(false);
+})();
+</script>
 </body>
 </html>
