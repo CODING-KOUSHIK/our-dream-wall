@@ -1113,7 +1113,7 @@ async function fetchSheet(manual=false){
 syncBtn.addEventListener('click', ()=>fetchSheet(true));
 
 // Auto-poll every 35 seconds
-setInterval(()=>fetchSheet(false), 35000);
+setInterval(()=>fetchSheet(false), 300000);
 
 // Boot
 fetchSheet(false);
